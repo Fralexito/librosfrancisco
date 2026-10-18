@@ -11,6 +11,7 @@ window.SITE = {
     whatsapp: "51916969388",            // con código de país, sin + ni espacios
     correo: "dazatanantafrancisco@outlook.com",
     facebook: "Francisco Daza Tananta",
+    facebookUrl: "",                    // pega aquí el enlace de su página de Facebook; si está vacío, abre una búsqueda
     moneda: "S/"
   },
 

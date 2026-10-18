@@ -58,16 +58,26 @@
   /* ------------------------------------------------------------------
      Paneles laterales (menú móvil y pedido)
   ------------------------------------------------------------------ */
-  var lastFocus = null;
+  var lastFocus = null, openD = null;
+  function focusables(d) { return $$("a[href], button:not([disabled]), input, select, textarea", $(".panel", d)).filter(function (x) { return x.offsetParent !== null; }); }
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Tab" || !openD) return;
+    var f = focusables(openD); if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
   function openDrawer(name) {
-    var d = $("#drawer-" + name); if (!d) return; lastFocus = document.activeElement;
+    var d = $("#drawer-" + name); if (!d) return;
+    var a = document.activeElement; lastFocus = (a && !a.closest(".toast") && a !== document.body) ? a : $('[data-open-drawer="' + name + '"]'); openD = d;
     d.classList.add("open"); d.removeAttribute("inert"); document.body.style.overflow = "hidden";
     $$(".mnav a", d).forEach(function (a, i) { a.style.transitionDelay = (0.05 + i * 0.04) + "s"; });
     var f = $(".panel button, .panel a", d); if (f) setTimeout(function () { f.focus(); }, 50);
   }
   function closeDrawers() {
+    if (!openD) return;
     $$(".drawer.open").forEach(function (d) { d.classList.remove("open"); d.setAttribute("inert", ""); });
-    document.body.style.overflow = ""; if (lastFocus) lastFocus.focus();
+    openD = null; document.body.style.overflow = ""; if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
   }
 
   /* ------------------------------------------------------------------
@@ -191,7 +201,8 @@
     }
     if (top) top.addEventListener("click", function () { scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }); });
     $$("[data-wa-general]").forEach(function (a) { a.href = wa("Hola, quiero información sobre los libros de " + C.autor + "."); a.target = "_blank"; a.rel = "noopener"; });
-    $$("[data-mail]").forEach(function (el) { el.textContent = C.correo; });
+    $$("[data-mail]").forEach(function (el) { var at = C.correo.indexOf("@"); el.innerHTML = esc(C.correo.slice(0, at)) + "<wbr>" + esc(C.correo.slice(at)); });
+    $$("[data-fb]").forEach(function (a) { a.href = C.facebookUrl || ("https://www.facebook.com/search/top?q=" + encodeURIComponent(C.facebook)); a.target = "_blank"; a.rel = "noopener"; });
     $$("[data-books-list]").forEach(function (el) { el.innerHTML = L.map(function (b) { return '<a href="' + bookUrl(b) + '">' + esc(b.titulo) + "</a>"; }).join(""); });
     $$("[data-nbooks]").forEach(function (el) { el.setAttribute("data-count", L.length); });
 
@@ -211,8 +222,10 @@
         return;
       }
       var copy = t.closest("[data-copy]"); if (copy) {
-        var txt = C.correo, done = function () { copy.textContent = "Copiado"; };
-        try { navigator.clipboard.writeText(txt).then(done, function () { copy.textContent = txt; }); } catch (er) { copy.textContent = txt; }
+        var label = copy.getAttribute("data-label") || copy.textContent; copy.setAttribute("data-label", label);
+        var reset = function () { setTimeout(function () { copy.textContent = label; }, 2000); };
+        var selectMail = function () { var el = $("[data-mail]", copy.closest(".ccard") || document); if (el) { var r = document.createRange(); r.selectNodeContents(el); var sl = getSelection(); sl.removeAllRanges(); sl.addRange(r); } copy.textContent = "Correo seleccionado"; reset(); };
+        try { navigator.clipboard.writeText(C.correo).then(function () { copy.textContent = "Copiado"; toast("Correo copiado"); reset(); }, selectMail); } catch (er) { selectMail(); }
       }
     });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeDrawers(); });
@@ -249,9 +262,10 @@
       $$("button", prog).forEach(function (p, k) { p.classList.remove("on"); void p.offsetWidth; if (k === cur) p.classList.add("on"); });
     }
     function play() { clearInterval(timer); if (!reduce && feat.length > 1) timer = setInterval(function () { show(cur + 1); }, DUR); }
-    $$("button", prog).forEach(function (p, k) { p.addEventListener("click", function () { show(k); play(); }); });
-    $("#heroPrev").addEventListener("click", function () { show(cur - 1); play(); });
-    $("#heroNext").addEventListener("click", function () { show(cur + 1); play(); });
+    function go(i) { show(i); if (!hero.classList.contains("paused")) play(); }
+    $$("button", prog).forEach(function (p, k) { p.addEventListener("click", function () { go(k); }); });
+    $("#heroPrev").addEventListener("click", function () { go(cur - 1); });
+    $("#heroNext").addEventListener("click", function () { go(cur + 1); });
     if (feat.length < 2) $(".hero-ctrl").hidden = true;
     hero.addEventListener("mouseenter", function () { clearInterval(timer); hero.classList.add("paused"); });
     function restartBar() { $$("button", prog).forEach(function (p, k) { p.classList.remove("on"); void p.offsetWidth; if (k === cur) p.classList.add("on"); }); }
@@ -266,7 +280,9 @@
       return '<a class="theme" href="libros.html#' + th.slug + '" data-rv data-d="' + (i % 3) + '"><span class="n">' + th.libros.length + (th.libros.length === 1 ? " libro" : " libros") + '</span><h3>' + esc(th.nombre) + '</h3><p>' + esc(th.texto) + '</p>'
         + '<div class="mini">' + th.libros.map(function (b) { return '<img src="' + b.portada + '" alt="" title="' + esc(b.titulo) + '">'; }).join("") + '</div><span class="link">Ver libros <span class="ar">→</span></span></a>';
     }).join("");
-    $("#homeFan").innerHTML = L.slice(0, 4).map(function (b, i) { return '<img src="' + b.portada + '" alt="" style="--i:' + i + ';--n:' + Math.min(L.length, 4) + '">'; }).join("");
+    var nf = Math.min(L.length, 4), fan = $("#homeFan");
+    fan.style.setProperty("--spread", nf <= 2 ? "62%" : "38%"); fan.style.setProperty("--spread-h", nf <= 2 ? "74%" : "52%");
+    fan.innerHTML = L.slice(0, 4).map(function (b, i) { return '<img src="' + b.portada + '" alt="" style="--i:' + i + ';--n:' + nf + '">'; }).join("");
     var words2 = T.map(function (th) { return "<span>" + esc(th.nombre) + "<i>·</i></span>"; }).join("") + L.map(function (b) { return "<span>" + esc(b.titulo) + "<i>·</i></span>"; }).join("");
     $("#homeTrack").innerHTML = words2 + (reduce ? "" : words2.replace(/<span>/g, '<span aria-hidden="true">'));
   };
@@ -291,10 +307,11 @@
       var s = sort.value;
       if (s === "az") list.sort(function (a, b) { return a.titulo.localeCompare(b.titulo); });
       if (s === "precio") list.sort(function (a, b) { return (a.precio == null ? 1e9 : a.precio) - (b.precio == null ? 1e9 : b.precio); });
-      res.textContent = list.length + (list.length === 1 ? " libro" : " libros") + (active !== "Todos" ? " en " + active : "") + (tema ? " sobre " + tema.nombre : "") + (term ? " para «" + q.value.trim() + "»" : "");
+      res.textContent = list.length + (list.length === 1 ? " libro publicado" : " libros publicados") + (active !== "Todos" ? " en " + active : "") + (tema ? " sobre " + tema.nombre : "") + (term ? " para «" + q.value.trim() + "»" : "");
       grid.innerHTML = list.length ? list.map(card).join("") + (active === "Todos" && !term && !tema ? soonCard : "")
         : '<div class="empty"><b>No encontramos ese libro</b>Prueba con otra palabra o elige «Todos».</div>';
     }
+    if (!L.some(function (b) { return b.precio != null; })) { var op = $('option[value="precio"]', sort); if (op) op.remove(); }
     chips.addEventListener("click", function (e) { var b = e.target.closest("button"); if (!b) return; active = b.textContent; $$("button", chips).forEach(function (x) { x.setAttribute("aria-pressed", x === b); }); render(); });
     q.addEventListener("input", render); sort.addEventListener("change", render);
     render();
@@ -303,7 +320,12 @@
   /* ---------- Ficha de libro ---------- */
   pages.libro = function () {
     function draw() {
-      var id = location.hash.replace("#", ""), b = byId(id) || L[0], qty = 1;
+      var id = location.hash.replace("#", ""), b = id ? byId(id) : L[0], qty = 1;
+      if (!b) {
+        document.title = "Libro no encontrado · " + C.autor; $("#pdpCrumb").textContent = "No encontrado";
+        $("#pdp").innerHTML = "<div class='notfound' style='grid-column:1/-1'><h1>No encontramos ese libro</h1><p class='muted'>Puede que el enlace esté mal escrito o que el libro aún no se haya publicado.</p><a class='btn btn-acc' href='libros.html'>Ver todos los libros</a></div>";
+        $("#related").innerHTML = L.map(card).join(""); return;
+      }
       document.title = b.titulo + " · " + C.autor;
       $("#pdpCrumb").textContent = b.titulo;
       $("#pdpHead").style.setProperty("--tint", b.color || "");
@@ -365,9 +387,9 @@
   pages.universo = function () {
     var cr = S.criaturas, sizes = ["w7", "w5", "w4", "w4", "w4", "w6", "w6"];
     $("#uniCreatures").innerHTML = cr.map(function (c, i) {
-      return '<button type="button" class="creature ' + (sizes[i] || "w4") + '" data-rv data-d="' + (i % 3) + '"><img src="' + c.imagen + '" alt="" loading="lazy"><div class="in"><small>Del relato «' + esc(c.relato) + "»</small><h3>" + esc(c.nombre) + "</h3><p>" + esc(c.texto) + "</p></div></button>";
+      return '<button type="button" class="creature ' + (sizes[i] || "w4") + '" aria-expanded="false" data-rv data-d="' + (i % 3) + '"><img src="' + c.imagen + '" alt="" loading="lazy"><span class="in"><small>Del relato «' + esc(c.relato) + '»</small><span class="h">' + esc(c.nombre) + '</span><span class="p">' + esc(c.texto) + "</span></span></button>";
     }).join("");
-    $("#uniCreatures").addEventListener("click", function (e) { var c = e.target.closest(".creature"); if (c) c.classList.toggle("open"); });
+    $("#uniCreatures").addEventListener("click", function (e) { var c = e.target.closest(".creature"); if (c) { var o = c.classList.toggle("open"); c.setAttribute("aria-expanded", o); } });
 
     var G = S.glosario.slice().sort(function (a, b) { return a[0].localeCompare(b[0]); }), letter = "", q = $("#gSearch"), box = $("#gloss"), az = $("#az");
     var norm = function (s) { return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); };
@@ -379,7 +401,7 @@
       var list = G.filter(function (g) { var n = norm(g[0]); return (!letter || n[0].toUpperCase() === letter) && (!t || n.indexOf(t) > -1 || norm(g[1]).indexOf(t) > -1); });
       $("#gCount").textContent = list.length + (list.length === 1 ? " palabra" : " palabras");
       box.innerHTML = list.length ? list.map(function (g) {
-        return '<button type="button" class="word" aria-label="' + esc(g[0]) + ': ' + esc(g[1]) + '"><div class="inner"><div class="f"><b>' + esc(g[0]) + '</b><small><span>Ver significado</span><span>' + esc(g[0][0]) + '</span></small></div><div class="b"><b>' + esc(g[0]) + "</b><p>" + esc(g[1]) + "</p></div></div></button>";
+        return '<button type="button" class="word" aria-label="' + esc(g[0]) + ': ' + esc(g[1]) + '"><span class="inner"><span class="f"><b>' + esc(g[0]) + '</b><small><span>Ver significado</span><span>' + esc(g[0][0]) + '</span></small></span><span class="b"><b>' + esc(g[0]) + '</b><span class="p">' + esc(g[1]) + "</span></span></span></button>";
       }).join("") : '<div class="empty"><b>No está en el glosario</b>Prueba con otra palabra.</div>';
     }
     box.addEventListener("click", function (e) { var w = e.target.closest(".word"); if (w) w.classList.toggle("flip"); });

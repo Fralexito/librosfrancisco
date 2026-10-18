@@ -23,7 +23,7 @@
   --ease-out:cubic-bezier(.23,1,.32,1);
   --ease-in-out:cubic-bezier(.77,0,.175,1);
   --surface:#FFFFFF;    /* tarjetas y campos */
-  --line-2:var(--line-2);
+  --line-2:#CFCBC3;
   --acc-tx:#1F5C4A;     /* acento para textos */
   --inv-bg:#16181D; --inv-fg:#FFFFFF;
   --nav-bg:rgba(253,252,250,.92);
@@ -312,7 +312,7 @@ button{font:inherit}
 form{display:grid;gap:.9rem}
 .fields{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
 @media (max-width:620px){.fields{grid-template-columns:1fr}}
-.field{display:grid;gap:.35rem;min-width:0}
+.field{display:grid;gap:.35rem;min-width:0;align-content:start}
 .field label{font-size:.8125rem;font-weight:500;color:var(--fg-2)}
 .field input,.field select,.field textarea{min-height:3.1rem;border-radius:999px;border:1px solid var(--line-2);background:var(--surface);color:var(--fg);padding:0 1.2rem;font:400 1rem var(--f-body);width:100%;transition:border-color .2s,box-shadow .2s}
 .field textarea{border-radius:18px;padding:.9rem 1.2rem;min-height:7rem;resize:vertical}
@@ -526,14 +526,10 @@ footer code{font-family:inherit;font-size:.8125rem;user-select:all;overflow-wrap
 :root[data-theme="dark"] .author .ph img,:root[data-theme="dark"] .bag-item img{filter:brightness(.92)}
 :root[data-theme="dark"] footer{background:#0A0E0C;border-top:1px solid var(--line)}
 :root[data-theme="dark"] .hero,:root[data-theme="dark"] .phead,:root[data-theme="dark"] .band{background:#0A0E0C}
-:root[data-theme="dark"] .page.sepia{background:#2A251C;color:#E6DCC8}
-:root[data-theme="dark"] .page.sepia .fade{background:linear-gradient(0deg,#2A251C,transparent)}
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]) .card .cv,:root:not([data-theme="light"]) .pdp-media{background:color-mix(in srgb,var(--tint,#2a3a33) 14%,var(--bg-2))}
   :root:not([data-theme="light"]) footer{background:#0A0E0C;border-top:1px solid var(--line)}
   :root:not([data-theme="light"]) .hero,:root:not([data-theme="light"]) .phead,:root:not([data-theme="light"]) .band{background:#0A0E0C}
-  :root:not([data-theme="light"]) .page.sepia{background:#2A251C;color:#E6DCC8}
-  :root:not([data-theme="light"]) .page.sepia .fade{background:linear-gradient(0deg,#2A251C,transparent)}
 }
 
 /* ---------- Temas de la obra ---------- */
@@ -580,4 +576,41 @@ footer code{font-family:inherit;font-size:.8125rem;user-select:all;overflow-wrap
 .card .tacts .btn{white-space:normal;padding-inline:.75rem}
 .reader-tools > *{min-width:0;max-width:100%}
 @media (max-width:700px){#readTabs button{flex:none}}
-@media (max-width:600px){.card.soon{grid-column:1/-1}.card.soon .cv{min-height:8rem}}
+@media (max-width:600px){.card.soon .cv{min-height:8rem}}
+
+/* ---------- Correcciones de la auditoría ---------- */
+:root[data-theme="dark"] .checks li::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='%238FD0B5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .checks li::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='%238FD0B5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}}
+/* 7: cabeceras y banda verdes también en oscuro */
+:root[data-theme="dark"] .phead.plain,:root[data-theme="dark"] .band.plain{background:radial-gradient(120% 140% at 85% 0%,#1C3A30 0%,#0B1210 65%)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .phead.plain,:root:not([data-theme="light"]) .band.plain{background:radial-gradient(120% 140% at 85% 0%,#1C3A30 0%,#0B1210 65%)}}
+:root[data-theme="dark"] .band.plain,:root:not([data-theme="light"]) .band.plain{border:1px solid var(--line)}
+/* 8: el lector usa siempre papel real en modo Día */
+.page{background:#FFFFFF;color:#1E2128;border-color:#E3E0DA}
+.page .p-title{color:inherit}
+.page .p-book{color:#1F5C4A}
+.page .text p:first-child::first-letter{color:#1F5C4A}
+.page .fade{background:linear-gradient(0deg,#FFFFFF,rgba(255,255,255,0))}
+.page.sepia{background:#F6EFE1;color:#3B3225;border-color:#E8DCC4}
+.page.sepia .fade{background:linear-gradient(0deg,#F6EFE1,rgba(246,239,225,0))}
+.page.night{background:#16201C;color:#D8DED9;border-color:#16201C}
+.page.night .p-book,.page.night .text p:first-child::first-letter{color:#8FD0B5}
+.page.night .fade{background:linear-gradient(0deg,#16201C,rgba(22,32,28,0))}
+/* 10: abanico según cantidad de libros */
+.fan img{transform:translateX(calc((var(--i) - (var(--n) - 1) / 2) * var(--spread,38%))) rotate(calc((var(--i) - (var(--n) - 1) / 2) * 7deg))}
+@media (hover:hover){.band:hover .fan img{transform:translateX(calc((var(--i) - (var(--n) - 1) / 2) * var(--spread-h,52%))) rotate(calc((var(--i) - (var(--n) - 1) / 2) * 10deg)) translateY(-6px)}}
+/* 11: correo del pie */
+footer code{overflow-wrap:normal;word-break:normal}
+/* 12: tarjeta "próximo libro" solo ocupa toda la fila cuando queda sola */
+@media (max-width:600px){.card.soon{grid-column:auto}.grid > .card.soon:nth-child(odd){grid-column:1/-1}}
+/* 13: criaturas y glosario sin bloques dentro de botones */
+.creature .in,.creature .h,.creature .p,.word .inner,.word .f,.word .b,.word .f b,.word .b b,.word .f small,.word .b .p{display:block}
+.creature .h{font-family:var(--f-display);font-weight:600;line-height:1.05;font-size:clamp(1.6rem,2.6vw,2.2rem);color:#fff}
+.creature .p{font-size:.9375rem;color:#D1D8D4;max-height:0;opacity:0;overflow:hidden;transition:max-height 400ms var(--ease-out),opacity 300ms ease}
+.creature:hover .p,.creature:focus-visible .p,.creature.open .p{max-height:12rem;opacity:1}
+@media (max-width:860px){.creature .p{max-height:12rem;opacity:1}}
+.word .f,.word .b{display:grid}
+.word .b .p{font-size:.95rem;line-height:1.45;color:#E2EFE9}
+.word .f small{display:flex}
+.notfound{text-align:center;padding:5rem 1rem;display:grid;gap:1rem;justify-items:center}
+.notfound h1{font-size:clamp(2.4rem,5vw,3.6rem)}
