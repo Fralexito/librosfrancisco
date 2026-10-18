@@ -129,7 +129,7 @@ export function createViewer(opt) {
     camera.aspect = w / h;
     const need = Math.max(H * (opt.fill || 1.2), (W * 1.9) / camera.aspect);
     camera.position.set(0, 0.05, (need / 2) / Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
-    camera.lookAt(0, -0.05, 0); camera.updateProjectionMatrix();
+    camera.lookAt(0, -0.05, 0); camera.updateProjectionMatrix(); kick();
   }
   function onMove(e) {
     if (!host) return;
@@ -139,11 +139,11 @@ export function createViewer(opt) {
       const dx = e.clientX - st.drag.x; st.userY = st.drag.y0 + dx * 0.012; st.spinV = (e.clientX - st.drag.lx) * 0.012; st.drag.lx = e.clientX; st.lastUser = performance.now();
       return;
     }
-    if (opt.mode !== "scroll") { st.tx = py * -0.35; st.ty = px * 0.7; }
+    if (opt.mode !== "scroll" && !opt.still) { st.tx = py * -0.35; st.ty = px * 0.7; }
   }
   function onDown(e) {
     if (e.button && e.button !== 0) return;
-    st.drag = { x: e.clientX, lx: e.clientX, y0: st.userY }; host.classList.add("grabbing");
+    st.drag = { x: e.clientX, lx: e.clientX, y0: st.userY }; host.classList.add("grabbing"); kick();
     try { host.setPointerCapture(e.pointerId); } catch (er) {}
   }
   function onUp() {
@@ -158,13 +158,13 @@ export function createViewer(opt) {
     // inercia al soltar
     if (!st.drag && Math.abs(st.spinV) > 0.0005) { st.userY += st.spinV * k; st.spinV *= Math.pow(0.93, k); }
     // en portada, vuelve a su sitio poco a poco tras girarlo
-    if (opt.mode === "hover" && !st.drag && now - st.lastUser > 2200) {
+    if ((opt.mode === "hover" || opt.still) && !st.drag && now - st.lastUser > (opt.still ? 1200 : 2200)) {
       const k0 = Math.round(st.userY / (Math.PI * 2)) * Math.PI * 2; st.userY += (k0 - st.userY) * (1 - Math.pow(0.95, k));
     }
     if (st.spin) { st.spin *= Math.pow(0.89, k); if (Math.abs(st.spin) < 0.002) st.spin = 0; }
     const e8 = 1 - Math.pow(0.92, k); st.rx += (st.tx - st.rx) * e8; st.ry += (st.ty - st.ry) * e8;
     st.sy = (st.sy == null ? st.scrollY : st.sy) + (st.scrollY - (st.sy == null ? st.scrollY : st.sy)) * e8;
-    const idle = opt.reduce ? 0.5 : 1;
+    const idle = opt.still ? 0 : (opt.reduce ? 0.5 : 1);
     holder.position.y = Math.sin(t * 1.1) * 0.05 * idle;
     shadow.position.y = -H / 2 - 0.12 - holder.position.y;
     shadow.scale.setScalar(1 - holder.position.y * 0.6);
@@ -172,6 +172,7 @@ export function createViewer(opt) {
     book.rotation.y = opt.baseY + st.ry + st.userY + st.sy + st.spin + Math.sin(t * 0.5) * 0.06 * idle;
     renderer.render(scene, camera);
     if (!ready && mesh) { const im = mesh.material[4].map && mesh.material[4].map.image; if (im && im.complete && im.naturalWidth) { ready = true; host.classList.add("gl-ready"); } }
+    if (opt.still && ready && !st.drag && Math.abs(st.spinV) < 0.0005 && !st.spin && Math.abs(st.userY - Math.round(st.userY / (Math.PI * 2)) * Math.PI * 2) < 0.001) return;
     raf = requestAnimationFrame(frame);
   }
   function kick() { if (!raf && visible && host) raf = requestAnimationFrame(frame); }

@@ -403,14 +403,14 @@
         var v = views[k]; if (!v) return;
         var r = bl.getBoundingClientRect(); if (r.bottom < 0 || r.top > vh) return;
         var p = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
-        v.setScroll((p - 0.5) * 0.9 * (k % 2 ? -1 : 1));
+
       });
     }
     var io = "IntersectionObserver" in window ? new IntersectionObserver(function (en) {
       en.forEach(function (x) {
         if (!x.isIntersecting) return; io.unobserve(x.target);
         var k = blocks.indexOf(x.target);
-        glViewer({ mode: "drag", baseY: k % 2 ? 0.42 : -0.42 }, function (v) { views[k] = v; v.mount($(".sc-stage", x.target)).setBook(L[k]); upd(); });
+        glViewer({ mode: "drag", still: true, baseY: k % 2 ? 0.38 : -0.38 }, function (v) { views[k] = v; v.mount($(".sc-stage", x.target)).setBook(L[k]); });
       });
     }, { rootMargin: "400px 0px" }) : null;
     blocks.forEach(function (bl) { if (io) io.observe(bl); });
