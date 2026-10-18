@@ -7,31 +7,38 @@
 <meta name="description" content="Francisco Daza Tananta, maestro y escritor de Loreto. Autor de Fantasías Amazónicas y Tras los muros de Maranguita.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Geist:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Geist:wght@300;400;500;600&family=EB+Garamond:ital,wght@0,400;1,400&family=Courier+Prime:wght@400;700&family=Mrs+Saint+Delafield&display=swap">
 <style>
-/* Layout: página oscura única, imagen protagonista en la entrada. Grafito, marfil y un solo acento champán. Botones en píldora, imágenes con radio 20px. */
+/* Layout: libro abierto. Papel claro, tinta azul-negra, acento de pluma azul; secciones como capítulos, firma manuscrita y cuaderno rayado. Botones en píldora, imágenes con radio 20px. */
 :root{
-  --bg:#0E0E0F;          /* grafito */
-  --bg-2:#161618;        /* superficie elevada */
-  --bg-3:#1F1F22;
-  --fg:#F1EDE6;          /* marfil */
-  --fg-2:#ABA69E;
-  --fg-3:#76726B;
-  --line:#2A2A2E;
-  --pink:#CDB38A;        /* champán: único acento */
-  --pink-ink:#1B1712;
+  --bg:#F4F3EE;          /* papel */
+  --bg-2:#FBFAF7;        /* hoja limpia */
+  --bg-3:#ECEAE3;
+  --fg:#1A1F2B;          /* tinta azul-negra */
+  --fg-2:#4D5260;
+  --fg-3:#7C808A;
+  --line:#DCD9D0;
+  --pink:#2C4A7A;        /* tinta de pluma: único acento */
+  --pink-ink:#FFFFFF;
+  --rule:#C9D3E3;        /* renglón de cuaderno */
+  --margin:#D9A3A0;      /* margen de cuaderno */
   --f-display:"Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --f-body:"Geist", "Helvetica Neue", Arial, sans-serif;
-  --f-lit:"Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --f-lit:"EB Garamond", "Iowan Old Style", Georgia, serif;
+  --f-type:"Courier Prime", "Courier New", monospace;
+  --f-sign:"Mrs Saint Delafield", "Brush Script MT", cursive;
   --r-media:20px;
   --ease:cubic-bezier(.16,1,.3,1);
-  color-scheme:dark;
+  color-scheme:light;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:1.0625rem;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:70;opacity:.45;mix-blend-mode:multiply;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .42 0 0 0 0 .36 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 a{color:inherit;text-decoration:none}
+.chapter{font-family:var(--f-type);font-size:.875rem;letter-spacing:.04em;color:var(--pink);display:flex;align-items:center;gap:.9rem}
+.chapter::after{content:"";height:1px;width:3rem;background:currentColor;opacity:.5}
 img{display:block;max-width:100%}
 main{overflow-x:clip}
 h1,h2,h3,h4{font-family:var(--f-display);font-weight:500;margin:0;letter-spacing:-.01em;line-height:1.02;text-wrap:balance}
@@ -48,7 +55,7 @@ p{margin:0}
 .btn{display:inline-flex;align-items:center;gap:.6rem;height:3.25rem;padding:0 1.5rem;border-radius:999px;font:600 1rem var(--f-body);white-space:nowrap;cursor:pointer;border:1px solid transparent;transition:transform .35s var(--ease),background .25s,color .25s,border-color .25s}
 .btn:active{transform:scale(.98)}
 .btn-primary{background:var(--pink);color:var(--pink-ink)}
-.btn-primary:hover{background:#DCC6A2;transform:translateY(-2px)}
+.btn-primary:hover{background:#22406E;transform:translateY(-2px)}
 .btn-ghost{border-color:var(--line);color:var(--fg)}
 .btn-ghost:hover{border-color:var(--fg-2);transform:translateY(-2px)}
 .btn .ar{transition:transform .35s var(--ease)}
@@ -56,7 +63,7 @@ p{margin:0}
 
 /* Nav */
 .nav{position:fixed;inset:0 0 auto;top:env(safe-area-inset-top,0px);z-index:50;transition:background .4s,border-color .4s,backdrop-filter .4s;border-bottom:1px solid transparent}
-.nav.solid{background:rgba(14,14,15,.78);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-bottom-color:var(--line)}
+.nav.solid{background:rgba(244,243,238,.88);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-bottom-color:var(--line)}
 .nav .wrap{height:4.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .brand{font-family:var(--f-display);font-weight:600;font-size:1.375rem;letter-spacing:0;white-space:nowrap}
 .links{display:flex;align-items:center;gap:2rem;font-size:.9375rem;color:var(--fg-2)}
@@ -67,14 +74,17 @@ p{margin:0}
 /* Hero */
 .hero{position:relative;min-height:min(100dvh,60rem);display:grid;align-items:end;padding-top:6rem;padding-bottom:clamp(3rem,6vw,5rem);overflow:hidden}
 .hero-bg{position:absolute;inset:0;z-index:0}
-.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:60% 30%;transform:scale(1.08);animation:drift 22s var(--ease) forwards}
-.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(14,14,15,.96) 0%,rgba(14,14,15,.82) 34%,rgba(14,14,15,.25) 68%,rgba(14,14,15,.35) 100%),linear-gradient(0deg,var(--bg) 0%,rgba(14,14,15,0) 40%)}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:70% 30%;transform:scale(1.08);animation:drift 22s var(--ease) forwards}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 0%,rgba(244,243,238,.94) 30%,rgba(244,243,238,.35) 58%,rgba(244,243,238,0) 78%),linear-gradient(0deg,var(--bg) 0%,rgba(244,243,238,0) 30%),linear-gradient(180deg,rgba(244,243,238,.8) 0%,rgba(244,243,238,0) 18%)}
 @keyframes drift{to{transform:scale(1)}}
 .hero .wrap{position:relative;z-index:1;width:100%}
 .hero-in{max-width:40rem;display:grid;gap:1.75rem}
-.eyebrow{font-size:.8125rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--pink)}
+.eyebrow{font-family:var(--f-type);font-size:.9375rem;letter-spacing:.02em;color:var(--pink)}
 .hero h1{font-size:clamp(3.6rem,9vw,8rem);line-height:.92;letter-spacing:-.015em}
-.hero h1 i{font-style:italic;font-weight:500;color:var(--pink);display:inline-block;padding-bottom:.08em}
+.hero h1 i{font-style:italic;font-weight:500;color:var(--pink);display:inline-block;padding-bottom:.08em;position:relative}
+.pen{position:absolute;left:-2%;bottom:-.12em;width:104%;height:.32em;overflow:visible}
+.pen path{fill:none;stroke:var(--pink);stroke-width:3;stroke-linecap:round;stroke-dasharray:420;stroke-dashoffset:420;animation:draw 1.4s .9s cubic-bezier(.65,0,.35,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
 .hero .sub{font-size:clamp(1.0625rem,1.6vw,1.25rem);color:var(--fg-2);max-width:32ch;line-height:1.55}
 .ctas{display:flex;flex-wrap:wrap;gap:.75rem}
 .hero .rise{opacity:0;transform:translateY(22px);animation:rise 1s var(--ease) forwards}
@@ -95,36 +105,40 @@ p{margin:0}
 .stage{perspective:1600px;display:grid;place-items:center;padding-block:1rem}
 .book3d{position:relative;width:min(100%,21rem);aspect-ratio:.71;transform-style:preserve-3d;transform:rotateY(-24deg) rotateX(4deg);transition:transform .9s var(--ease)}
 .stage:hover .book3d{transform:rotateY(-8deg) rotateX(2deg) translateY(-6px)}
-.book3d .front{position:absolute;inset:0;border-radius:3px 8px 8px 3px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.06)}
+.book3d .front{position:absolute;inset:0;border-radius:3px 8px 8px 3px;overflow:hidden;box-shadow:0 40px 70px -30px rgba(26,31,43,.5),0 0 0 1px rgba(26,31,43,.06)}
 .book3d .front img{width:100%;height:100%;object-fit:cover}
 .book3d .front::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.35) 0,rgba(255,255,255,.12) 2.5%,rgba(0,0,0,0) 6%,rgba(0,0,0,0) 85%,rgba(255,255,255,.08) 100%)}
 .book3d .pages{position:absolute;top:1.5%;bottom:1.5%;right:0;width:34px;transform:translateX(17px) rotateY(90deg) ;background:repeating-linear-gradient(90deg,#e9e7df 0 2px,#d6d4cb 2px 3px);border-radius:2px}
-.book3d .glow{position:absolute;inset:auto -10% -12% -10%;height:30%;background:radial-gradient(closest-side,rgba(205,179,138,.16),transparent);transform:translateZ(-40px);filter:blur(10px)}
+.book3d .glow{position:absolute;inset:auto -10% -12% -10%;height:30%;background:radial-gradient(closest-side,rgba(44,74,122,.10),transparent);transform:translateZ(-40px);filter:blur(10px)}
 
 .info{display:grid;gap:1.5rem}
 .genre{font-size:.9375rem;color:var(--fg-2)}
 .genre b{color:var(--fg);font-weight:600}
 .info h3{font-size:clamp(2.25rem,4.6vw,3.75rem)}
 .info .tag{font-family:var(--f-lit);font-style:italic;font-size:1.4rem;line-height:1.3;color:var(--fg-2);margin-top:-.75rem}
-.info .syn{color:var(--fg-2);max-width:56ch;display:grid;gap:1rem}
+.info .syn{color:var(--fg-2);max-width:56ch;display:grid;gap:1rem;font-family:var(--f-lit);font-size:1.1875rem;line-height:1.6}
+.info .syn p:first-child::first-letter{font-family:var(--f-display);float:left;font-size:3.6em;line-height:.8;padding:.06em .1em 0 0;color:var(--pink)}
 .chips{display:flex;gap:.5rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:.25rem;scrollbar-width:none;max-width:100%}
 .chips::-webkit-scrollbar{display:none}
 .chip{scroll-snap-align:start;flex:none;border:1px solid var(--line);border-radius:999px;padding:.5rem 1rem;font-size:.875rem;color:var(--fg-2);white-space:nowrap;transition:border-color .25s,color .25s}
 .chip:hover{border-color:var(--pink);color:var(--fg)}
 .facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border-radius:16px;overflow:hidden;border:1px solid var(--line)}
 .facts div{background:var(--bg-2);padding:1rem 1.1rem}
+.facts dd{font-family:var(--f-type)!important;font-size:.875rem!important}
 .facts dt{font-size:.75rem;color:var(--fg-3);margin-bottom:.2rem}
 .facts dd{margin:0;font-size:.9375rem;font-weight:500;line-height:1.35}
 @media (max-width:560px){.facts{grid-template-columns:1fr 1fr}}
 .note{font-size:.8125rem;color:var(--fg-3);max-width:56ch}
 
 /* Manifiesto: texto que se ilumina al hacer scroll */
-.mani{background:var(--bg-2);border-block:1px solid var(--line)}
+.mani{background:transparent}
+.sheet{background:var(--bg-2);border:1px solid var(--line);box-shadow:0 30px 60px -40px rgba(26,31,43,.35),8px 8px 0 -1px var(--bg),8px 8px 0 0 var(--line);padding:clamp(2rem,6vw,5rem) clamp(1.5rem,6vw,5.5rem);position:relative;max-width:62rem;margin:0 auto}
+.sheet .folio{position:absolute;right:clamp(1rem,3vw,2rem);top:clamp(1rem,2.5vw,1.6rem);font-family:var(--f-type);font-size:.8125rem;color:var(--fg-3)}
 .mani-text{font-family:var(--f-display);font-weight:500;font-size:clamp(2rem,4.2vw,3.6rem);line-height:1.16;letter-spacing:-.005em;max-width:48rem}
 .mani-text .w{color:var(--fg)}
 @supports (animation-timeline: view()){
   @media (prefers-reduced-motion: no-preference){
-    .mani-text .w{color:#4A4844;animation:lightup linear both;animation-timeline:view();animation-range:entry 60% cover 42%}
+    .mani-text .w{color:#C3C0B8;animation:lightup linear both;animation-timeline:view();animation-range:entry 60% cover 42%}
     .mani-text .hl .w{animation-name:lightgold}
   }
 }
@@ -134,7 +148,7 @@ p{margin:0}
 .mani-foot{margin-top:clamp(2.5rem,5vw,4rem);display:flex;flex-wrap:wrap;gap:1.5rem 3rem;align-items:flex-end;justify-content:space-between}
 .mani-foot blockquote{margin:0;max-width:30rem;font-family:var(--f-lit);font-style:italic;font-size:1.45rem;line-height:1.45;color:var(--fg-2)}
 .mani-foot cite{display:block;font-style:normal;font-family:var(--f-body);font-size:.875rem;color:var(--fg-3);margin-top:.6rem}
-.sign{font-family:var(--f-display);font-weight:600;font-size:1.4rem;color:var(--fg-2)}
+.sign{font-family:var(--f-sign);font-weight:400;font-size:clamp(2.6rem,5vw,3.6rem);line-height:1;color:var(--pink);color:var(--fg-2)}
 
 /* Marquesina de palabras */
 .marq{padding-block:clamp(2.5rem,5vw,4rem);overflow:hidden;border-bottom:1px solid var(--line)}
@@ -142,6 +156,7 @@ p{margin:0}
 .marq:hover .track{animation-play-state:paused}
 .word{display:flex;align-items:baseline;gap:1rem;white-space:nowrap}
 .word b{font-family:var(--f-display);font-style:italic;font-weight:500;font-size:clamp(2.2rem,4vw,3.4rem)}
+.word em{font-family:var(--f-type);font-style:normal;font-size:.8125rem;color:var(--pink)}
 .word span{font-size:.9375rem;color:var(--fg-3);max-width:16rem;white-space:normal;line-height:1.35}
 @keyframes slide{to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion: reduce){.track{animation:none;flex-wrap:wrap;width:auto}.hero .rise{animation:none;opacity:1;transform:none}.hero-bg img{animation:none}}
@@ -152,15 +167,16 @@ p{margin:0}
 .free-media img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease)}
 .free-media:hover img{transform:scale(1.04)}
 .excerpt{margin-top:1rem;font-family:var(--f-lit);font-style:italic;font-size:1.35rem;line-height:1.55;color:var(--fg-2);max-width:36rem}
-.free-copy{display:grid;gap:1.5rem}
+.free-copy{display:grid;gap:1.5rem;background:var(--bg-2) repeating-linear-gradient(180deg,transparent 0 31px,var(--rule) 31px 32px);background-position:0 1.2rem;border:1px solid var(--line);border-radius:6px;padding:clamp(1.75rem,4vw,3rem) clamp(1.25rem,4vw,3rem) clamp(1.75rem,4vw,3rem) clamp(2.5rem,6vw,4.5rem);position:relative;box-shadow:0 30px 60px -45px rgba(26,31,43,.4)}
+.free-copy::before{content:"";position:absolute;top:0;bottom:0;left:clamp(1.5rem,4vw,3rem);width:1px;background:var(--margin)}
 .free-copy .h2{font-size:clamp(2.25rem,4.4vw,3.5rem)}
 form{display:grid;gap:1rem}
 .field{display:grid;gap:.45rem}
 .field label{font-size:.875rem;color:var(--fg-2)}
-.field input{height:3.25rem;border-radius:999px;border:1px solid var(--line);background:var(--bg-2);color:var(--fg);padding:0 1.25rem;font:400 1rem var(--f-body);transition:border-color .25s}
-.field input::placeholder{color:#8B958F}
+.field input{height:3.25rem;border-radius:999px;border:1px solid #CFCBC1;background:#FFFFFF;color:var(--fg);padding:0 1.25rem;font:400 1rem var(--f-body);transition:border-color .25s}
+.field input::placeholder{color:#868A93}
 .field input:focus{outline:none;border-color:var(--pink)}
-.field .err{font-size:.8125rem;color:#E9A48F;min-height:1.1em}
+.field .err{font-size:.8125rem;color:#A8432C;min-height:1.1em}
 .fine{font-size:.8125rem;color:var(--fg-3)}
 .done{border:1px solid var(--line);background:var(--bg-2);border-radius:20px;padding:1.5rem}
 .done b{display:block;font-family:var(--f-display);font-size:1.375rem;margin-bottom:.35rem}
@@ -179,10 +195,11 @@ form{display:grid;gap:1rem}
 .c-stat b{font-family:var(--f-display);font-weight:600;font-size:clamp(2.8rem,4.8vw,3.8rem);letter-spacing:0;line-height:1}
 .c-stat span{color:var(--fg-2);font-size:.9375rem}
 .c-stat.accent{background:var(--pink);border-color:var(--pink);color:var(--pink-ink)}
-.c-stat.accent span{color:#4A3E2C}
+.c-stat.accent span{color:rgba(255,255,255,.8)}
 .c-stat.img{position:relative;overflow:hidden;border:0}
 .c-stat.img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%}
-.c-stat.img::before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(14,14,15,.92),rgba(14,14,15,.2));z-index:1}
+.c-stat.img::before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,24,34,.92),rgba(20,24,34,.25));z-index:1}
+.c-stat.img b,.c-stat.img span{color:#FFFFFF}
 .c-stat.img > *{position:relative;z-index:2}
 .bento-2{grid-column:5 / -1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
 .bento-2 .c-stat{grid-column:auto}
@@ -208,6 +225,7 @@ footer{padding-block:clamp(5rem,10vw,8rem) 2.5rem;border-top:1px solid var(--lin
 .copy:hover{border-color:var(--fg-2)}
 .foot-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem;font-size:.9375rem;color:var(--fg-2)}
 .foot-cols b{display:block;color:var(--fg);font-weight:600;margin-bottom:.4rem}
+.foot-sign{font-family:var(--f-sign);font-size:clamp(3rem,7vw,5rem);line-height:1;color:var(--pink);margin-top:2.5rem}
 .legal{margin-top:clamp(3rem,6vw,5rem);display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;font-size:.8125rem;color:var(--fg-3)}
 @media (max-width:860px){.foot-top{grid-template-columns:1fr}}
 
@@ -217,6 +235,7 @@ footer{padding-block:clamp(5rem,10vw,8rem) 2.5rem;border-top:1px solid var(--lin
 @media (prefers-reduced-motion: reduce){.js .reveal.pre{transform:none;opacity:1}}
 .next-line{margin-top:clamp(3rem,6vw,4.5rem);padding-top:1.5rem;border-top:1px solid var(--line);color:var(--fg-3);font-size:.9375rem}
 .next-line span{font-family:var(--f-display);font-style:italic;font-size:1.35rem;color:var(--pink);margin-right:.6rem}
+@media (max-width:760px){.hero{align-items:end;min-height:44rem}.hero-bg img{object-position:62% 0}.hero-bg::after{background:linear-gradient(0deg,var(--bg) 0%,var(--bg) 42%,rgba(244,243,238,.55) 56%,rgba(244,243,238,0) 72%),linear-gradient(180deg,rgba(244,243,238,.75) 0%,rgba(244,243,238,0) 14%)}}
 </style>
 </head>
 <body>
@@ -239,7 +258,7 @@ footer{padding-block:clamp(5rem,10vw,8rem) 2.5rem;border-top:1px solid var(--lin
     <div class="wrap">
       <div class="hero-in">
         <p class="eyebrow rise">Maestro y escritor de Loreto</p>
-        <h1 class="rise">De la selva <i>al asfalto.</i></h1>
+        <h1 class="rise">De la selva <i>al asfalto.<svg class="pen" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 16 C 60 6, 120 20, 180 12 S 270 6, 296 14"/></svg></i></h1>
         <p class="sub rise">Leyendas del monte, aulas rurales y los patios de un centro juvenil, contados por quien estuvo ahí.</p>
         <div class="ctas rise">
           <a class="btn btn-primary" href="#lectura">Leer gratis <span class="ar">→</span></a>
@@ -252,6 +271,7 @@ footer{padding-block:clamp(5rem,10vw,8rem) 2.5rem;border-top:1px solid var(--lin
   <section class="sec" id="libros">
     <div class="wrap">
       <div class="books-head reveal">
+        <p class="chapter">Capítulo I</p>
         <h2 class="h2">La obra.</h2>
         <p class="muted" style="max-width:52ch">Un catálogo que crece. Cada libro cuenta una parte del mismo camino: de la selva al asfalto.</p>
         <div class="seg" role="tablist" aria-label="Elegir libro" id="seg"></div>
@@ -263,24 +283,24 @@ footer{padding-block:clamp(5rem,10vw,8rem) 2.5rem;border-top:1px solid var(--lin
   </section>
 
   <section class="sec mani" id="manifiesto" aria-label="Por qué escribe">
-    <div class="wrap">
+    <div class="wrap"><div class="sheet"><span class="folio">p. 1</span><p class="chapter" style="margin-bottom:1.5rem">Capítulo II · Prólogo del autor</p>
       <p class="mani-text" id="maniText">Durante más de veinte años fui profesor en comunidades de Loreto. De día enseñaba a leer. De noche escuchaba hablar de la Runa Mula en voz baja, como si el monte pudiera oír. Después crucé el portón de un centro juvenil en Lima. Escribo lo que vi en los dos lugares, porque <span class="hl">si queremos que los chicos lean, los maestros tenemos que atrevernos primero.</span></p>
       <div class="mani-foot">
         <blockquote>«La esperanza germina siempre que un maestro se niega a dar por perdida una vida.»<cite>Tras los muros de Maranguita</cite></blockquote>
-        <p class="sign">Francisco Daza Tananta</p>
+        <p class="sign" aria-label="Firma de Francisco Daza Tananta">Francisco Daza Tananta</p>
       </div>
-    </div>
+    </div></div>
   </section>
 
   <section class="marq" aria-label="Palabras del glosario de Fantasías Amazónicas">
     <div class="track" id="track">
-      <div class="word"><b>Huito</b><span>Fruto cuya pulpa tiñe la piel de negro.</span></div>
-      <div class="word"><b>Cocha</b><span>Laguna o depósito natural de agua.</span></div>
-      <div class="word"><b>Emponado</b><span>Piso de listones de madera o caña.</span></div>
-      <div class="word"><b>Vaciante</b><span>Época en que bajan las aguas del río.</span></div>
-      <div class="word"><b>Ayaymama</b><span>Ave nocturna de canto lúgubre.</span></div>
-      <div class="word"><b>Manchari</b><span>Susto o pérdida del alma por un fuerte shock.</span></div>
-      <div class="word"><b>Bufeo colorado</b><span>Delfín rosado del río Amazonas.</span></div>
+      <div class="word"><b>Huito</b><em>s.</em><span>Fruto cuya pulpa tiñe la piel de negro.</span></div>
+      <div class="word"><b>Cocha</b><em>s.</em><span>Laguna o depósito natural de agua.</span></div>
+      <div class="word"><b>Emponado</b><em>s.</em><span>Piso de listones de madera o caña.</span></div>
+      <div class="word"><b>Vaciante</b><em>s.</em><span>Época en que bajan las aguas del río.</span></div>
+      <div class="word"><b>Ayaymama</b><em>s.</em><span>Ave nocturna de canto lúgubre.</span></div>
+      <div class="word"><b>Manchari</b><em>s.</em><span>Susto o pérdida del alma por un fuerte shock.</span></div>
+      <div class="word"><b>Bufeo colorado</b><em>s.</em><span>Delfín rosado del río Amazonas.</span></div>
     </div>
   </section>
 
@@ -291,6 +311,7 @@ footer{padding-block:clamp(5rem,10vw,8rem) 2.5rem;border-top:1px solid var(--lin
         <p class="excerpt">«Adelita era una de esas niñas que se recuerdan con especial cariño después de muchos años.»</p>
       </div>
       <div class="free-copy reveal">
+        <p class="chapter">Capítulo III · Lectura libre</p>
         <h2 class="h2">Lee «El sueño de Adelita» gratis.</h2>
         <p class="muted">Un relato completo e ilustrado del libro, con su glosario. Además, serás de los primeros en saber cuándo sale cada nuevo libro.</p>
         <form id="leadForm" novalidate>
@@ -316,6 +337,7 @@ footer{padding-block:clamp(5rem,10vw,8rem) 2.5rem;border-top:1px solid var(--lin
       <div class="bento">
         <div class="cell c-photo reveal"><img src="assets/img/francisco-daza-tananta.jpg" alt="Retrato de Francisco Daza Tananta."></div>
         <div class="cell c-bio reveal">
+          <p class="chapter">Capítulo IV · El autor</p>
           <h3>El profe, el árbitro, el que cuenta.</h3>
           <p>Francisco Daza Tananta nació en Iquitos en 1966. Estudió en el Instituto Superior Pedagógico Público «Loreto» y enseñó más de dos décadas en el distrito de Nauta, muchas veces en escuelas rurales.</p>
           <p>También fue árbitro de fútbol y vóleibol y juez de básquetbol, oficio que lo llevó por buena parte del Perú. Ya en Lima trabajó como educador en el centro juvenil de la capital. Vive en Lima con su familia.</p>
@@ -330,6 +352,7 @@ footer{padding-block:clamp(5rem,10vw,8rem) 2.5rem;border-top:1px solid var(--lin
 
   <section class="sec" id="cuaderno" style="padding-top:0">
     <div class="wrap">
+      <p class="chapter reveal" style="margin-bottom:1rem">Capítulo V</p>
       <h2 class="h2 reveal" style="margin-bottom:clamp(2rem,4vw,3rem)">Cuaderno.</h2>
       <div class="rows">
         <article class="row reveal"><div><h3>La leyenda y el puesto de salud</h3><p>Qué hace un profesor cuando una familia cree que a su hija la enfermó la Madre del Agua.</p></div><span class="when">Próximamente</span></article>
@@ -352,6 +375,7 @@ footer{padding-block:clamp(5rem,10vw,8rem) 2.5rem;border-top:1px solid var(--lin
         <div><b>Editoriales</b>ACUEDI Ediciones<br>Ediciones Daza Mozombite</div>
       </div>
     </div>
+    <p class="foot-sign" aria-label="Firma de Francisco Daza Tananta">Francisco Daza Tananta</p>
     <div class="legal"><span>© 2026 Francisco Daza Tananta. Lima, Perú.</span><span>Diseño: FRALEX</span></div>
   </div>
 </footer>
