@@ -254,7 +254,9 @@
     $("#heroNext").addEventListener("click", function () { show(cur + 1); play(); });
     if (feat.length < 2) $(".hero-ctrl").hidden = true;
     hero.addEventListener("mouseenter", function () { clearInterval(timer); hero.classList.add("paused"); });
-    hero.addEventListener("mouseleave", function () { hero.classList.remove("paused"); show(cur); play(); });
+    function restartBar() { $$("button", prog).forEach(function (p, k) { p.classList.remove("on"); void p.offsetWidth; if (k === cur) p.classList.add("on"); }); }
+    hero.addEventListener("mouseleave", function () { hero.classList.remove("paused"); restartBar(); play(); });
+    document.addEventListener("visibilitychange", function () { if (document.hidden) clearInterval(timer); else { restartBar(); play(); } });
     show(0); play();
 
     $("#homeGrid").innerHTML = L.map(card).join("") + soonCard;
