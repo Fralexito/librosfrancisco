@@ -20,6 +20,16 @@
   document.documentElement.classList.add("js");
 
   /* ------------------------------------------------------------------
+     Libro 3D real (WebGL). Se carga aparte y solo si el equipo lo soporta.
+  ------------------------------------------------------------------ */
+  var SRC = (document.currentScript && document.currentScript.src) || location.href, glP = null;
+  function glOK() { try { var c = document.createElement("canvas"); return !!(window.WebGLRenderingContext && (c.getContext("webgl2") || c.getContext("webgl"))); } catch (e) { return false; } }
+  function glViewer(opts, cb) {
+    if (!glP) glP = glOK() ? (new Function("u", "return import(u)"))(new URL("book-gl.js", SRC).href).catch(function (e) { console.warn("3D no disponible", e); return null; }) : Promise.resolve(null);
+    glP.then(function (m) { if (m) cb(m.createViewer(Object.assign({ reduce: reduce, author: C.autor }, opts))); });
+  }
+
+  /* ------------------------------------------------------------------
      Bolsa de pedido (se guarda en este navegador)
   ------------------------------------------------------------------ */
   var KEY = "fdt-bolsa";
@@ -138,7 +148,7 @@
   /* ------------------------------------------------------------------
      Vista rápida de un libro
   ------------------------------------------------------------------ */
-  var qvFocus = null;
+  var qvFocus = null, qvV = null;
   function openQV(id) {
     var b = byId(id), q = $("#quickview"); if (!b || !q) return; qvFocus = document.activeElement; var qty = 1;
     $("#qvBox").innerHTML = '<button class="icon-btn qv-x" type="button" data-close-qv aria-label="Cerrar">✕</button>'
@@ -151,6 +161,8 @@
       + '<a class="link" href="' + bookUrl(b) + '">Ver la ficha completa <span class="ar">→</span></a></div>';
     q.hidden = false; document.body.style.overflow = "hidden"; requestAnimationFrame(function () { q.classList.add("open"); });
     tilt($(".qv-media .stage", q));
+    if (qvV) qvV.mount($(".qv-media .stage", q)).setBook(b);
+    else glViewer({ mode: "drag", baseY: -0.35 }, function (v) { qvV = v; if (!q.hidden) v.mount($(".qv-media .stage", q)).setBook(b); });
     $$("[data-qvq]", q).forEach(function (x) { x.onclick = function () { qty = Math.max(1, qty + +x.getAttribute("data-qvq")); $("#qvQty").textContent = qty; }; });
     $("#qvAdd").onclick = function () { addToBag(b.id, qty, $(".qv-media img", q)); closeQV(); };
     $("#qvBuy").onclick = function () { buyNow(b.id, qty); };
@@ -370,6 +382,43 @@
   var pages = {};
 
   /* ---------- Inicio ---------- */
+  /* Vitrina 3D de la portada: un bloque de texto por libro y el libro fijo al lado */
+  function showcase() {
+    var list = $("#scList"), stage = $("#scStage"); if (!list || !stage) return;
+    var two = function (n) { return (n < 10 ? "0" : "") + n; };
+    list.innerHTML = L.map(function (b, i) {
+      var f = (b.ficha || []).slice(0, 3);
+      return '<article class="sc-item" data-i="' + i + '" style="--tint:' + (b.color || "") + '">'
+        + '<span class="kicker">' + two(i + 1) + " · " + esc(b.genero) + "</span><h3>" + esc(b.titulo) + "</h3>"
+        + '<p class="hook">' + esc(b.gancho) + "</p>"
+        + (b.sinopsis && b.sinopsis[0] ? "<p class='syn'>" + esc(b.sinopsis[0]) + "</p>" : "")
+        + (f.length ? "<dl>" + f.map(function (x) { return "<div><dt>" + esc(x[0]) + "</dt><dd>" + esc(x[1]) + "</dd></div>"; }).join("") + "</dl>" : "")
+        + '<div class="ctas"><button class="btn btn-acc" type="button" data-add="' + b.id + '">' + BAG + 'Agregar al pedido</button><button class="btn btn-line" type="button" data-buy="' + b.id + '">Comprar ya</button><a class="link" href="' + bookUrl(b) + '">Ver la ficha <span class="ar">→</span></a></div>'
+        + '<div class="sc-mini">' + book3d(b) + "</div></article>";
+    }).join("");
+    stage.innerHTML = book3d(L[0]).replace(/^<div class="stage[^"]*">/, "").replace(/<\/div>$/, "");
+    var items = $$(".sc-item", list), act = -1, view = null, count = $("#scCount");
+    function setAct(i) {
+      if (i === act) return; var d = i > act ? 1 : -1; act = i;
+      items.forEach(function (it, k) { it.classList.toggle("on", k === i); });
+      count.textContent = two(i + 1) + " / " + two(L.length);
+      $(".sc-stage-box").style.setProperty("--tint", L[i].color || "");
+      var im = $(".book3d .front img", stage); if (im) im.src = L[i].portada;
+      if (view) view.setBook(L[i], d);
+    }
+    function upd() {
+      var vh = innerHeight, best = 0, bd = 1e9, p = 0;
+      items.forEach(function (it, k) { var r = it.getBoundingClientRect(), c = r.top + r.height / 2, dd = Math.abs(c - vh / 2); if (dd < bd) { bd = dd; best = k; } });
+      setAct(best);
+      var r = items[best].getBoundingClientRect(); p = Math.min(1, Math.max(0, (vh * 0.6 - r.top) / (r.height || 1)));
+      if (view) view.setScroll((p - 0.5) * 1.7);
+    }
+    setAct(0);
+    glViewer({ mode: "scroll", baseY: -0.3 }, function (v) { view = v; v.mount(stage).setBook(L[act]); upd(); });
+    addEventListener("scroll", function () { requestAnimationFrame(upd); }, { passive: true });
+    addEventListener("resize", upd); upd();
+  }
+
   pages.inicio = function () {
     var feat = L.filter(function (b) { return b.destacado; }); if (!feat.length) feat = [L[0]];
     var hero = $("#hero"), bg = $("#heroBg"), slot = $("#heroSlot"), prog = $("#heroProg"), cur = 0, timer = null, DUR = 8000;
@@ -377,7 +426,8 @@
     prog.innerHTML = feat.map(function (b, i) { return '<button type="button" aria-label="' + esc(b.titulo) + '"><i></i></button>'; }).join("");
     prog.style.setProperty("--dur", DUR + "ms");
     function words(t) { return t.split(" ").map(function (w) { return '<span class="ln"><span>' + esc(w) + "</span></span>"; }).join(" "); }
-    function show(i) {
+    var heroV = null, heroWait = false;
+    function show(i, dir) {
       cur = (i + feat.length) % feat.length; var b = feat[cur];
       slot.classList.remove("in");
       setTimeout(function () {
@@ -388,16 +438,19 @@
           + book3d(b);
         $$(".hero-copy h1 .ln > span", slot).forEach(function (s, k) { s.style.transitionDelay = (0.08 + k * 0.07) + "s"; });
         tilt($(".stage", slot));
+        var stg = $(".stage", slot);
+        if (heroV) heroV.mount(stg).setBook(b, dir || 1);
+        else if (!heroWait) { heroWait = true; glViewer({ mode: "hover" }, function (v) { heroV = v; v.mount($(".stage", slot)).setBook(feat[cur]); }); }
         requestAnimationFrame(function () { requestAnimationFrame(function () { slot.classList.add("in"); }); });
       }, slot.innerHTML ? 260 : 0);
       $$("img", bg).forEach(function (im, k) { im.classList.toggle("on", k === cur); });
       $$("button", prog).forEach(function (p, k) { p.classList.remove("on"); void p.offsetWidth; if (k === cur) p.classList.add("on"); });
     }
-    function play() { clearInterval(timer); if (!reduce && feat.length > 1) timer = setInterval(function () { show(cur + 1); }, DUR); }
-    function go(i) { show(i); if (!hero.classList.contains("paused")) play(); }
+    function play() { clearInterval(timer); if (!reduce && feat.length > 1) timer = setInterval(function () { show(cur + 1, 1); }, DUR); }
+    function go(i, d) { show(i, d || (i < cur ? -1 : 1)); if (!hero.classList.contains("paused")) play(); }
     $$("button", prog).forEach(function (p, k) { p.addEventListener("click", function () { go(k); }); });
-    $("#heroPrev").addEventListener("click", function () { go(cur - 1); });
-    $("#heroNext").addEventListener("click", function () { go(cur + 1); });
+    $("#heroPrev").addEventListener("click", function () { go(cur - 1, -1); });
+    $("#heroNext").addEventListener("click", function () { go(cur + 1, 1); });
     if (feat.length < 2) $(".hero-ctrl").hidden = true;
     hero.addEventListener("mouseenter", function () { clearInterval(timer); hero.classList.add("paused"); });
     function restartBar() { $$("button", prog).forEach(function (p, k) { p.classList.remove("on"); void p.offsetWidth; if (k === cur) p.classList.add("on"); }); }
@@ -428,34 +481,11 @@
     addEventListener("pointermove", function (e) { if (!drag) return; var dx = e.clientX - drag.x; if (Math.abs(dx) > 5 && !drag.moved) { drag.moved = true; shelf.classList.add("dragging"); } if (drag.moved) shelf.scrollLeft = drag.left - dx; });
     addEventListener("pointerup", function () { if (!drag) return; var moved = drag.moved; drag = null; if (moved) { shelf.classList.remove("dragging"); var w = step(); shelf.scrollTo({ left: Math.round(shelf.scrollLeft / w) * w, behavior: reduce ? "auto" : "smooth" }); shelf.addEventListener("click", function stop(ev) { ev.stopPropagation(); ev.preventDefault(); shelf.removeEventListener("click", stop, true); }, true); } });
 
-    /* Explorador de temas */
-    var T = themes(), ex = $("#homeThemes");
-    ex.innerHTML = '<div class="ex-list" role="tablist" aria-label="Temas">' + T.map(function (th, i) {
-      return '<button type="button" role="tab" id="ext-' + i + '" aria-controls="exPanel" aria-selected="' + (i === 0) + '"' + (i ? ' tabindex="-1"' : "") + '><b>' + esc(th.nombre) + '</b><span>' + th.libros.length + (th.libros.length === 1 ? " libro" : " libros") + "</span></button>";
-    }).join("") + '</div><div class="ex-panel" id="exPanel" role="tabpanel" aria-live="polite"></div>';
-    function pick(i) {
-      var th = T[i]; if (!th) return;
-      $$(".ex-list button", ex).forEach(function (b, k) { b.setAttribute("aria-selected", k === i); b.tabIndex = k === i ? 0 : -1; });
-      $("#exPanel").setAttribute("aria-labelledby", "ext-" + i);
-      $("#exPanel").innerHTML = '<div class="in"><div class="ex-txt"><span class="ex-n">' + String(i + 1).padStart(2, "0") + " / " + String(T.length).padStart(2, "0") + '</span><h3>' + esc(th.nombre) + "</h3><p>" + esc(th.texto) + '</p><a class="link" href="libros.html#' + th.slug + '">Ver estos libros en el catálogo <span class="ar">→</span></a></div><div class="ex-books">'
-        + th.libros.map(function (b) { return '<a class="ex-book" href="' + bookUrl(b) + '"><span class="cv" style="--tint:' + (b.color || "") + '"><img src="' + b.portada + '" alt=""></span><b>' + esc(b.titulo) + "</b><span>" + esc(b.genero) + " · " + esc(b.salida) + "</span></a>"; }).join("")
-        + '</div></div>';
-    }
-    var tabs = $$(".ex-list button", ex);
-    tabs.forEach(function (b, i) {
-      b.addEventListener("click", function () { pick(i); });
-      b.addEventListener("keydown", function (e) {
-        var k = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key]; if (!k) return;
-        e.preventDefault(); var n = (i + k + tabs.length) % tabs.length; tabs[n].focus(); pick(n);
-      });
-    });
-    pick(0);
+    /* Vitrina: el libro gira mientras bajas */
+    showcase();
     var nf = Math.min(L.length, 4), fan = $("#homeFan");
     fan.style.setProperty("--spread", nf <= 2 ? "62%" : "38%"); fan.style.setProperty("--spread-h", nf <= 2 ? "74%" : "52%");
     fan.innerHTML = L.slice(0, 4).map(function (b, i) { return '<img src="' + b.portada + '" alt="" style="--i:' + i + ';--n:' + nf + '">'; }).join("");
-    var one = T.map(function (th) { return '<a href="libros.html#' + th.slug + '">' + esc(th.nombre) + "</a><i aria-hidden='true'>✦</i>"; }).join("");
-    var rep = one; while (rep.length < one.length * 3 && T.length < 6) rep += one;
-    $("#homeTrack").innerHTML = reduce ? one : '<div class="grp">' + rep + '</div><div class="grp" aria-hidden="true">' + rep.replace(/<a /g, '<a tabindex="-1" ') + "</div>";
   };
 
   /* ---------- Catálogo ---------- */
@@ -490,8 +520,9 @@
 
   /* ---------- Ficha de libro ---------- */
   pages.libro = function () {
+    var pdpV = null, curB = null, cur0 = function () { return curB; };
     function draw() {
-      var id = location.hash.replace("#", ""), b = id ? byId(id) : L[0], qty = 1;
+      var id = location.hash.replace("#", ""), b = id ? byId(id) : L[0], qty = 1; curB = b;
       if (!b) {
         document.title = "Libro no encontrado · " + C.autor; $("#pdpCrumb").textContent = "No encontrado";
         $("#pdp").innerHTML = "<div class='notfound' style='grid-column:1/-1'><h1>No encontramos ese libro</h1><p class='muted'>Puede que el enlace esté mal escrito o que el libro aún no se haya publicado.</p><a class='btn btn-acc' href='libros.html'>Ver todos los libros</a></div>";
@@ -526,6 +557,9 @@
       $("#pdpAdd").onclick = function () { addToBag(b.id, qty, $(".pdp-media img")); };
       $("#pdpBuy").onclick = function () { buyNow(b.id, qty); };
       tilt($(".pdp-media .stage"));
+      var ps = $(".pdp-media .stage");
+      if (pdpV) pdpV.mount(ps).setBook(b, 1);
+      else glViewer({ mode: "drag", baseY: -0.35 }, function (v) { pdpV = v; v.mount($(".pdp-media .stage")).setBook(cur0()); $(".pdp-media .hint").textContent = "Arrastra el libro para girarlo"; });
       $("#related").innerHTML = L.filter(function (x) { return x.id !== b.id; }).map(card).join("") + soonCard;
       scrollTo(0, 0);
     }

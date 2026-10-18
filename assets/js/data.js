@@ -34,6 +34,7 @@ window.SITE = {
       disponible: true,
       destacado: true,
       color: "#DCE9E0",
+      lomo: { fondo: "#14506A", texto: "#FFE9A8" },   // color del lomo y de la contraportada en 3D
       portada: "assets/img/portada-fantasias-amazonicas.jpg",
       fondo: "assets/img/criatura-madre-del-agua.jpg",
       gancho: "Siete relatos donde la Runa Mula, la sirena y la Madre del Agua caminan por pueblos reales de Loreto.",
@@ -62,6 +63,7 @@ window.SITE = {
       disponible: true,
       destacado: true,
       color: "#DFE3EC",
+      lomo: { fondo: "#F4F2EC", texto: "#2B4C9B" },
       portada: "assets/img/portada-tras-los-muros-de-maranguita.jpg",
       fondo: "assets/img/maranguita-patio.jpg",
       gancho: "Un maestro rural llega al centro juvenil de Lima. El primer día le advierten: «Si ven que eres débil de carácter, te fregaste».",
