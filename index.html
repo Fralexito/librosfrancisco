@@ -59,34 +59,34 @@
     <div class="hero-ctrl"><div class="wrap"><div class="prog" id="heroProg"></div><div class="arrows"><button type="button" id="heroPrev" aria-label="Anterior">←</button><button type="button" id="heroNext" aria-label="Siguiente">→</button></div></div></div>
   </section>
 
-  <div class="wrap"><div class="values">
+  <div class="valuesbar"><div class="wrap"><div class="values">
     <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v14h-6a3 3 0 0 0-2 1 3 3 0 0 0-2-1H4z"/></svg><div><b>Ediciones 2026</b><span>Textos revisados y corregidos</span></div></div>
     <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.9A8 8 0 1 1 21 12z"/></svg><div><b>Pedido por WhatsApp</b><span>Sin registros ni tarjetas</span></div></div>
     <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/></svg><div><b>Entrega coordinada</b><span>Según tu ciudad</span></div></div>
     <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg><div><b>Directo del autor</b><span>Libros de la familia Daza</span></div></div>
-  </div></div>
+  </div></div></div>
 
-  <section class="sec" id="libros">
+  <section class="sec" id="libros" aria-labelledby="h-libros">
     <div class="wrap">
-      <div class="sec-head" data-rv><div><h2>Los libros</h2></div><a class="link" href="libros.html">Ver catálogo completo <span class="ar">→</span></a></div>
-      <div class="grid" id="homeGrid"></div>
+      <header class="sec-head" data-rv><div><h2 id="h-libros">Los <em>libros</em></h2><p class="lead">Toda la obra del autor en un solo lugar. Desliza para ver cada título.</p></div>
+        <div class="sh-tools"><div class="shelf-nav"><button type="button" class="icon-btn" id="shelfPrev" aria-label="Libros anteriores">←</button><button type="button" class="icon-btn" id="shelfNext" aria-label="Más libros">→</button></div><a class="link" href="libros.html">Ver catálogo <span class="ar">→</span></a></div></header>
+      <div class="shelf" id="homeShelf" tabindex="0" aria-label="Estantería de libros"></div>
+      <div class="shelf-bar" aria-hidden="true"><i id="shelfBar"></i></div>
     </div>
   </section>
 
-  <section class="sec tight">
+  <section class="sec alt" aria-labelledby="h-temas">
     <div class="wrap">
-      <div class="sec-head" data-rv><div><h2>Los temas de sus <em>libros</em></h2></div><p class="lead">Cada libro nace de una etapa de su vida. Elige un tema y descubre qué libros lo tratan.</p></div>
-      <div class="themes" id="homeThemes"></div>
+      <header class="sec-head" data-rv><div><h2 id="h-temas">Los temas de su <em>obra</em></h2><p class="lead">Cada libro nace de una etapa de su vida. Elige un tema y descubre qué libros lo tratan.</p></div></header>
+      <div class="explorer" id="homeThemes" data-rv></div>
     </div>
   </section>
 
-  <div class="marq" aria-label="Temas y libros del autor"><div class="track" id="homeTrack"></div></div>
-
-  <section class="sec">
+  <section class="sec" aria-labelledby="h-autor">
     <div class="wrap author">
       <figure class="ph" style="margin:0" data-rv><img src="assets/img/francisco-daza-tananta.jpg" alt="Retrato de Francisco Daza Tananta."><div class="stamp"><b>+20 años</b>como maestro en Loreto</div></figure>
       <div data-rv data-d="1">
-        <h2>Un maestro que escribe <em>lo que vivió.</em></h2>
+        <h2 id="h-autor">Un maestro que escribe <em>lo que vivió.</em></h2>
         <div class="bio"><p>Francisco Daza Tananta nació en Iquitos en 1966. Enseñó más de veinte años en escuelas de Loreto, arbitró por buena parte del Perú y fue educador en el centro juvenil de Lima. De esos lugares nacen sus libros.</p></div>
         <div class="stats">
           <div><b data-count="20" data-pre="+">+20</b><span>años de docencia</span></div>
@@ -98,31 +98,30 @@
     </div>
   </section>
 
-  <section class="sec tight">
-    <div class="wrap">
+  <div class="marq" aria-label="Temas y libros del autor"><div class="track" id="homeTrack"></div></div>
+
+  <section class="sec alt" id="suscribirse" aria-label="Lectura gratis y suscripción">
+    <div class="wrap duo">
       <div class="band plain" data-rv>
         <div class="txt">
           <p class="kicker" style="color:#9FD3BF">Lectura gratis</p>
           <h2>Lee antes de <em>comprar.</em></h2>
-          <p>Un fragmento de cada libro para leer aquí mismo, con letra ajustable y modo noche. Así sabes qué te espera antes de pedirlo.</p>
+          <p>Un fragmento de cada libro para leer aquí mismo, con letra ajustable y modo noche.</p>
           <div class="ctas"><a class="btn btn-light" href="leer.html">Empezar a leer <span class="ar">→</span></a></div>
         </div>
         <div class="fan" id="homeFan" aria-hidden="true"></div>
       </div>
-    </div>
-  </section>
-
-  <section class="sec tight" id="suscribirse">
-    <div class="wrap"><div class="subscribe" data-rv>
-      <div><p class="kicker">Lectores de la familia</p><h2>Entérate primero de cada <em>libro nuevo.</em></h2><p class="muted" style="margin-top:.75rem">Presentaciones, preventas y fragmentos inéditos, directo en tu correo.</p></div>
-      <form data-lead="lista" novalidate>
+      <div class="subscribe" data-rv data-d="1">
+        <div><p class="kicker">Lectores de la familia</p><h2>Entérate primero de cada <em>libro nuevo.</em></h2><p class="muted" style="margin-top:.75rem">Presentaciones, preventas y fragmentos inéditos, directo en tu correo.</p></div>
+        <form data-lead="lista" novalidate>
   <div class="fields">
     <div class="field"><label for="n-lista">Nombre</label><input id="n-lista" name="nombre" type="text" placeholder="Por ejemplo: Rosa" autocomplete="given-name"><span class="err e-name"></span></div>
     <div class="field"><label for="m-lista">Correo</label><input id="m-lista" name="correo" type="email" placeholder="tucorreo@gmail.com" autocomplete="email"><span class="err e-mail"></span></div>
   </div>
   <div class="ctas" style="align-items:center"><button class="btn btn-acc" type="submit">Suscribirme</button><span class="fine">Un correo al mes como máximo.</span></div>
 </form>
-    </div></div>
+      </div>
+    </div>
   </section>
 </main>
 <footer>
