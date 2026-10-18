@@ -4,489 +4,141 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Libros de Francisco Daza Tananta</title>
-<meta name="description" content="Compra los libros de Francisco Daza Tananta: Fantasías Amazónicas, Tras los muros de Maranguita y más. Pedidos por WhatsApp.">
+<meta name="description" content="Compra los libros de Francisco Daza Tananta: Fantasías Amazónicas, Tras los muros de Maranguita y más.">
 <meta property="og:title" content="Libros de Francisco Daza Tananta">
-<meta property="og:description" content="Cuentos amazónicos y memorias de un maestro peruano. Pide tu ejemplar por WhatsApp.">
+<meta property="og:description" content="Compra los libros de Francisco Daza Tananta: Fantasías Amazónicas, Tras los muros de Maranguita y más.">
+<meta property="og:image" content="assets/img/portada-fantasias-amazonicas.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231F5C4A'/%3E%3Ctext x='32' y='44' font-family='Georgia' font-size='34' font-style='italic' fill='white' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Geist:wght@400;500;600;700&display=swap">
-<style>
-/* Layout: librería en línea de autor. Producto destacado arriba, catálogo en tarjetas de producto, ficha en ventana, compra por WhatsApp.
-   Claro y limpio. Un acento verde selva. Botones e inputs en píldora, tarjetas 16px, ventanas 24px. */
-:root{
-  --bg:#FDFCFA;
-  --bg-2:#F4F2EE;
-  --bg-3:#EAE7E1;
-  --fg:#16181D;
-  --fg-2:#50545E;
-  --fg-3:#80848C;
-  --line:#E3E0DA;
-  --acc:#1F5C4A;      /* verde selva: único acento */
-  --acc-hi:#174A3B;
-  --acc-soft:#E4EEE9;
-  --f-display:"Cormorant Garamond","Iowan Old Style","Palatino Linotype",Georgia,serif;
-  --f-body:"Geist","Helvetica Neue",Arial,sans-serif;
-  --ease:cubic-bezier(.16,1,.3,1);
-  color-scheme:light;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:1rem;line-height:1.6;-webkit-font-smoothing:antialiased}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
-a{color:inherit;text-decoration:none}
-img{display:block;max-width:100%}
-main{overflow-x:clip}
-h1,h2,h3{font-family:var(--f-display);font-weight:600;margin:0;line-height:1.05;letter-spacing:-.01em;text-wrap:balance}
-p{margin:0}
-:focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:8px}
-.wrap{max-width:78rem;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
-@media (min-width:768px){.wrap{padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}}
-.sec{padding-block:clamp(3.5rem,7vw,6rem)}
-.sec-head{display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
-.sec-head h2{font-size:clamp(2rem,4vw,3rem)}
-.sec-head p{color:var(--fg-2);max-width:46ch}
-.muted{color:var(--fg-2)}
-
-/* Botones */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;height:3.1rem;padding:0 1.4rem;border-radius:999px;font:600 .9375rem var(--f-body);white-space:nowrap;cursor:pointer;border:1px solid transparent;transition:transform .3s var(--ease),background .2s,border-color .2s}
-.btn:active{transform:scale(.98)}
-.btn-buy{background:var(--acc);color:#fff}
-.btn-buy:hover{background:var(--acc-hi);transform:translateY(-1px)}
-.btn-line{border-color:#CFCBC3;color:var(--fg);background:#fff}
-.btn-line:hover{border-color:var(--fg)}
-.btn-sm{height:2.5rem;padding:0 1rem;font-size:.875rem}
-.btn svg{width:1.1em;height:1.1em;flex:none}
-
-/* Barra de aviso y cabecera */
-.notice{background:var(--acc);color:#fff;font-size:.8125rem;text-align:center;padding:.55rem 1rem}
-.notice a{text-decoration:underline;text-underline-offset:2px}
-.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(253,252,250,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-.nav .wrap{height:4.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.logo{font-family:var(--f-display);font-weight:700;font-size:1.4rem;white-space:nowrap}
-.links{display:flex;align-items:center;gap:1.75rem;font-size:.9rem;font-weight:500;color:var(--fg-2)}
-.links a:not(.btn):hover{color:var(--fg)}
-@media (max-width:860px){.links a:not(.btn){display:none}.logo{font-size:1.15rem}}
-
-/* Producto destacado */
-.hero{padding-block:clamp(2rem,5vw,3.5rem) clamp(2.5rem,5vw,4rem);border-bottom:1px solid var(--line)}
-.prod{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(2rem,5vw,4.5rem);align-items:center}
-.showcase{position:relative;border-radius:24px;background:var(--tint,var(--acc-soft));display:grid;place-items:center;padding:clamp(2.5rem,6vw,4.5rem) 1.5rem clamp(5.5rem,8vw,6.5rem);perspective:1800px;transition:background .6s var(--ease)}
-.book3d{position:relative;width:min(100%,17.5rem);aspect-ratio:.71;transform-style:preserve-3d;transform:rotateY(-18deg) rotateX(2deg);transition:transform .9s var(--ease)}
-.showcase:hover .book3d{transform:rotateY(-5deg) translateY(-6px)}
-.book3d .front{position:absolute;inset:0;border-radius:2px 7px 7px 2px;overflow:hidden;box-shadow:0 40px 60px -28px rgba(22,24,29,.55)}
-.book3d .front img{width:100%;height:100%;object-fit:cover}
-.book3d .front::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.3) 0,rgba(255,255,255,.18) 2.2%,rgba(0,0,0,0) 6%)}
-.book3d .pages{position:absolute;top:1.4%;bottom:1.4%;right:0;width:28px;transform:translateX(14px) rotateY(90deg);background:repeating-linear-gradient(90deg,#f3f0e9 0 2px,#ddd8cc 2px 3px)}
-.tag-new{position:absolute;top:1.25rem;left:1.25rem;background:#fff;color:var(--acc);font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.35rem .75rem;border-radius:999px;box-shadow:0 4px 14px -6px rgba(0,0,0,.2)}
-.thumbs{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);display:flex;gap:.5rem}
-.thumbs button{width:2.6rem;aspect-ratio:.71;border-radius:3px;border:2px solid transparent;padding:0;overflow:hidden;cursor:pointer;background:none;opacity:.6;transition:opacity .2s,border-color .2s}
-.thumbs button img{width:100%;height:100%;object-fit:cover}
-.thumbs button[aria-current="true"]{opacity:1;border-color:var(--fg)}
-.p-info{display:grid;gap:1.1rem}
-.p-cat{font-size:.8125rem;font-weight:600;color:var(--acc);letter-spacing:.04em;text-transform:uppercase}
-.p-info h1{font-size:clamp(2.6rem,5.5vw,4.4rem)}
-.p-sub{font-family:var(--f-display);font-style:italic;font-weight:500;font-size:clamp(1.2rem,2vw,1.45rem);color:var(--fg-2);line-height:1.3;margin-top:-.4rem}
-.p-by{font-size:.9375rem;color:var(--fg-2)}
-.p-by a{color:var(--fg);font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line)}
-.price{display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;padding-block:.25rem}
-.price b{font-size:1.75rem;font-weight:700;letter-spacing:-.01em}
-.price span{font-size:.875rem;color:var(--fg-3)}
-.p-desc{color:var(--fg-2);max-width:52ch;font-size:1.0625rem}
-.buyrow{display:flex;flex-wrap:wrap;gap:.75rem}
-.trust{list-style:none;padding:1.1rem 0 0;margin:.25rem 0 0;border-top:1px solid var(--line);display:grid;gap:.55rem;font-size:.9rem;color:var(--fg-2)}
-.trust li{display:flex;gap:.65rem;align-items:flex-start}
-.trust li::before{content:"";flex:none;width:1.1rem;height:1.1rem;margin-top:.2rem;border-radius:50%;background:var(--acc-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='%231F5C4A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/70% no-repeat}
-.p-info .anim > *{animation:rise .7s var(--ease) both}
-@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-@media (max-width:880px){.prod{grid-template-columns:1fr}}
-
-/* Catálogo */
-.filters{display:flex;gap:.5rem;flex-wrap:wrap}
-.filters button{height:2.4rem;padding:0 1rem;border-radius:999px;border:1px solid #CFCBC3;background:#fff;color:var(--fg-2);font:500 .875rem var(--f-body);cursor:pointer}
-.filters button[aria-pressed="true"]{background:var(--fg);border-color:var(--fg);color:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:clamp(1rem,2.5vw,1.75rem)}
-.card{display:grid;grid-template-rows:auto 1fr;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:box-shadow .3s,transform .4s var(--ease)}
-.card:hover{box-shadow:0 18px 40px -24px rgba(22,24,29,.35);transform:translateY(-3px)}
-.card .cv{background:var(--tint,var(--bg-2));padding:1.75rem 2.5rem;display:grid;place-items:center;cursor:pointer;border:0;width:100%}
-.card .cv img{width:100%;aspect-ratio:.71;object-fit:cover;border-radius:2px 5px 5px 2px;box-shadow:0 22px 34px -20px rgba(22,24,29,.6);transition:transform .5s var(--ease)}
-.card:hover .cv img{transform:scale(1.03)}
-.card .body{padding:1.1rem 1.25rem 1.25rem;display:grid;gap:.35rem;align-content:start}
-.card .cat{font-size:.75rem;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.05em}
-.card h3{font-size:1.45rem;line-height:1.15}
-.card .by{font-size:.8125rem;color:var(--fg-3)}
-.card .pr{display:flex;justify-content:space-between;align-items:center;gap:.5rem;margin-top:.6rem}
-.card .pr b{font-size:1.05rem}
-.card .pr span{font-size:.8125rem;color:var(--fg-3)}
-.card .acts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.75rem}
-.card.soon{background:var(--bg-2);border-style:dashed}
-.card.soon .cv{background:transparent;min-height:16rem;cursor:default}
-.card.soon .cv span{font-family:var(--f-display);font-style:italic;font-size:1.5rem;color:var(--fg-3);text-align:center}
-@media (max-width:600px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.85rem}.card .cv{padding:1.1rem 1.25rem}.card h3{font-size:1.15rem}.card .acts{grid-template-columns:1fr}.card .body{padding:.9rem}}
-
-/* Cómo comprar */
-.how{background:var(--bg-2);border-block:1px solid var(--line)}
-.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;counter-reset:s;list-style:none;padding:0;margin:0}
-.steps li{counter-increment:s;background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.5rem;display:grid;gap:.4rem}
-.steps li::before{content:counter(s);width:2.2rem;height:2.2rem;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-weight:700;margin-bottom:.4rem}
-.steps b{font-size:1.05rem}
-.steps span{color:var(--fg-2);font-size:.9375rem}
-@media (max-width:760px){.steps{grid-template-columns:1fr}}
-
-/* Fragmento gratis */
-.sample{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#fff}
-.sample .img{min-height:22rem;position:relative}
-.sample .img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.sample .txt{padding:clamp(1.75rem,4.5vw,3.5rem);display:grid;gap:1.1rem;align-content:center}
-.sample h2{font-size:clamp(2rem,3.8vw,2.9rem)}
-.sample blockquote{margin:0;font-family:var(--f-display);font-style:italic;font-size:1.3rem;line-height:1.45;color:var(--fg-2);border-left:2px solid var(--acc);padding-left:1rem}
-form{display:grid;gap:.9rem}
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
-@media (max-width:620px){.fields{grid-template-columns:1fr}}
-.field{display:grid;gap:.35rem;min-width:0}
-.field label{font-size:.8125rem;font-weight:500;color:var(--fg-2)}
-.field input{height:3.1rem;border-radius:999px;border:1px solid #CFCBC3;background:#fff;color:var(--fg);padding:0 1.2rem;font:400 1rem var(--f-body);width:100%}
-.field input::placeholder{color:#8A8D94}
-.field input:focus{outline:none;border-color:var(--acc)}
-.err{font-size:.8125rem;color:#A8432C;min-height:1.1em}
-.fine{font-size:.8125rem;color:var(--fg-3)}
-.done{border:1px solid var(--line);border-radius:16px;padding:1.25rem;background:var(--acc-soft)}
-.done b{display:block;font-family:var(--f-display);font-size:1.5rem;margin-bottom:.2rem}
-.done p{color:var(--fg-2);font-size:.9375rem}
-@media (max-width:860px){.sample{grid-template-columns:1fr}.sample .img{min-height:14rem}}
-
-/* Autor */
-.author{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,7fr);gap:clamp(1.75rem,5vw,4rem);align-items:center}
-.author .ph{border-radius:20px;overflow:hidden;aspect-ratio:4/5;background:var(--bg-2)}
-.author .ph img{width:100%;height:100%;object-fit:cover;object-position:50% 22%}
-.author h2{font-size:clamp(2rem,4vw,3rem)}
-.author .bio{display:grid;gap:.9rem;color:var(--fg-2);max-width:62ch;margin-top:1rem}
-.facts3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:1.5rem}
-.facts3 div{border-top:2px solid var(--acc);padding-top:.75rem}
-.facts3 b{display:block;font-family:var(--f-display);font-size:2.2rem;line-height:1}
-.facts3 span{font-size:.875rem;color:var(--fg-2)}
-@media (max-width:760px){.author{grid-template-columns:1fr}.author .ph{max-width:18rem}.facts3{grid-template-columns:1fr}}
-
-/* Preguntas */
-.faq{display:grid;gap:.6rem;max-width:52rem}
-.faq details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:0 1.25rem}
-.faq summary{cursor:pointer;list-style:none;padding:1.1rem 0;font-weight:600;display:flex;justify-content:space-between;gap:1rem}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";font-size:1.3rem;line-height:1;color:var(--acc);transition:transform .3s}
-.faq details[open] summary::after{transform:rotate(45deg)}
-.faq details p{padding-bottom:1.1rem;color:var(--fg-2)}
-
-/* Ficha en ventana */
-.modal{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
-.modal[hidden]{display:none!important}
-.modal .bd{position:absolute;inset:0;background:rgba(22,24,29,.45);backdrop-filter:blur(3px)}
-.modal .box{position:relative;background:var(--bg);border-radius:24px;max-width:62rem;width:100%;max-height:min(90vh,52rem);overflow:auto;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,6fr);animation:pop .45s var(--ease)}
-@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
-.modal .side{background:var(--tint,var(--bg-2));display:grid;place-items:center;padding:2.5rem 1.5rem;perspective:1600px}
-.modal .main{padding:clamp(1.5rem,4vw,2.75rem);display:grid;gap:1rem;align-content:start}
-.modal h3{font-size:clamp(2rem,3.6vw,2.8rem)}
-.modal .syn{display:grid;gap:.8rem;color:var(--fg-2)}
-.modal .toc{margin:0;padding-left:1.2rem;display:grid;gap:.2rem;font-size:.9375rem}
-.modal dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem 1.5rem;margin:0;padding-top:1rem;border-top:1px solid var(--line)}
-.modal dt{font-size:.75rem;color:var(--fg-3)}
-.modal dd{margin:0;font-size:.9375rem;font-weight:500}
-.modal .note{font-size:.8125rem;color:var(--fg-3)}
-.modal .close{position:absolute;top:1rem;right:1rem;width:2.5rem;height:2.5rem;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:1.2rem;cursor:pointer;z-index:2}
-.modal h4{margin:.4rem 0 0;font-size:.8125rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--fg-3)}
-@media (max-width:760px){.modal .box{grid-template-columns:1fr}.modal .side{padding:2rem 1rem}.modal .side .book3d{width:11rem}}
-
-/* Pie */
-footer{background:var(--fg);color:#D9DBDF;padding-block:clamp(3rem,6vw,4.5rem) 2rem;font-size:.9375rem}
-.foot{display:grid;grid-template-columns:minmax(0,4fr) repeat(3,minmax(0,2fr));gap:2rem}
-.foot .logo{color:#fff}
-.foot p{color:#A9ADB5;margin-top:.6rem;max-width:34ch}
-.foot b{display:block;color:#fff;font-weight:600;margin-bottom:.6rem}
-.foot a{display:block;color:#C9CCD2;padding-block:.15rem}
-.foot a:hover{color:#fff}
-.foot code{font-family:inherit;user-select:all;word-break:break-all;color:#C9CCD2}
-.legal{margin-top:2.5rem;padding-top:1.25rem;border-top:1px solid #2C2F36;display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;font-size:.8125rem;color:#8D919A}
-@media (max-width:860px){.foot{grid-template-columns:1fr 1fr}}
-@media (max-width:480px){.foot{grid-template-columns:1fr}}
-
-@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
-@media (max-width:480px){.hide-sm{display:none}}
-</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=EB+Garamond:ital,wght@0,400;1,400&family=Geist:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/css/styles.css">
+<meta name="page" content="inicio">
 </head>
-<body>
-<div class="notice">Novedad: <b>Tras los muros de Maranguita</b> llega en octubre de 2026. <a href="#catalogo">Ver el libro</a></div>
+<body data-page="inicio">
+<div id="topSentinel" style="position:absolute;top:0;height:1px;width:1px"></div>
+<div class="notice">Novedad: <b>Tras los muros de Maranguita</b> llega en octubre de 2026. <a href="libro.html#tras-los-muros-de-maranguita">Conócelo</a></div>
 <header class="nav">
   <div class="wrap">
-    <a class="logo" href="#inicio">Francisco Daza Tananta</a>
-    <nav class="links" aria-label="Principal">
-      <a href="#catalogo">Libros</a>
-      <a href="#como-comprar">Cómo comprar</a>
-      <a href="#autor">El autor</a>
-      <a href="#preguntas">Preguntas</a>
-      <a class="btn btn-buy btn-sm" id="navWa" href="#" target="_blank" rel="noopener"><span class="hide-sm">Pedir por&nbsp;</span>WhatsApp</a>
-    </nav>
+    <a class="logo" href="index.html"><b>Francisco Daza Tananta</b><span>Escritor peruano</span></a>
+    <nav class="menu" aria-label="Principal"><a href="libros.html">Libros</a><a href="universo.html">Universo amazónico</a><a href="leer.html">Lectura gratis</a><a href="autor.html">El autor</a><a href="noticias.html">Noticias</a><a href="contacto.html">Contacto</a></nav>
+    <div class="tools">
+      <button class="icon-btn" type="button" data-open-drawer="bag" aria-label="Ver mi pedido"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg><span class="count" id="bagCount">0</span></button>
+      <button class="icon-btn burger" type="button" data-open-drawer="menu" aria-label="Abrir menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
+    </div>
   </div>
 </header>
-
-<main id="inicio">
-  <section class="hero" aria-label="Libro destacado">
-    <div class="wrap prod">
-      <div class="showcase" id="showcase">
-        <span class="tag-new" id="hTag">Nuevo</span>
-        <div class="book3d"><div class="pages"></div><div class="front"><img id="hCover" src="" alt=""></div></div>
-        <div class="thumbs" id="thumbs" role="group" aria-label="Elegir libro"></div>
-      </div>
-      <div class="p-info"><div class="anim" id="hInfo" style="display:grid;gap:1.1rem"></div></div>
+<div class="drawer" id="drawer-menu" inert>
+  <div class="bd" data-close-drawer></div>
+  <aside class="panel" aria-label="Menú">
+    <div class="drawer-head"><h3>Menú</h3><button class="icon-btn" type="button" data-close-drawer aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <nav class="mnav"><a href="index.html" aria-current="page">Inicio<span>01</span></a><a href="libros.html">Libros<span>02</span></a><a href="universo.html">Universo amazónico<span>03</span></a><a href="leer.html">Lectura gratis<span>04</span></a><a href="autor.html">El autor<span>05</span></a><a href="noticias.html">Noticias<span>06</span></a><a href="contacto.html">Contacto<span>07</span></a></nav>
+    <div style="margin-top:auto;padding-top:2rem"><a class="btn btn-acc" style="width:100%" data-wa-general href="#">Escríbenos por WhatsApp</a></div>
+  </aside>
+</div>
+<div class="drawer" id="drawer-bag" inert>
+  <div class="bd" data-close-drawer></div>
+  <aside class="panel" aria-label="Tu pedido">
+    <div class="drawer-head"><h3>Tu pedido</h3><button class="icon-btn" type="button" data-close-drawer aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="bag-list" id="bagList"></div>
+    <div class="bag-foot" id="bagFoot" hidden>
+      <div class="bag-total"><span>Total</span><span id="bagTotal"></span></div>
+      <p class="fine">Al enviar, se abre WhatsApp con tu pedido escrito. Ahí coordinamos el pago y la entrega.</p>
+      <button class="btn btn-acc" type="button" id="sendOrder">Enviar pedido por WhatsApp</button>
+      <button class="btn btn-line" type="button" data-close-drawer>Seguir viendo libros</button>
     </div>
-  </section>
-
-  <section class="sec" id="catalogo">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2>Todos los libros</h2>
-        <div class="filters" id="filters" role="group" aria-label="Filtrar por género"></div>
-      </div>
-      <div class="grid" id="grid"></div>
-    </div>
-  </section>
-
-  <section class="sec how" id="como-comprar">
-    <div class="wrap">
-      <div class="sec-head"><h2>Cómo comprar</h2><p>Sin registros ni tarjetas. Hablas directamente con la familia del autor.</p></div>
-      <ol class="steps">
-        <li><b>Elige tu libro</b><span>Toca «Comprar» en el libro que quieras.</span></li>
-        <li><b>Escríbenos por WhatsApp</b><span>Se abre un mensaje ya escrito con el nombre del libro. Solo envíalo.</span></li>
-        <li><b>Coordina el pago y la entrega</b><span>Te respondemos con el precio final, las formas de pago y el envío.</span></li>
-      </ol>
-    </div>
-  </section>
-
-  <section class="sec" id="fragmento">
-    <div class="wrap">
-      <div class="sample">
-        <div class="img"><img src="assets/img/madre-del-agua.jpg" alt="Ilustración de El sueño de Adelita."></div>
-        <div class="txt">
-          <p class="p-cat">Lectura gratis</p>
-          <h2>Prueba antes de comprar: lee «El sueño de Adelita».</h2>
-          <blockquote>«Adelita era una de esas niñas que se recuerdan con especial cariño después de muchos años.»</blockquote>
-          <p class="muted">Te enviamos el relato completo de Fantasías Amazónicas a tu correo, y te avisamos cuando salga cada libro nuevo.</p>
-          <form id="leadForm" novalidate>
-            <div class="fields">
-              <div class="field"><label for="f-name">Nombre</label><input id="f-name" name="nombre" type="text" placeholder="Por ejemplo: Rosa" autocomplete="given-name"><span class="err" id="e-name"></span></div>
-              <div class="field"><label for="f-mail">Correo</label><input id="f-mail" name="correo" type="email" placeholder="tucorreo@gmail.com" autocomplete="email"><span class="err" id="e-mail"></span></div>
-            </div>
-            <div class="buyrow" style="align-items:center"><button class="btn btn-buy" type="submit">Enviarme el relato</button><span class="fine">Un correo al mes como máximo.</span></div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec" id="autor" style="padding-top:0">
-    <div class="wrap author">
-      <figure class="ph" style="margin:0"><img src="assets/img/francisco-daza-tananta.jpg" alt="Retrato de Francisco Daza Tananta."></figure>
-      <div>
-        <p class="p-cat">Sobre el autor</p>
-        <h2>Francisco Daza Tananta</h2>
-        <div class="bio">
-          <p>Nació en Iquitos en 1966. Fue maestro más de veinte años en el distrito de Nauta, muchas veces en escuelas rurales, y árbitro de fútbol, vóleibol y básquetbol por buena parte del Perú.</p>
-          <p>De esas comunidades nacen sus cuentos amazónicos. De sus años como educador en el centro juvenil de Lima, sus memorias. Hoy vive en Lima y prepara sus próximos libros.</p>
-        </div>
-        <div class="facts3">
-          <div><b>+20</b><span>años como maestro en Loreto</span></div>
-          <div><b>5.ª</b><span>edición de su primer libro</span></div>
-          <div><b id="nBooks">2</b><span>libros publicados, y más en camino</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec how" id="preguntas">
-    <div class="wrap">
-      <div class="sec-head"><h2>Preguntas frecuentes</h2></div>
-      <div class="faq">
-        <details open><summary>¿Cómo compro un libro?</summary><p>Toca «Comprar» en el libro que quieras. Se abre WhatsApp con un mensaje listo; lo envías y coordinamos contigo el pago y la entrega.</p></details>
-        <details><summary>¿Hacen envíos?</summary><p>Sí, coordinamos la entrega contigo por WhatsApp según tu ciudad.</p></details>
-        <details><summary>¿Venden a colegios, bibliotecas o librerías?</summary><p>Sí. Para pedidos de varios ejemplares o presentaciones con el autor, escríbenos por WhatsApp o al correo.</p></details>
-        <details><summary>¿Para qué edad es Fantasías Amazónicas?</summary><p>Está pensado para leer en familia y en el aula. Algunos relatos tienen escenas de miedo propias de las leyendas amazónicas.</p></details>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer id="contacto">
-  <div class="wrap">
-    <div class="foot">
-      <div><span class="logo">Francisco Daza Tananta</span><p>Cuentos de la Amazonía y memorias de un maestro peruano.</p></div>
-      <div><b>Libros</b><span id="footBooks"></span></div>
-      <div><b>Comprar</b><a id="footWa" href="#" target="_blank" rel="noopener">WhatsApp</a><a href="#como-comprar">Cómo comprar</a><a href="#preguntas">Preguntas</a></div>
-      <div><b>Contacto</b><code>dazatanantafrancisco@outlook.com</code><span style="display:block;margin-top:.4rem;color:#A9ADB5">Facebook: Francisco Daza Tananta</span></div>
-    </div>
-    <div class="legal"><span>© 2026 Francisco Daza Tananta. Lima, Perú.</span><span>ACUEDI Ediciones · Ediciones Daza Mozombite · Diseño: FRALEX</span></div>
-  </div>
-</footer>
-
-<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mTitle">
-  <div class="bd" data-close></div>
-  <div class="box" id="mBox"></div>
+  </aside>
 </div>
 
-<script>
-(function(){
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+<main>
+  <section class="hero" id="hero" aria-label="Libros destacados">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="wrap" id="heroSlot"></div>
+    <div class="hero-ctrl"><div class="wrap"><div class="prog" id="heroProg"></div><div class="arrows"><button type="button" id="heroPrev" aria-label="Anterior">←</button><button type="button" id="heroNext" aria-label="Siguiente">→</button></div></div></div>
+  </section>
 
-  // =====================================================================
-  //  CONFIGURACIÓN DE LA TIENDA
-  //  WHATSAPP: número con código de país, sin espacios ni "+". Perú = 51.
-  // =====================================================================
-  var WHATSAPP = "51916969388";
+  <div class="wrap"><div class="values">
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h6a3 3 0 0 1 2 1 3 3 0 0 1 2-1h6v14h-6a3 3 0 0 0-2 1 3 3 0 0 0-2-1H4z"/></svg><div><b>Ediciones 2026</b><span>Textos revisados y corregidos</span></div></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.9A8 8 0 1 1 21 12z"/></svg><div><b>Pedido por WhatsApp</b><span>Sin registros ni tarjetas</span></div></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/></svg><div><b>Entrega coordinada</b><span>Según tu ciudad</span></div></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg><div><b>Directo del autor</b><span>Libros de la familia Daza</span></div></div>
+  </div></div>
 
-  // =====================================================================
-  //  CATÁLOGO DE LIBROS
-  //  Para agregar un libro: copia un bloque { ... }, cambia los datos y guarda.
-  //  - precio: por ejemplo "S/ 35.00". Si está vacío dice "Precio por anunciar".
-  //  - destacado: true para que aparezca arriba, en la vitrina principal.
-  //  - disponible: false para mostrar "Preventa" en lugar de "Comprar".
-  // =====================================================================
-  var LIBROS = [
-    {
-      titulo: "Fantasías Amazónicas",
-      subtitulo: "Cuentos y algo más…",
-      genero: "Cuentos",
-      edicion: "Quinta edición, revisada",
-      estado: "Octubre 2026",
-      precio: "",
-      disponible: true,
-      destacado: true,
-      color: "#E1ECE4",
-      portada: "assets/img/portada-fantasias-amazonicas.jpg",
-      resumen: "Siete relatos donde la Runa Mula, la sirena y la Madre del Agua caminan por pueblos reales de Loreto. Leyendas amazónicas contadas por el maestro que las escuchó de noche en las comunidades.",
-      sinopsis: [
-        "Tres hombres esperan despiertos, con linternas y jugo de huito, a que pase la Runa Mula. Un pescador rema solo hasta una cocha donde dicen que algo respira bajo el agua. Una alumna deja de ir a la escuela porque, según su familia, la enfermó la Madre del Agua.",
-        "Esta quinta edición llega con el texto revisado de principio a fin, corrección de estilo profesional, ilustraciones y un glosario de voces amazónicas."
-      ],
-      contenido: ["El reemplazo de la Runa Mula","La decepción de la sirena","El escape de los «pelacaras»","Del finado su veneno","La recompensa de los bufeos colorados","El despertar de la anaconda","El sueño de Adelita"],
-      ficha: [["Edición","Quinta, revisada"],["Salida","Octubre 2026"],["Sello","Ediciones Daza Mozombite"],["Prólogo","Jaime Vásquez Valcárcel"],["Incluye","Glosario amazónico"],["Ideal para","Familias y docentes"]],
-      ventajas: ["Edición revisada y corregida en 2026","Ilustraciones y glosario de voces amazónicas","Perfecto para leer en familia o en el aula"],
-      nota: ""
-    },
-    {
-      titulo: "Tras los muros de Maranguita",
-      subtitulo: "Memorias de un exeducador dentro del centro juvenil más temido del Perú",
-      genero: "Memorias",
-      edicion: "Primera edición",
-      estado: "Octubre 2026",
-      precio: "",
-      disponible: true,
-      destacado: true,
-      color: "#E2E6EE",
-      portada: "assets/img/portada-tras-los-muros-de-maranguita.jpg",
-      resumen: "Un maestro rural de Iquitos entra a trabajar al centro juvenil de Lima. Motines, fútbol, chicos que quieren otra vida y una injusticia que lo dejó del otro lado de la reja.",
-      sinopsis: [
-        "Un maestro rural de Iquitos llega a Lima y entra a trabajar al pabellón «Bienvenida». El primer día una psicóloga le advierte: «Si ven que eres débil de carácter, te fregaste».",
-        "Motines, partidos de fútbol que valen más que un sermón, un chico que sueña con ser diseñador gráfico y una acusación injusta que dejó al autor, por unas horas, del otro lado de la reja. Un testimonio sobre la dignidad donde menos se espera."
-      ],
-      contenido: ["Primera parte: El pabellón «Bienvenida»","Segunda parte: «Domingo Savio»","Tercera parte: Las sombras del sistema","Cuarta parte: La salida","Epílogo: el diseño de una nueva vida"],
-      ficha: [["Edición","Primera"],["Salida","Octubre 2026"],["Sello","ACUEDI Ediciones"],["Tiraje","500 ejemplares"],["Diseño","Emilio Dumas"],["Ideal para","Adultos y educadores"]],
-      ventajas: ["Testimonio real, contado en primera persona","Tiraje limitado de 500 ejemplares","Para educadores, psicólogos y lectores de no ficción"],
-      nota: "Los nombres de los adolescentes son seudónimos, conforme a la Ley N.º 29733 y al Código de los Niños y Adolescentes."
-    }
-  ];
+  <section class="sec" id="libros">
+    <div class="wrap">
+      <div class="sec-head" data-rv><div><p class="kicker">Catálogo</p><h2>Los libros</h2></div><a class="link" href="libros.html">Ver catálogo completo <span class="ar">→</span></a></div>
+      <div class="grid" id="homeGrid"></div>
+    </div>
+  </section>
 
-  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-  function wa(msg){ return 'https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(msg); }
-  function buyLink(b){ return wa('Hola, quiero comprar el libro «'+b.titulo+'» de Francisco Daza Tananta. ¿Me pueden dar información?'); }
-  var WA_ICON='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.2-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1.1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>';
-  function priceHTML(b){ return b.precio ? '<b>'+esc(b.precio)+'</b>' : '<b style="font-size:1.25rem">Precio por anunciar</b>'; }
-  function buyLabel(b){ return b.disponible ? 'Comprar' : 'Reservar'; }
+  <section class="sec tight">
+    <div class="wrap">
+      <div class="band" data-rv>
+        <div class="bgimg"><img src="assets/img/criatura-madre-del-agua.jpg" alt=""></div>
+        <div class="txt">
+          <p class="kicker" style="color:#9FD3BF">Lectura gratis</p>
+          <h2>Lee antes de <em>comprar.</em></h2>
+          <blockquote>«Adelita era una de esas niñas que se recuerdan con especial cariño después de muchos años.»</blockquote>
+          <p>Fragmentos de los dos libros para leer aquí mismo, con letra ajustable y modo noche.</p>
+          <div class="ctas"><a class="btn btn-light" href="leer.html">Empezar a leer <span class="ar">→</span></a></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  document.getElementById('navWa').href = wa('Hola, quiero información sobre los libros de Francisco Daza Tananta.');
-  document.getElementById('footWa').href = wa('Hola, quiero información sobre los libros de Francisco Daza Tananta.');
-  document.getElementById('nBooks').textContent = LIBROS.length;
+  <section class="sec tight">
+    <div class="wrap">
+      <div class="sec-head" data-rv><div><p class="kicker">Universo amazónico</p><h2>Las criaturas de sus <em>cuentos</em></h2></div><a class="link" href="universo.html">Conocer a todas <span class="ar">→</span></a></div>
+      <div class="creatures" id="homeCreatures"></div>
+    </div>
+  </section>
 
-  // ---------- Vitrina principal ----------
-  var feat=LIBROS.filter(function(b){return b.destacado;}); if(!feat.length) feat=[LIBROS[0]];
-  var cur=0, timer=null, show=document.getElementById('showcase');
-  var thumbs=document.getElementById('thumbs');
-  thumbs.innerHTML = feat.length>1 ? feat.map(function(b,i){return '<button type="button" aria-label="'+esc(b.titulo)+'"'+(i===0?' aria-current="true"':'')+'><img src="'+b.portada+'" alt=""></button>';}).join('') : '';
-  function hero(i){
-    cur=(i+feat.length)%feat.length; var b=feat[cur], idx=LIBROS.indexOf(b);
-    show.style.setProperty('--tint', b.color||'');
-    var img=document.getElementById('hCover'); img.src=b.portada; img.alt='Portada de '+b.titulo;
-    document.getElementById('hTag').textContent = b.disponible ? 'Nuevo · '+b.estado : 'Preventa';
-    var info=document.getElementById('hInfo');
-    info.innerHTML='<p class="p-cat">'+esc(b.genero)+' · '+esc(b.edicion)+'</p><h1>'+esc(b.titulo)+'</h1><p class="p-sub">'+esc(b.subtitulo)+'</p>'
-      +'<p class="p-by">de <a href="#autor">Francisco Daza Tananta</a></p>'
-      +'<div class="price">'+priceHTML(b)+'<span>Pago y envío por WhatsApp</span></div>'
-      +'<p class="p-desc">'+esc(b.resumen)+'</p>'
-      +'<div class="buyrow"><a class="btn btn-buy" href="'+buyLink(b)+'" target="_blank" rel="noopener">'+WA_ICON+buyLabel(b)+'</a><button class="btn btn-line" type="button" data-open="'+idx+'">Ver detalles</button></div>'
-      +'<ul class="trust">'+b.ventajas.map(function(v){return '<li>'+esc(v)+'</li>';}).join('')+'</ul>';
-    info.classList.remove('anim'); void info.offsetWidth; info.classList.add('anim');
-    [].forEach.call(thumbs.children,function(t,k){ if(k===cur) t.setAttribute('aria-current','true'); else t.removeAttribute('aria-current'); });
-  }
-  function play(){ clearInterval(timer); if(!reduce && feat.length>1) timer=setInterval(function(){hero(cur+1);},8000); }
-  [].forEach.call(thumbs.children,function(t,k){ t.addEventListener('click',function(){hero(k);play();}); });
-  var heroSec=document.querySelector('.hero');
-  heroSec.addEventListener('mouseenter',function(){clearInterval(timer);});
-  heroSec.addEventListener('mouseleave',play);
-  heroSec.addEventListener('focusin',function(){clearInterval(timer);});
-  hero(0); play();
+  <div class="marq" aria-label="Palabras del glosario"><div class="track" id="homeTrack"></div></div>
 
-  // ---------- Catálogo ----------
-  document.getElementById('footBooks').innerHTML = LIBROS.map(function(b,i){return '<a href="#catalogo" data-open="'+i+'">'+esc(b.titulo)+'</a>';}).join('');
-  var grid=document.getElementById('grid'), filters=document.getElementById('filters'), active='Todos';
-  var gens=['Todos'].concat(LIBROS.map(function(b){return b.genero;}).filter(function(g,i,a){return a.indexOf(g)===i;}));
-  filters.innerHTML=gens.map(function(g){return '<button type="button" aria-pressed="'+(g==='Todos')+'">'+esc(g)+'</button>';}).join('');
-  function renderGrid(){
-    grid.innerHTML = LIBROS.map(function(b,i){
-      if(active!=='Todos' && b.genero!==active) return '';
-      return '<article class="card"><button class="cv" type="button" data-open="'+i+'" style="--tint:'+(b.color||'')+'" aria-label="Ver detalles de '+esc(b.titulo)+'"><img src="'+b.portada+'" alt="" loading="lazy"></button>'
-        +'<div class="body"><span class="cat">'+esc(b.genero)+'</span><h3>'+esc(b.titulo)+'</h3><span class="by">Francisco Daza Tananta · '+esc(b.edicion)+'</span>'
-        +'<div class="pr">'+(b.precio?'<b>'+esc(b.precio)+'</b>':'<span>Precio por anunciar</span>')+'<span>'+esc(b.estado)+'</span></div>'
-        +'<div class="acts"><a class="btn btn-buy btn-sm" href="'+buyLink(b)+'" target="_blank" rel="noopener">'+buyLabel(b)+'</a><button class="btn btn-line btn-sm" type="button" data-open="'+i+'">Detalles</button></div></div></article>';
-    }).join('') + (active==='Todos' ? '<article class="card soon" aria-label="Próximo libro"><div class="cv"><span>Próximo libro<br>en camino</span></div><div class="body"><span class="cat">Muy pronto</span><h3>Nuevo título</h3><span class="by">Deja tu correo para enterarte primero</span><div class="acts" style="grid-template-columns:1fr"><a class="btn btn-line btn-sm" href="#fragmento">Avisarme</a></div></div></article>' : '');
-  }
-  filters.addEventListener('click',function(e){
-    var b=e.target.closest('button'); if(!b) return; active=b.textContent;
-    [].forEach.call(filters.children,function(x){x.setAttribute('aria-pressed',x===b);}); renderGrid();
-  });
-  renderGrid();
+  <section class="sec">
+    <div class="wrap author">
+      <figure class="ph" style="margin:0" data-rv><img src="assets/img/francisco-daza-tananta.jpg" alt="Retrato de Francisco Daza Tananta."><div class="stamp"><b>+20 años</b>como maestro en Loreto</div></figure>
+      <div data-rv data-d="1">
+        <p class="kicker">El autor</p>
+        <h2>Un maestro que escribe <em>lo que vivió.</em></h2>
+        <div class="bio"><p>Francisco Daza Tananta nació en Iquitos en 1966. Enseñó más de veinte años en escuelas de Loreto, arbitró por buena parte del Perú y fue educador en el centro juvenil de Lima. De esos lugares nacen sus libros.</p></div>
+        <div class="stats">
+          <div><b data-count="20" data-pre="+">+20</b><span>años de docencia</span></div>
+          <div><b data-count="5" data-suf=".ª">5.ª</b><span>edición de su primer libro</span></div>
+          <div><b data-nbooks data-count="2">2</b><span>libros publicados</span></div>
+        </div>
+        <a class="btn btn-line" href="autor.html">Conocer su historia <span class="ar">→</span></a>
+      </div>
+    </div>
+  </section>
 
-  // ---------- Ficha en ventana ----------
-  var modal=document.getElementById('modal'), box=document.getElementById('mBox'), lastFocus=null;
-  function openBook(i){
-    var b=LIBROS[i]; lastFocus=document.activeElement;
-    box.style.setProperty('--tint', b.color||'');
-    box.innerHTML='<button class="close" type="button" data-close aria-label="Cerrar">×</button>'
-      +'<div class="side"><div class="book3d"><div class="pages"></div><div class="front"><img src="'+b.portada+'" alt="Portada de '+esc(b.titulo)+'"></div></div></div>'
-      +'<div class="main"><p class="p-cat">'+esc(b.genero)+' · '+esc(b.edicion)+'</p><h3 id="mTitle">'+esc(b.titulo)+'</h3><p class="p-sub" style="margin-top:-.3rem">'+esc(b.subtitulo)+'</p>'
-      +'<div class="price">'+priceHTML(b)+'<span>Pago y envío por WhatsApp</span></div>'
-      +'<div class="buyrow"><a class="btn btn-buy" href="'+buyLink(b)+'" target="_blank" rel="noopener">'+WA_ICON+buyLabel(b)+'</a></div>'
-      +'<h4>Sinopsis</h4><div class="syn">'+b.sinopsis.map(function(p){return '<p>'+esc(p)+'</p>';}).join('')+'</div>'
-      +(b.contenido.length?'<h4>Contenido</h4><ol class="toc">'+b.contenido.map(function(c){return '<li>'+esc(c)+'</li>';}).join('')+'</ol>':'')
-      +'<h4>Ficha técnica</h4><dl>'+b.ficha.map(function(f){return '<div><dt>'+esc(f[0])+'</dt><dd>'+esc(f[1])+'</dd></div>';}).join('')+'</dl>'
-      +(b.nota?'<p class="note">'+esc(b.nota)+'</p>':'')+'</div>';
-    modal.hidden=false; document.body.style.overflow='hidden'; box.querySelector('.close').focus();
-  }
-  function closeBook(){ modal.hidden=true; document.body.style.overflow=''; if(lastFocus) lastFocus.focus(); }
-  document.addEventListener('click',function(e){
-    if(e.target.closest('[data-close]')){ closeBook(); return; }
-    var t=e.target.closest('[data-open]'); if(!t) return; e.preventDefault(); openBook(+t.getAttribute('data-open'));
-  });
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && !modal.hidden) closeBook(); });
-
-  // ---------- Formulario ----------
-  var f=document.getElementById('leadForm'), re=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  f.addEventListener('submit',function(e){
-    e.preventDefault();
-    var nm=f.nombre.value.trim(), m=f.correo.value.trim();
-    document.getElementById('e-name').textContent=nm?'':'Escribe tu nombre.';
-    document.getElementById('e-mail').textContent=re.test(m)?'':'Revisa tu correo: debe verse como nombre@gmail.com';
-    if(!nm||!re.test(m)) return;
-    var d=document.createElement('div'); d.className='done'; d.setAttribute('role','status');
-    d.innerHTML='<b></b><p>Te enviaremos «El sueño de Adelita» a <strong></strong>.</p><p class="fine" style="margin-top:.6rem">Vista previa: el envío real se activa al conectar el servicio de correo.</p>';
-    d.querySelector('b').textContent='Gracias, '+nm+'.'; d.querySelector('strong').textContent=m; f.replaceWith(d);
-  });
-})();
-</script>
-
+  <section class="sec tight" id="suscribirse">
+    <div class="wrap"><div class="subscribe" data-rv>
+      <div><p class="kicker">Lectores de la familia</p><h2>Entérate primero de cada <em>libro nuevo.</em></h2><p class="muted" style="margin-top:.75rem">Presentaciones, preventas y fragmentos inéditos, directo en tu correo.</p></div>
+      <form data-lead="lista" novalidate>
+  <div class="fields">
+    <div class="field"><label for="n-lista">Nombre</label><input id="n-lista" name="nombre" type="text" placeholder="Por ejemplo: Rosa" autocomplete="given-name"><span class="err e-name"></span></div>
+    <div class="field"><label for="m-lista">Correo</label><input id="m-lista" name="correo" type="email" placeholder="tucorreo@gmail.com" autocomplete="email"><span class="err e-mail"></span></div>
+  </div>
+  <div class="ctas" style="align-items:center"><button class="btn btn-acc" type="submit">Suscribirme</button><span class="fine">Un correo al mes como máximo.</span></div>
+</form>
+    </div></div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div><a class="logo" href="index.html"><b>Francisco Daza Tananta</b><span>Escritor peruano</span></a><p>Cuentos de la Amazonía y memorias de un maestro peruano. Libros que nacen de lo vivido.</p></div>
+      <div><h5>Libros</h5><div data-books-list></div><a href="libros.html">Ver catálogo</a></div>
+      <div><h5>Explora</h5><a href="universo.html">Universo amazónico</a><a href="leer.html">Lectura gratis</a><a href="autor.html">El autor</a><a href="noticias.html">Noticias</a></div>
+      <div><h5>Contacto</h5><a data-wa-general href="#">WhatsApp</a><a href="contacto.html">Pedidos y colegios</a><code data-mail></code></div>
+    </div>
+    <div class="foot-bottom"><span>© 2026 Francisco Daza Tananta. Lima, Perú.</span><span>ACUEDI Ediciones · Ediciones Daza Mozombite · Diseño: FRALEX</span></div>
+  </div>
+</footer>
+<button class="totop" id="totop" type="button" aria-label="Volver arriba">↑</button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/app.js"></script>
 </body>
 </html>
