@@ -85,14 +85,14 @@
 </div>
 <button class="orderpill" id="orderPill" type="button" data-open-drawer="bag" hidden><span class="op-count" id="opCount">0</span><span class="op-txt">Tu pedido</span><span class="op-total" id="opTotal"></span><span class="op-go">Ver pedido →</span></button>
 <div class="scrollbar" id="scrollbar" aria-hidden="true"></div>
-<section class="phead plain"><div class="wrap"><nav class="crumbs" aria-label="Ruta"><a href="index.html">Inicio</a><span>/</span><span>Libros</span></nav><h1>Todos los <em>libros</em></h1><p>La obra completa de Francisco Daza Tananta. Busca, filtra por tema y arma tu pedido.</p></div></section>
+<section class="phead plain"><div class="wrap"><nav class="crumbs" aria-label="Ruta"><a href="index.html">Inicio</a><span>/</span><span>Libros</span></nav><h1>Todos los <em>libros</em></h1><p>La obra completa de Francisco Daza Tananta. Busca, elige y arma tu pedido.</p></div></section>
 <main><section class="sec"><div class="wrap">
   <div class="toolbar">
-    <label class="search"><span class="sr" hidden>Buscar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="catSearch" type="search" placeholder="Buscar por título, tema o género" aria-label="Buscar libros"></label>
+    <label class="search"><span class="sr" hidden>Buscar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="catSearch" type="search" placeholder="Buscar por título o género" aria-label="Buscar libros"></label>
     <div class="chips" id="catChips" role="group" aria-label="Filtrar por género"></div>
     <select class="sort" id="catSort" aria-label="Ordenar"><option value="">Destacados</option><option value="az">Título A-Z</option><option value="precio">Precio</option></select>
   </div>
-  <div class="themebar"><small>Temas:</small><span id="catThemes" style="display:contents"></span></div>
+  <span id="catThemes" hidden></span>
   <p class="result" id="catResult"></p>
   <div class="grid" id="catGrid"></div>
 </div></section>

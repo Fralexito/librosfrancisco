@@ -89,7 +89,7 @@
   }
   rise(".howto", { rotateX: reduce ? 0 : 16, transformPerspective: 1200, transformOrigin: "50% 0%" });
   rise(".duo > *", { rotateY: reduce ? 0 : -10, transformPerspective: 1400, stagger: .12 });
-  rise(".pdp-info > *", { y: 24, duration: .9, stagger: .05 });
+  $$(".pdp-info > *").forEach(function (el, i) { el.classList.add("seen"); gsap.from(el, { opacity: 0, y: reduce ? 8 : 24, duration: .8, delay: .1 + i * .05, ease: "expo.out" }); });
   $$(".howto-steps li").forEach(function (li, i) {
     gsap.from(li, { opacity: 0, x: reduce ? 0 : -30, duration: .9, delay: .15 + i * .12, ease: "expo.out", scrollTrigger: { trigger: li.parentNode, start: "top 85%", once: true } });
   });
@@ -105,7 +105,7 @@
       var im = ph.querySelector("img"); if (im) gsap.fromTo(im, { yPercent: -6, scale: 1.12 }, { yPercent: 6, scale: 1.12, ease: "none", scrollTrigger: { trigger: ph, start: "top bottom", end: "bottom top", scrub: true } });
     });
     /* Vitrina: el escenario aparece desde lejos */
-    $$(".sc-stage-box").forEach(function (b) { gsap.from(b, { scale: .8, opacity: 0, rotateY: -20, transformPerspective: 1400, duration: 1.4, ease: "expo.out", scrollTrigger: { trigger: b, start: "top 85%", once: true } }); });
+    $$(".sc-stage-box").forEach(function (b) { gsap.from(b, { scale: .9, opacity: 0, rotateY: innerWidth > 900 ? -16 : 0, transformPerspective: 1400, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: b, start: "top 85%", once: true } }); });
     /* Encabezados de página interior */
     $$(".phead .wrap > *").forEach(function (el, i) { gsap.from(el, { opacity: 0, y: 40, duration: 1.1, delay: .1 + i * .08, ease: "expo.out" }); });
     /* Nombre grande del pie: letra por letra */
@@ -148,5 +148,6 @@
     new MutationObserver(magAll).observe(document.body, { childList: true, subtree: true });
   }
 
-  addEventListener("load", function () { ST.refresh(); });
+  addEventListener("load", function () { ST.refresh(); setTimeout(function () { ST.refresh(); }, 1500); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ST.refresh(); });
 })();

@@ -120,7 +120,7 @@ export function createViewer(opt) {
 
   // Estado del movimiento
   const st = { tx: 0, ty: 0, rx: 0, ry: 0, drag: null, spin: 0, spinV: 0, userY: 0, scrollY: 0, t0: performance.now(), hover: false, lastUser: 0 };
-  let host = null, visible = true, raf = 0, ro = null, io = null;
+  let host = null, visible = true, raf = 0, ro = null, io = null, ready = false;
 
   function fit() {
     if (!host) return;
@@ -171,6 +171,7 @@ export function createViewer(opt) {
     book.rotation.x = st.rx + Math.sin(t * 0.7) * 0.02 * idle;
     book.rotation.y = opt.baseY + st.ry + st.userY + st.sy + st.spin + Math.sin(t * 0.5) * 0.06 * idle;
     renderer.render(scene, camera);
+    if (!ready && mesh) { const im = mesh.material[4].map && mesh.material[4].map.image; if (im && im.complete && im.naturalWidth) { ready = true; host.classList.add("gl-ready"); } }
     raf = requestAnimationFrame(frame);
   }
   function kick() { if (!raf && visible && host) raf = requestAnimationFrame(frame); }
@@ -180,7 +181,7 @@ export function createViewer(opt) {
     mount(el) {
       if (host === el) return api;
       if (host) unbind();
-      host = el; el.appendChild(canvas); el.classList.add("gl-on");
+      host = el; el.appendChild(canvas); el.classList.add("gl-on"); if (ready) el.classList.add("gl-ready");
       el.addEventListener("pointermove", onMove); el.addEventListener("pointerdown", onDown);
       el.addEventListener("pointerup", onUp); el.addEventListener("pointercancel", onUp); el.addEventListener("pointerleave", onLeave);
       ro = new ResizeObserver(fit); ro.observe(el); ro.observe(canvas);
@@ -204,7 +205,7 @@ export function createViewer(opt) {
     if (!host) return;
     host.removeEventListener("pointermove", onMove); host.removeEventListener("pointerdown", onDown);
     host.removeEventListener("pointerup", onUp); host.removeEventListener("pointercancel", onUp); host.removeEventListener("pointerleave", onLeave);
-    host.classList.remove("gl-on"); ro && ro.disconnect(); io && io.disconnect(); host = null;
+    host.classList.remove("gl-on", "gl-ready"); ro && ro.disconnect(); io && io.disconnect(); host = null;
   }
   document.addEventListener("visibilitychange", () => { visible = !document.hidden; kick(); });
   return api;

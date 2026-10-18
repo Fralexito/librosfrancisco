@@ -440,7 +440,7 @@
         tilt($(".stage", slot));
         var stg = $(".stage", slot);
         if (heroV) heroV.mount(stg).setBook(b, dir || 1);
-        else if (!heroWait) { heroWait = true; glViewer({ mode: "hover" }, function (v) { heroV = v; v.mount($(".stage", slot)).setBook(feat[cur]); }); }
+        else if (!heroWait) { heroWait = true; setTimeout(function () { glViewer({ mode: "hover" }, function (v) { heroV = v; v.mount($(".stage", slot)).setBook(feat[cur]); }); }, 700); }
         requestAnimationFrame(function () { requestAnimationFrame(function () { slot.classList.add("in"); }); });
       }, slot.innerHTML ? 260 : 0);
       $$("img", bg).forEach(function (im, k) { im.classList.toggle("on", k === cur); });
@@ -541,7 +541,6 @@
         + "<ul class='checks'>" + b.ventajas.map(function (v) { return "<li>" + esc(v) + "</li>"; }).join("") + "</ul></div>"
         + "<div class='tabs' role='tablist'><button role='tab' aria-selected='true' data-tab='s'>Sinopsis</button><button role='tab' aria-selected='false' data-tab='c'>Contenido</button><button role='tab' aria-selected='false' data-tab='f'>Ficha técnica</button></div>"
         + "<div id='tabBox'></div>"
-        + ((b.temas && b.temas.length) ? "<div class='tags'>" + themes().filter(function (th) { return b.temas.indexOf(th.nombre) > -1; }).map(function (th) { return "<a href='libros.html#" + th.slug + "'>" + esc(th.nombre) + "</a>"; }).join("") + "</div>" : "")
         + "<div class='ctas'>" + (b.fragmento ? "<a class='btn btn-line' href='leer.html#" + b.fragmento + "'>Leer un fragmento gratis <span class='ar'>→</span></a>" : "") + "</div>"
         + (b.extra ? "<a class='extra' href='" + esc(b.extra.url) + "'><b>" + esc(b.extra.titulo) + "</b><span>" + esc(b.extra.texto) + "</span><span class='ar'>→</span></a>" : "")
         + "</div>";

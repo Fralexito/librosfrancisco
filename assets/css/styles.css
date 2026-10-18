@@ -893,7 +893,7 @@ body.has-order .toast{bottom:calc(5.5rem + env(safe-area-inset-bottom,0px))}
 }
 
 /* Autor: retrato más cuidado */
-.author{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
+@media (min-width:861px){.author{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}}
 .author .ph{max-width:26rem;width:100%;justify-self:center;aspect-ratio:4/5;background:radial-gradient(120% 90% at 50% 20%,var(--acc-soft),var(--bg-2));box-shadow:0 40px 70px -50px var(--shadow)}
 .author .ph img{mix-blend-mode:multiply;object-position:50% 15%}
 :root[data-theme="dark"] .author .ph img{mix-blend-mode:normal}
@@ -976,3 +976,28 @@ html.motion .card{transform-style:preserve-3d;will-change:transform}
 }
 .howto-sec{padding-top:clamp(2.5rem,5vw,4rem)}
 .wordmark{font-size:clamp(2.4rem,8vw,7.4rem)}
+
+/* ---------- Correcciones visuales ---------- */
+/* Títulos que suben palabra por palabra: sin recortar letras */
+.split .w{padding:0 .06em .16em 0;margin:0 -.06em -.16em 0}
+/* El libro 3D solo se muestra cuando ya está listo (sin parpadeo) */
+.stage:not(.gl-ready) .gl-book{visibility:hidden}
+.stage.gl-ready .book3d{opacity:0;pointer-events:none}
+.stage.gl-on:not(.gl-ready) .book3d{opacity:1}
+/* Barra de búsqueda fija del catálogo: fondo de vidrio para no mezclarse con las tarjetas */
+.toolbar{background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);box-shadow:0 18px 40px -28px var(--shadow)}
+/* Pie: el nombre grande siempre cabe y el botón de subir no tapa el texto */
+.wordmark{font-size:clamp(1.5rem,8vw,7.4rem)}
+@media (max-width:700px){
+  .totop{width:2.6rem;height:2.6rem;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+  body.has-order .totop{bottom:calc(4.75rem + env(safe-area-inset-bottom,0px))}
+  .foot-bottom{padding-right:3.5rem}
+}
+/* Vitrina en celular: sin huecos vacíos */
+@media (max-width:900px){
+  .sc-item{min-height:0;align-content:start;padding-block:2.25rem 3.5rem;border-bottom:1px solid var(--line)}
+  .sc-item:last-child{border-bottom:0;min-height:55svh}
+  .sc-item h3{font-size:clamp(2rem,8vw,2.6rem)}
+}
+.toolbar{position:static}
+.pdp-media,.qv-media{overflow:hidden;position:relative}
