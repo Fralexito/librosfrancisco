@@ -175,11 +175,12 @@ button{font:inherit}
 .hero-bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.08);transition:opacity 1.2s var(--ease),transform 8s linear}
 .hero-bg img.on{opacity:.55;transform:scale(1)}
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,26,23,.95) 0%,rgba(15,26,23,.78) 42%,rgba(15,26,23,.35) 100%),linear-gradient(0deg,rgba(15,26,23,.85),rgba(15,26,23,0) 45%)}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(2rem,5vw,4rem);align-items:center;min-height:min(86dvh,46rem);padding-block:clamp(3rem,7vw,5rem) clamp(5rem,8vw,6rem)}
+.hero > .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(2rem,5vw,4rem);align-items:center;min-height:46rem;padding-block:clamp(3rem,7vw,5rem) clamp(5rem,8vw,6rem)}
 .hero-copy{display:grid;gap:1.25rem;align-content:center}
 .hero .badge{justify-self:start;font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.4rem .85rem;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(6px)}
 .hero h1{font-size:clamp(3rem,7.2vw,6.4rem);line-height:.92;color:#fff}
-.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.06em}
+.hero h1 .ln{display:inline-block;overflow:hidden;padding-bottom:.08em;vertical-align:top}
+.hero h1.long{font-size:clamp(2.6rem,5.4vw,4.8rem);line-height:.98}
 .hero h1 .ln > span{display:inline-block;transform:translateY(105%);transition:transform 1s var(--ease)}
 .hero .in h1 .ln > span{transform:none}
 .hero .sub{font-family:var(--f-display);font-style:italic;font-size:clamp(1.25rem,2.2vw,1.65rem);color:#D7DED9;max-width:34ch;line-height:1.3}
@@ -209,7 +210,7 @@ button{font:inherit}
 .arrows button{width:2.75rem;height:2.75rem;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.06);color:#fff;cursor:pointer;font-size:1.05rem;transition:background .2s}
 .arrows button:hover{background:rgba(255,255,255,.18)}
 @media (max-width:860px){
-  .hero .wrap{grid-template-columns:1fr;min-height:0;padding-top:2rem;gap:1.5rem}
+  .hero > .wrap{grid-template-columns:1fr;min-height:57rem;align-content:start;padding-top:2rem;gap:1.5rem}
   .hero .stage{order:-1}
   .hero .stage .book3d{width:12.5rem}
   .hero-bg::after{background:linear-gradient(0deg,rgba(15,26,23,.96) 30%,rgba(15,26,23,.6) 70%,rgba(15,26,23,.45))}

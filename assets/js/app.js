@@ -237,7 +237,7 @@
       slot.classList.remove("in");
       setTimeout(function () {
         slot.innerHTML = '<div class="hero-copy"><span class="badge">' + (b.disponible ? "Novedad · " + esc(b.salida) : "Preventa") + "</span>"
-          + "<h1>" + words(b.titulo) + "</h1><p class='sub'>" + esc(b.subtitulo) + "</p><p class='hook'>" + esc(b.gancho) + "</p>"
+          + "<h1" + (b.titulo.length > 22 ? " class='long'" : "") + ">" + words(b.titulo) + "</h1><p class='sub'>" + esc(b.subtitulo) + "</p><p class='hook'>" + esc(b.gancho) + "</p>"
           + "<div class='price-line'><b>" + esc(price(b)) + "</b><span>Pago y envío por WhatsApp</span></div>"
           + "<div class='ctas'><button class='btn btn-acc' type='button' data-add='" + b.id + "'>" + BAG + "Agregar al pedido</button><a class='btn btn-ghost-light' href='" + bookUrl(b) + "'>Ver el libro</a></div></div>"
           + book3d(b);
