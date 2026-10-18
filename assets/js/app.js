@@ -112,7 +112,8 @@
       + '<div class="quick"><button class="btn btn-acc btn-sm" type="button" data-add="' + b.id + '">' + BAG + 'Agregar</button><a class="btn btn-light btn-sm" href="' + bookUrl(b) + '">Ver libro</a></div></div>'
       + '<div class="body"><span class="cat">' + esc(b.genero) + '</span><h3><a href="' + bookUrl(b) + '">' + esc(b.titulo) + '</a></h3>'
       + '<span class="by">' + esc(C.autor) + ' · ' + esc(b.edicion) + '</span>'
-      + '<div class="pr"><b>' + esc(price(b)) + '</b><span>' + esc(b.salida) + '</span></div></div></article>';
+      + '<div class="pr"><b>' + esc(b.precio != null ? price(b) : "Por anunciar") + '</b><span>' + esc(b.salida) + '</span></div>'
+      + '<div class="tacts"><button class="btn btn-acc btn-sm" type="button" data-add="' + b.id + '">' + BAG + (b.disponible ? "Agregar al pedido" : "Reservar") + '</button></div></div></article>';
   }
   function slugify(x) { return "tema-" + x.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-"); }
   function themes() {
@@ -202,11 +203,6 @@
       var q = t.closest("[data-q]"); if (q) { var id = q.getAttribute("data-id"); bag[id] = Math.max(0, (bag[id] || 0) + +q.getAttribute("data-q")); if (!bag[id]) delete bag[id]; saveBag(); renderBag(); return; }
       var rm = t.closest("[data-rm]"); if (rm) { delete bag[rm.getAttribute("data-rm")]; saveBag(); renderBag(); return; }
       if (t.closest("#sendOrder")) { e.preventDefault(); window.open(wa(orderMessage()), "_blank", "noopener"); return; }
-      var btn = t.closest(".btn"); if (btn && !reduce) {
-        var r = btn.getBoundingClientRect(), s = Math.max(r.width, r.height), sp = document.createElement("span");
-        sp.className = "ripple"; sp.style.cssText = "width:" + s + "px;height:" + s + "px;left:" + (e.clientX - r.left - s / 2) + "px;top:" + (e.clientY - r.top - s / 2) + "px";
-        btn.appendChild(sp); setTimeout(function () { sp.remove(); }, 650);
-      }
       if (t.closest("[data-theme-toggle]")) {
         var root = document.documentElement, cur = root.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
         var next = cur === "dark" ? "light" : "dark"; root.setAttribute("data-theme", next);
@@ -381,7 +377,7 @@
       var list = G.filter(function (g) { var n = norm(g[0]); return (!letter || n[0].toUpperCase() === letter) && (!t || n.indexOf(t) > -1 || norm(g[1]).indexOf(t) > -1); });
       $("#gCount").textContent = list.length + (list.length === 1 ? " palabra" : " palabras");
       box.innerHTML = list.length ? list.map(function (g) {
-        return '<button type="button" class="word" aria-label="' + esc(g[0]) + ': ' + esc(g[1]) + '"><div class="inner"><div class="f"><b>' + esc(g[0]) + '</b><small><span>Toca para ver</span><span>' + esc(g[0][0]) + '</span></small></div><div class="b"><b>' + esc(g[0]) + "</b><p>" + esc(g[1]) + "</p></div></div></button>";
+        return '<button type="button" class="word" aria-label="' + esc(g[0]) + ': ' + esc(g[1]) + '"><div class="inner"><div class="f"><b>' + esc(g[0]) + '</b><small><span>Ver significado</span><span>' + esc(g[0][0]) + '</span></small></div><div class="b"><b>' + esc(g[0]) + "</b><p>" + esc(g[1]) + "</p></div></div></button>";
       }).join("") : '<div class="empty"><b>No está en el glosario</b>Prueba con otra palabra.</div>';
     }
     box.addEventListener("click", function (e) { var w = e.target.closest(".word"); if (w) w.classList.toggle("flip"); });
@@ -421,13 +417,4 @@
   var pm = document.querySelector('meta[name="page"]'), p = document.body.getAttribute("data-page") || (pm && pm.content); if (pages[p]) pages[p]();
   reveal(); counters();
 
-  /* Transición suave al cambiar de página */
-  document.addEventListener("click", function (e) {
-    var a = e.target.closest("a"); if (!a || reduce) return;
-    var href = a.getAttribute("href") || "";
-    if (a.target === "_blank" || e.metaKey || e.ctrlKey || /^(https?:|mailto:|tel:|#)/.test(href) || !/\.html/.test(href)) return;
-    if (href.split("#")[0] === location.pathname.split("/").pop()) return;
-    e.preventDefault(); document.body.classList.add("leaving"); setTimeout(function () { location.href = href; }, 220);
-  });
-  addEventListener("pageshow", function () { document.body.classList.remove("leaving"); });
 })();
