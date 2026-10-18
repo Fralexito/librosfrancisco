@@ -201,6 +201,13 @@
         sp.className = "ripple"; sp.style.cssText = "width:" + s + "px;height:" + s + "px;left:" + (e.clientX - r.left - s / 2) + "px;top:" + (e.clientY - r.top - s / 2) + "px";
         btn.appendChild(sp); setTimeout(function () { sp.remove(); }, 650);
       }
+      if (t.closest("[data-theme-toggle]")) {
+        var root = document.documentElement, cur = root.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        var next = cur === "dark" ? "light" : "dark"; root.setAttribute("data-theme", next);
+        try { localStorage.setItem("fdt-tema", next); } catch (er) {}
+        toast(next === "dark" ? "Modo oscuro activado" : "Modo claro activado");
+        return;
+      }
       var copy = t.closest("[data-copy]"); if (copy) {
         var txt = C.correo, done = function () { copy.textContent = "Copiado"; };
         try { navigator.clipboard.writeText(txt).then(done, function () { copy.textContent = txt; }); } catch (er) { copy.textContent = txt; }
