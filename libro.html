@@ -42,15 +42,49 @@
   <div class="bd" data-close-drawer></div>
   <aside class="panel" role="dialog" aria-modal="true" aria-label="Tu pedido">
     <div class="drawer-head"><h3>Tu pedido</h3><button class="icon-btn" type="button" data-close-drawer aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    <div class="bag-list" id="bagList"></div>
-    <div class="bag-foot" id="bagFoot" hidden>
-      <div class="bag-total"><span>Total</span><span id="bagTotal"></span></div>
-      <p class="fine">Al enviar, se abre WhatsApp con tu pedido escrito. Ahí coordinamos el pago y la entrega.</p>
-      <button class="btn btn-acc" type="button" id="sendOrder">Enviar pedido por WhatsApp</button>
-      <button class="btn btn-line" type="button" data-close-drawer>Seguir viendo libros</button>
+    <ol class="steps-mini" id="bagSteps" aria-label="Pasos del pedido"><li class="on">Libros</li><li>Tus datos</li><li>Enviar</li></ol>
+    <div class="bag-view" id="bagView1">
+      <div class="bag-list" id="bagList"></div>
+      <div class="bag-foot" id="bagFoot" hidden>
+        <div class="bag-total"><span>Total</span><span id="bagTotal"></span></div>
+        <button class="btn btn-acc" type="button" id="toCheckout">Continuar con mis datos <span class="ar">→</span></button>
+        <button class="btn btn-line" type="button" data-close-drawer>Seguir viendo libros</button>
+      </div>
+    </div>
+    <form class="bag-view checkout" id="bagView2" hidden novalidate>
+      <div class="field"><label for="o-name">Tu nombre</label><input id="o-name" name="nombre" type="text" placeholder="Rosa Pérez" autocomplete="name"><span class="err e-oname"></span></div>
+      <div class="field"><label for="o-city">Ciudad y distrito</label><input id="o-city" name="ciudad" type="text" placeholder="Lima, San Martín de Porres" autocomplete="address-level2"><span class="err e-ocity"></span></div>
+      <fieldset class="opts"><legend>¿Cómo lo recibes?</legend>
+        <label><input type="radio" name="entrega" value="Envío a domicilio" checked><span>Envío a domicilio</span></label>
+        <label><input type="radio" name="entrega" value="Recojo en persona"><span>Recojo en persona</span></label>
+      </fieldset>
+      <fieldset class="opts"><legend>¿Cómo prefieres pagar?</legend>
+        <label><input type="radio" name="pago" value="Yape" checked><span>Yape</span></label>
+        <label><input type="radio" name="pago" value="Plin"><span>Plin</span></label>
+        <label><input type="radio" name="pago" value="Transferencia"><span>Transferencia</span></label>
+        <label><input type="radio" name="pago" value="Efectivo"><span>Efectivo</span></label>
+      </fieldset>
+      <div class="field"><label for="o-note">Nota (opcional)</label><input id="o-note" name="nota" type="text" placeholder="Por ejemplo: es para regalo"></div>
+      <div class="sum" id="bagSum"></div>
+      <button class="btn btn-acc" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.2-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2z"/></svg>Enviar pedido por WhatsApp</button>
+      <button class="btn btn-line" type="button" id="backToBag">← Volver a mis libros</button>
+      <p class="fine">Se abre WhatsApp con tu pedido escrito. Te confirmamos el precio final y la entrega.</p>
+    </form>
+    <div class="bag-view sent" id="bagView3" hidden>
+      <div class="sent-ico" aria-hidden="true">✓</div>
+      <h4>¡Tu pedido está listo!</h4>
+      <p class="muted">Se abrió WhatsApp con tu pedido. Solo toca «Enviar» en WhatsApp para que lo recibamos.</p>
+      <a class="btn btn-acc" id="reopenWa" href="#" target="_blank" rel="noopener">Abrir WhatsApp otra vez</a>
+      <button class="btn btn-line" type="button" id="clearBag">Empezar un pedido nuevo</button>
     </div>
   </aside>
 </div>
+<div class="qv" id="quickview" hidden role="dialog" aria-modal="true" aria-labelledby="qvTitle">
+  <div class="bd" data-close-qv></div>
+  <div class="qv-box" id="qvBox"></div>
+</div>
+<button class="orderpill" id="orderPill" type="button" data-open-drawer="bag" hidden><span class="op-count" id="opCount">0</span><span class="op-txt">Tu pedido</span><span class="op-total" id="opTotal"></span><span class="op-go">Ver pedido →</span></button>
+<div class="scrollbar" id="scrollbar" aria-hidden="true"></div>
 
 <main>
   <div class="wrap" style="padding-top:1.5rem" id="pdpHead"><nav class="crumbs" style="color:var(--fg-3)" aria-label="Ruta"><a href="index.html">Inicio</a><span>/</span><a href="libros.html">Libros</a><span>/</span><span id="pdpCrumb"></span></nav></div>
@@ -68,6 +102,7 @@
       <div><h5>Explora</h5><a href="leer.html">Lectura gratis</a><a href="autor.html">El autor</a><a href="noticias.html">Noticias</a></div>
       <div><h5>Contacto</h5><a data-wa-general href="#">WhatsApp</a><a href="contacto.html">Pedidos y colegios</a><code data-mail></code></div>
     </div>
+    <p class="wordmark" aria-hidden="true">Francisco Daza Tananta</p>
     <div class="foot-bottom"><span>© 2026 Francisco Daza Tananta. Lima, Perú.</span><span>ACUEDI Ediciones · Ediciones Daza Mozombite · Diseño: FRALEX</span></div>
   </div>
 </footer>

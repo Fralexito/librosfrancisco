@@ -26,14 +26,32 @@
   var bag = (function () { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } })();
   function saveBag() { try { localStorage.setItem(KEY, JSON.stringify(bag)); } catch (e) {} }
   function bagCount() { var n = 0; for (var k in bag) n += bag[k]; return n; }
-  function addToBag(id, n) {
-    bag[id] = (bag[id] || 0) + (n || 1); saveBag(); renderBag();
-    var cnt = $("#bagCount"); if (cnt) { cnt.classList.remove("bump"); void cnt.offsetWidth; cnt.classList.add("bump"); }
-    var b = byId(id); toast("Agregaste «" + b.titulo + "» a tu pedido", "Ver pedido", function () { openDrawer("bag"); });
+  function flyToBag(src) {
+    var target = $('[data-open-drawer="bag"].icon-btn'); if (!src || !target || reduce || !src.animate) return;
+    var a = src.getBoundingClientRect(), t = target.getBoundingClientRect(); if (!a.width) return;
+    var c = src.cloneNode(true); c.className = "flyer"; c.removeAttribute("loading");
+    c.style.cssText = "left:" + a.left + "px;top:" + a.top + "px;width:" + a.width + "px;height:" + a.height + "px";
+    document.body.appendChild(c);
+    var dx = t.left + t.width / 2 - (a.left + a.width / 2), dy = t.top + t.height / 2 - (a.top + a.height / 2);
+    c.animate([{ transform: "translate(0,0) scale(1) rotate(0)", opacity: 1 }, { transform: "translate(" + dx * .55 + "px," + (dy * .55 - 60) + "px) scale(.5) rotate(-8deg)", opacity: 1, offset: .55 }, { transform: "translate(" + dx + "px," + dy + "px) scale(.08) rotate(-14deg)", opacity: .4 }], { duration: 750, easing: "cubic-bezier(.5,0,.2,1)" }).onfinish = function () { c.remove(); };
+  }
+  function addToBag(id, n, srcEl) {
+    bag[id] = (bag[id] || 0) + (n || 1); saveBag();
+    flyToBag(srcEl);
+    setTimeout(function () {
+      renderBag();
+      var cnt = $("#bagCount"); if (cnt) { cnt.classList.remove("bump"); void cnt.offsetWidth; cnt.classList.add("bump"); }
+    }, reduce ? 0 : 650);
+    toast("Libro agregado a tu pedido ✓");
+  }
+  function srcImg(el) {
+    var box = el && el.closest(".card, .hero, .pdp, .qv-box, .ex-book, .band");
+    return box ? $(".book3d .front img, .cv img, img", box) : null;
   }
   function renderBag() {
-    var n = bagCount(), cnt = $("#bagCount");
+    var n = bagCount(), cnt = $("#bagCount"), pill = $("#orderPill");
     if (cnt) { cnt.textContent = n; cnt.classList.toggle("on", n > 0); }
+    if (pill) { pill.hidden = n === 0; $("#opCount").textContent = n; document.body.classList.toggle("has-order", n > 0); }
     var list = $("#bagList"), foot = $("#bagFoot"); if (!list) return;
     var ids = Object.keys(bag).filter(function (k) { return bag[k] > 0 && byId(k); });
     if (!ids.length) {
@@ -49,10 +67,46 @@
     }).join("");
     foot.hidden = false;
     $("#bagTotal").textContent = known ? C.moneda + " " + total.toFixed(2) : "Se confirma por WhatsApp";
+    if ($("#opTotal")) $("#opTotal").textContent = known ? C.moneda + " " + total.toFixed(2) : n + (n === 1 ? " libro" : " libros");
   }
-  function orderMessage() {
-    var lines = Object.keys(bag).filter(function (k) { return bag[k] > 0 && byId(k); }).map(function (id) { return "• " + bag[id] + " × " + byId(id).titulo; });
-    return "Hola, quiero hacer este pedido de libros de " + C.autor + ":\n" + lines.join("\n") + "\n¿Me pueden indicar el precio final, las formas de pago y el envío?";
+  var DKEY = "fdt-datos";
+  function orderMessage(d) {
+    var lines = Object.keys(bag).filter(function (k) { return bag[k] > 0 && byId(k); }).map(function (id) { var b = byId(id); return "• " + bag[id] + " × " + b.titulo + (b.precio != null ? " (" + price(b) + " c/u)" : ""); });
+    var msg = "Hola, quiero hacer este pedido de libros de " + C.autor + ":\n" + lines.join("\n");
+    if (d) msg += "\n\nNombre: " + d.nombre + "\nCiudad y distrito: " + d.ciudad + "\nEntrega: " + d.entrega + "\nPago: " + d.pago + (d.nota ? "\nNota: " + d.nota : "");
+    return msg + "\n\n¿Me confirman el precio final y la entrega? Gracias.";
+  }
+  function showStep(k) {
+    [1, 2, 3].forEach(function (i) { var v = $("#bagView" + i); if (v) v.hidden = i !== k; });
+    $$("#bagSteps li").forEach(function (li, i) { li.classList.toggle("on", i < k); li.classList.toggle("now", i === k - 1); });
+    var v = $("#bagView" + k); if (v) { var f = $("input, button, a", v); if (f) setTimeout(function () { f.focus(); }, 60); }
+    if (k === 2) {
+      var ids = Object.keys(bag).filter(function (x) { return bag[x] > 0 && byId(x); });
+      $("#bagSum").innerHTML = "<b>Resumen</b>" + ids.map(function (id) { return "<span>" + bag[id] + " × " + esc(byId(id).titulo) + "</span>"; }).join("");
+      try { var dd = JSON.parse(localStorage.getItem(DKEY)) || {}; var f2 = $("#bagView2"); if (dd.nombre && !f2.elements.nombre.value) f2.elements.nombre.value = dd.nombre; if (dd.ciudad && !f2.elements.ciudad.value) f2.elements.ciudad.value = dd.ciudad; } catch (e) {}
+    }
+  }
+  function bindCheckout() {
+    var f = $("#bagView2"); if (!f) return;
+    $("#toCheckout").addEventListener("click", function () { showStep(2); });
+    $("#backToBag").addEventListener("click", function () { showStep(1); });
+    $$("input[type=text]", f).forEach(function (i) { i.addEventListener("input", function () { var er = i.parentNode.querySelector(".err"); if (er && i.value.trim()) er.textContent = ""; }); });
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var d = { nombre: f.elements.nombre.value.trim(), ciudad: f.elements.ciudad.value.trim(), entrega: f.elements.entrega.value, pago: f.elements.pago.value, nota: f.elements.nota.value.trim() };
+      $(".e-oname", f).textContent = d.nombre ? "" : "Escribe tu nombre para saber a quién enviamos el pedido.";
+      $(".e-ocity", f).textContent = d.ciudad ? "" : "Escribe tu ciudad y distrito para coordinar la entrega.";
+      if (!d.nombre || !d.ciudad) return;
+      try { localStorage.setItem(DKEY, JSON.stringify({ nombre: d.nombre, ciudad: d.ciudad })); } catch (er) {}
+      var url = wa(orderMessage(d)); $("#reopenWa").href = url;
+      window.open(url, "_blank", "noopener");
+      showStep(3);
+    });
+    $("#clearBag").addEventListener("click", function () { bag = {}; saveBag(); renderBag(); showStep(1); closeDrawers(); toast("Listo para un pedido nuevo"); });
+  }
+  function buyNow(id, n, srcEl) {
+    if (!bag[id]) bag[id] = n || 1; else if (n && n > bag[id]) bag[id] = n;
+    saveBag(); renderBag(); closeQV(true); openDrawer("bag"); showStep(2);
   }
 
   /* ------------------------------------------------------------------
@@ -71,6 +125,7 @@
     var d = $("#drawer-" + name); if (!d) return;
     var a = document.activeElement; lastFocus = (a && !a.closest(".toast") && a !== document.body) ? a : $('[data-open-drawer="' + name + '"]'); openD = d;
     d.classList.add("open"); d.removeAttribute("inert"); document.body.style.overflow = "hidden";
+    if (name === "bag" && $("#bagView3") && $("#bagView3").hidden) showStep(1);
     $$(".mnav a", d).forEach(function (a, i) { a.style.transitionDelay = (0.05 + i * 0.04) + "s"; });
     var f = $(".panel button, .panel a", d); if (f) setTimeout(function () { f.focus(); }, 50);
   }
@@ -78,6 +133,34 @@
     if (!openD) return;
     $$(".drawer.open").forEach(function (d) { d.classList.remove("open"); d.setAttribute("inert", ""); });
     openD = null; document.body.style.overflow = ""; if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
+  }
+
+  /* ------------------------------------------------------------------
+     Vista rápida de un libro
+  ------------------------------------------------------------------ */
+  var qvFocus = null;
+  function openQV(id) {
+    var b = byId(id), q = $("#quickview"); if (!b || !q) return; qvFocus = document.activeElement; var qty = 1;
+    $("#qvBox").innerHTML = '<button class="icon-btn qv-x" type="button" data-close-qv aria-label="Cerrar">✕</button>'
+      + '<div class="qv-media" style="--tint:' + (b.color || "") + '">' + book3d(b) + '</div>'
+      + '<div class="qv-info"><span class="kicker">' + esc(b.genero) + " · " + esc(b.edicion) + '</span><h3 id="qvTitle">' + esc(b.titulo) + '</h3><p class="sub">' + esc(b.subtitulo) + '</p>'
+      + '<p class="hook">' + esc(b.gancho) + '</p><div class="qv-price"><b>' + esc(price(b)) + '</b><span>Pago y envío por WhatsApp</span></div>'
+      + '<div class="qv-row"><div class="qty" aria-label="Cantidad"><button type="button" data-qvq="-1" aria-label="Menos">−</button><span id="qvQty">1</span><button type="button" data-qvq="1" aria-label="Más">+</button></div>'
+      + '<button class="btn btn-acc" type="button" id="qvAdd">' + BAG + (b.disponible ? "Agregar al pedido" : "Reservar") + '</button></div>'
+      + '<button class="btn btn-line" type="button" id="qvBuy">Comprar ya</button>'
+      + '<a class="link" href="' + bookUrl(b) + '">Ver la ficha completa <span class="ar">→</span></a></div>';
+    q.hidden = false; document.body.style.overflow = "hidden"; requestAnimationFrame(function () { q.classList.add("open"); });
+    tilt($(".qv-media .stage", q));
+    $$("[data-qvq]", q).forEach(function (x) { x.onclick = function () { qty = Math.max(1, qty + +x.getAttribute("data-qvq")); $("#qvQty").textContent = qty; }; });
+    $("#qvAdd").onclick = function () { addToBag(b.id, qty, $(".qv-media img", q)); closeQV(); };
+    $("#qvBuy").onclick = function () { buyNow(b.id, qty); };
+    setTimeout(function () { $("#qvAdd").focus(); }, 60);
+  }
+  function closeQV(silent) {
+    var q = $("#quickview"); if (!q || q.hidden) return;
+    q.classList.remove("open"); setTimeout(function () { q.hidden = true; }, reduce ? 0 : 220);
+    if (!openD) document.body.style.overflow = "";
+    if (!silent && qvFocus && document.contains(qvFocus)) qvFocus.focus();
   }
 
   /* ------------------------------------------------------------------
@@ -119,11 +202,11 @@
   function card(b, i) {
     return '<article class="card" data-rv data-d="' + (i % 3) + '">'
       + '<div class="cv" style="--tint:' + (b.color || "") + '"><span class="pill">' + (b.disponible ? "Nuevo" : "Preventa") + '</span><img src="' + b.portada + '" alt="" loading="lazy">'
-      + '<div class="quick"><button class="btn btn-acc btn-sm" type="button" data-add="' + b.id + '">' + BAG + 'Agregar</button><a class="btn btn-light btn-sm" href="' + bookUrl(b) + '">Ver libro</a></div></div>'
+      + '<div class="quick"><button class="btn btn-acc btn-sm" type="button" data-add="' + b.id + '">' + BAG + 'Agregar</button><button class="btn btn-light btn-sm" type="button" data-qv="' + b.id + '">Vista rápida</button></div></div>'
       + '<div class="body"><span class="cat">' + esc(b.genero) + '</span><h3><a href="' + bookUrl(b) + '">' + esc(b.titulo) + '</a></h3>'
       + '<span class="by">' + esc(C.autor) + ' · ' + esc(b.edicion) + '</span>'
       + '<div class="pr"><b>' + esc(b.precio != null ? price(b) : "Por anunciar") + '</b><span>' + esc(b.salida) + '</span></div>'
-      + '<div class="tacts"><button class="btn btn-acc btn-sm" type="button" data-add="' + b.id + '">' + BAG + (b.disponible ? "Agregar al pedido" : "Reservar") + '</button></div></div></article>';
+      + '<div class="tacts"><button class="btn btn-acc btn-sm" type="button" data-add="' + b.id + '">' + BAG + (b.disponible ? "Agregar" : "Reservar") + '</button><button class="btn btn-line btn-sm" type="button" data-qv="' + b.id + '">Ver</button></div></div></article>';
   }
   function slugify(x) { return "tema-" + x.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-"); }
   function themes() {
@@ -139,7 +222,8 @@
   function bindForms() {
     var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     $$("form[data-lead]").forEach(function (f) {
-      f.addEventListener("submit", function (e) {
+      $$("input[type=text]", f).forEach(function (i) { i.addEventListener("input", function () { var er = i.parentNode.querySelector(".err"); if (er && i.value.trim()) er.textContent = ""; }); });
+    f.addEventListener("submit", function (e) {
         e.preventDefault();
         var nm = f.elements.nombre ? f.elements.nombre.value.trim() : "x", m = f.elements.correo.value.trim();
         var en = $(".e-name", f), em = $(".e-mail", f);
@@ -154,7 +238,8 @@
       });
     });
     $$("form[data-wa]").forEach(function (f) {
-      f.addEventListener("submit", function (e) {
+      $$("input[type=text]", f).forEach(function (i) { i.addEventListener("input", function () { var er = i.parentNode.querySelector(".err"); if (er && i.value.trim()) er.textContent = ""; }); });
+    f.addEventListener("submit", function (e) {
         e.preventDefault();
         var v = function (n) { return f.elements[n] ? f.elements[n].value.trim() : ""; };
         if (!v("nombre")) { $(".e-name", f).textContent = "Escribe tu nombre."; return; }
@@ -179,6 +264,39 @@
       if (el.closest(".shelf") || el.getBoundingClientRect().top < innerHeight * 0.95) return;
       el.classList.add("rv"); io.observe(el);
     });
+  }
+  /* Movimiento extra: títulos palabra por palabra, imágenes que se descubren, luz que sigue al cursor */
+  function dynamics() {
+    if (!reduce && "IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (en) { en.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add("in"); io.unobserve(x.target); } }); }, { threshold: 0.2 });
+      $$(".sec-head h2, .phead h1, .sec h2.split").forEach(function (h) {
+        if (h.getBoundingClientRect().top < innerHeight * 0.9 || h.querySelector("*:not(em):not(br)")) return;
+        var k = 0;
+        (function walk(node) {
+          Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+            if (n.nodeType === 3) {
+              var frag = document.createDocumentFragment();
+              n.textContent.split(/(\s+)/).forEach(function (w) {
+                if (!w) return; if (/^\s+$/.test(w)) { frag.appendChild(document.createTextNode(w)); return; }
+                var o = document.createElement("span"); o.className = "w"; var i = document.createElement("span"); i.textContent = w; i.style.transitionDelay = (k++ * 0.055) + "s"; o.appendChild(i); frag.appendChild(o);
+              });
+              n.parentNode.replaceChild(frag, n);
+            } else if (n.nodeType === 1) walk(n);
+          });
+        })(h);
+        h.classList.add("split"); io.observe(h);
+      });
+      $$("figure.ph, [data-clip]").forEach(function (el) {
+        if (el.getBoundingClientRect().top < innerHeight * 0.9) return; el.classList.add("clip"); io.observe(el);
+      });
+    }
+    if (matchMedia("(hover:hover) and (pointer:fine)").matches) {
+      document.addEventListener("pointermove", function (e) {
+        var el = e.target.closest && e.target.closest(".band, .ex-panel, .subscribe, .card .cv, .val, .qa details, .lead-card");
+        if (!el) return; var r = el.getBoundingClientRect();
+        el.style.setProperty("--mx", (e.clientX - r.left) + "px"); el.style.setProperty("--my", (e.clientY - r.top) + "px");
+      }, { passive: true });
+    }
   }
   function counters() {
     var els = $$("[data-count]"); if (!els.length) return;
@@ -206,6 +324,9 @@
       requestAnimationFrame(function () {
         var y = scrollY, open = document.querySelector(".drawer.open");
         if (!open) nav.classList.toggle("hide", y > lastY && y > 320);
+        var bar = $("#scrollbar"), h = document.documentElement.scrollHeight - innerHeight;
+        if (bar) bar.style.transform = "scaleX(" + (h > 0 ? Math.min(y / h, 1) : 0) + ")";
+        var hb = $("#heroBg"); if (hb && !reduce && y < innerHeight) hb.style.transform = "translateY(" + (y * 0.18) + "px) scale(1.06)";
         lastY = y; ticking = false;
       });
     }, { passive: true });
@@ -217,12 +338,14 @@
 
     document.addEventListener("click", function (e) {
       var t = e.target;
-      var add = t.closest("[data-add]"); if (add) { e.preventDefault(); addToBag(add.getAttribute("data-add"), +(add.getAttribute("data-n") || 1)); return; }
+      var add = t.closest("[data-add]"); if (add) { e.preventDefault(); addToBag(add.getAttribute("data-add"), +(add.getAttribute("data-n") || 1), srcImg(add)); return; }
+      var buy = t.closest("[data-buy]"); if (buy) { e.preventDefault(); buyNow(buy.getAttribute("data-buy"), +(buy.getAttribute("data-n") || 1)); return; }
+      var qv = t.closest("[data-qv]"); if (qv) { e.preventDefault(); openQV(qv.getAttribute("data-qv")); return; }
+      if (t.closest("[data-close-qv]")) { closeQV(); return; }
       var od = t.closest("[data-open-drawer]"); if (od) { e.preventDefault(); openDrawer(od.getAttribute("data-open-drawer")); return; }
       if (t.closest("[data-close-drawer]")) { closeDrawers(); return; }
       var q = t.closest("[data-q]"); if (q) { var id = q.getAttribute("data-id"); bag[id] = Math.max(0, (bag[id] || 0) + +q.getAttribute("data-q")); if (!bag[id]) delete bag[id]; saveBag(); renderBag(); return; }
       var rm = t.closest("[data-rm]"); if (rm) { delete bag[rm.getAttribute("data-rm")]; saveBag(); renderBag(); return; }
-      if (t.closest("#sendOrder")) { e.preventDefault(); window.open(wa(orderMessage()), "_blank", "noopener"); return; }
       if (t.closest("[data-theme-toggle]")) {
         var root = document.documentElement, cur = root.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
         var next = cur === "dark" ? "light" : "dark"; root.setAttribute("data-theme", next);
@@ -237,8 +360,8 @@
         try { navigator.clipboard.writeText(C.correo).then(function () { copy.textContent = "Copiado"; toast("Correo copiado"); reset(); }, selectMail); } catch (er) { selectMail(); }
       }
     });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeDrawers(); });
-    renderBag(); bindForms();
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") { if (!$("#quickview").hidden) closeQV(); else closeDrawers(); } });
+    renderBag(); bindForms(); bindCheckout(); dynamics();
   }
 
   /* ==================================================================
@@ -261,7 +384,7 @@
         slot.innerHTML = '<div class="hero-copy"><span class="badge">' + (b.disponible ? "Novedad · " + esc(b.salida) : "Preventa") + "</span>"
           + "<h1" + (b.titulo.length > 22 ? " class='long'" : "") + ">" + words(b.titulo) + "</h1><p class='sub'>" + esc(b.subtitulo) + "</p><p class='hook'>" + esc(b.gancho) + "</p>"
           + "<div class='price-line'><b>" + esc(price(b)) + "</b><span>Pago y envío por WhatsApp</span></div>"
-          + "<div class='ctas'><button class='btn btn-acc' type='button' data-add='" + b.id + "'>" + BAG + "Agregar al pedido</button><a class='btn btn-ghost-light' href='" + bookUrl(b) + "'>Ver el libro</a></div></div>"
+          + "<div class='ctas'><button class='btn btn-acc' type='button' data-add='" + b.id + "'>" + BAG + "Agregar al pedido</button><button class='btn btn-ghost-light' type='button' data-buy='" + b.id + "'>Comprar ya</button><a class='link light' href='" + bookUrl(b) + "'>Ver el libro <span class='ar'>→</span></a></div></div>"
           + book3d(b);
         $$(".hero-copy h1 .ln > span", slot).forEach(function (s, k) { s.style.transitionDelay = (0.08 + k * 0.07) + "s"; });
         tilt($(".stage", slot));
@@ -382,7 +505,7 @@
         + "<div class='buybox'><div class='price'><b>" + esc(price(b)) + "</b><span>Pago y envío coordinados por WhatsApp</span></div>"
         + "<div class='row'><div class='qty' aria-label='Cantidad'><button type='button' id='qMinus' aria-label='Menos'>−</button><span id='qVal'>1</span><button type='button' id='qPlus' aria-label='Más'>+</button></div>"
         + "<button class='btn btn-acc' type='button' id='pdpAdd'>" + BAG + (b.disponible ? "Agregar al pedido" : "Reservar") + "</button>"
-        + "<a class='btn btn-line' target='_blank' rel='noopener' href='" + wa("Hola, quiero comprar el libro «" + b.titulo + "» de " + C.autor + ".") + "'>" + WA + "Comprar ya</a></div>"
+        + "<button class='btn btn-line' type='button' id='pdpBuy'>" + WA + "Comprar ya</button></div>"
         + "<ul class='checks'>" + b.ventajas.map(function (v) { return "<li>" + esc(v) + "</li>"; }).join("") + "</ul></div>"
         + "<div class='tabs' role='tablist'><button role='tab' aria-selected='true' data-tab='s'>Sinopsis</button><button role='tab' aria-selected='false' data-tab='c'>Contenido</button><button role='tab' aria-selected='false' data-tab='f'>Ficha técnica</button></div>"
         + "<div id='tabBox'></div>"
@@ -399,7 +522,8 @@
       $$("[data-tab]").forEach(function (t) { t.addEventListener("click", function () { $$("[data-tab]").forEach(function (x) { x.setAttribute("aria-selected", x === t); }); box.innerHTML = "<div class='tabpanel'>" + panes[t.getAttribute("data-tab")] + "</div>"; }); });
       $("#qMinus").onclick = function () { qty = Math.max(1, qty - 1); $("#qVal").textContent = qty; };
       $("#qPlus").onclick = function () { qty++; $("#qVal").textContent = qty; };
-      $("#pdpAdd").onclick = function () { addToBag(b.id, qty); };
+      $("#pdpAdd").onclick = function () { addToBag(b.id, qty, $(".pdp-media img")); };
+      $("#pdpBuy").onclick = function () { buyNow(b.id, qty); };
       tilt($(".pdp-media .stage"));
       $("#related").innerHTML = L.filter(function (x) { return x.id !== b.id; }).map(card).join("") + soonCard;
       scrollTo(0, 0);
