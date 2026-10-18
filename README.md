@@ -1,21 +1,24 @@
-# Los libros de Francisco Daza Tananta
+# Libros de Francisco Daza Tananta
 
-Vitrina web de los libros del escritor Francisco Daza Tananta: carrusel de novedades, catálogo con filtros por género, ficha de cada libro, relato gratis y noticias.
+Librería en línea de los libros del escritor Francisco Daza Tananta. Muestra un libro destacado arriba, el catálogo completo con filtros por género, la ficha de cada libro y la compra por WhatsApp.
 
 Se publica con GitHub Pages desde la rama `main`.
 
-## Cómo agregar un libro nuevo
+## Cambiar el número de WhatsApp
 
-1. Sube la portada a la carpeta `assets/img/` (formato `.jpg`, vertical).
-2. Abre `index.html` y busca la línea `var LIBROS = [`.
-3. Copia uno de los bloques `{ ... }`, pégalo al final de la lista y cambia sus datos:
-   - `titulo`, `subtitulo`, `genero` (por ejemplo `Novela`), `etiqueta` (por ejemplo `Primera edición`), `estado` (por ejemplo `Marzo 2027`).
-   - `destacado: true` para que salga en el carrusel de la portada.
-   - `color`: el fondo suave de su tarjeta, por ejemplo `"#E9DFD6"`.
-   - `portada`: la ruta de la imagen, por ejemplo `assets/img/mi-nuevo-libro.jpg`.
-   - `gancho`: una frase corta para el carrusel.
-   - `sinopsis`, `contenido` (puede quedar vacío: `[]`), `ficha` y `nota`.
-   - `compra`: el enlace de venta. Si lo dejas vacío (`""`), dice "Próximamente en librerías".
-4. Guarda y sube el cambio. En uno o dos minutos la web se actualiza sola.
+En `index.html`, busca `var WHATSAPP =` y escribe el número con el código de país, sin espacios ni `+`. Para Perú empieza con `51`.
 
-El libro aparece solo en el catálogo, en su filtro de género, en el pie de página y, si es destacado, en el carrusel.
+## Poner o cambiar un precio
+
+Busca el libro en la lista `var LIBROS = [` y escribe su precio en `precio`, por ejemplo `precio: "S/ 35.00"`. Si lo dejas vacío (`""`), la web dice "Precio por anunciar".
+
+## Agregar un libro nuevo
+
+1. Sube la portada a `assets/img/` (formato `.jpg`, vertical).
+2. En `index.html`, dentro de `var LIBROS = [`, copia un bloque `{ ... }`, pégalo al final y cambia sus datos:
+   - `titulo`, `subtitulo`, `genero` (por ejemplo `Novela`), `edicion`, `estado` (por ejemplo `Marzo 2027`).
+   - `precio`, `disponible` (`false` muestra "Reservar" en vez de "Comprar"), `destacado` (`true` lo pone arriba).
+   - `color`: fondo suave de su tarjeta, por ejemplo `"#EDE4DA"`.
+   - `portada`: por ejemplo `assets/img/mi-nuevo-libro.jpg`.
+   - `resumen`, `sinopsis`, `contenido`, `ficha`, `ventajas` y `nota`.
+3. Guarda y sube el cambio. En uno o dos minutos la web se actualiza sola.
