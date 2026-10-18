@@ -437,9 +437,9 @@
       var th = T[i]; if (!th) return;
       $$(".ex-list button", ex).forEach(function (b, k) { b.setAttribute("aria-selected", k === i); b.tabIndex = k === i ? 0 : -1; });
       $("#exPanel").setAttribute("aria-labelledby", "ext-" + i);
-      $("#exPanel").innerHTML = '<div class="in"><h3>' + esc(th.nombre) + "</h3><p>" + esc(th.texto) + '</p><div class="ex-books">'
+      $("#exPanel").innerHTML = '<div class="in"><div class="ex-txt"><span class="ex-n">' + String(i + 1).padStart(2, "0") + " / " + String(T.length).padStart(2, "0") + '</span><h3>' + esc(th.nombre) + "</h3><p>" + esc(th.texto) + '</p><a class="link" href="libros.html#' + th.slug + '">Ver estos libros en el catálogo <span class="ar">→</span></a></div><div class="ex-books">'
         + th.libros.map(function (b) { return '<a class="ex-book" href="' + bookUrl(b) + '"><span class="cv" style="--tint:' + (b.color || "") + '"><img src="' + b.portada + '" alt=""></span><b>' + esc(b.titulo) + "</b><span>" + esc(b.genero) + " · " + esc(b.salida) + "</span></a>"; }).join("")
-        + '</div><a class="link" href="libros.html#' + th.slug + '">Ver en el catálogo <span class="ar">→</span></a></div>';
+        + '</div></div>';
     }
     var tabs = $$(".ex-list button", ex);
     tabs.forEach(function (b, i) {
@@ -453,8 +453,9 @@
     var nf = Math.min(L.length, 4), fan = $("#homeFan");
     fan.style.setProperty("--spread", nf <= 2 ? "62%" : "38%"); fan.style.setProperty("--spread-h", nf <= 2 ? "74%" : "52%");
     fan.innerHTML = L.slice(0, 4).map(function (b, i) { return '<img src="' + b.portada + '" alt="" style="--i:' + i + ';--n:' + nf + '">'; }).join("");
-    var words2 = T.map(function (th) { return "<span>" + esc(th.nombre) + "<i>·</i></span>"; }).join("") + L.map(function (b) { return "<span>" + esc(b.titulo) + "<i>·</i></span>"; }).join("");
-    $("#homeTrack").innerHTML = words2 + (reduce ? "" : words2.replace(/<span>/g, '<span aria-hidden="true">'));
+    var one = T.map(function (th) { return '<a href="libros.html#' + th.slug + '">' + esc(th.nombre) + "</a><i aria-hidden='true'>✦</i>"; }).join("");
+    var rep = one; while (rep.length < one.length * 3 && T.length < 6) rep += one;
+    $("#homeTrack").innerHTML = reduce ? one : '<div class="grp">' + rep + '</div><div class="grp" aria-hidden="true">' + rep.replace(/<a /g, '<a tabindex="-1" ') + "</div>";
   };
 
   /* ---------- Catálogo ---------- */
