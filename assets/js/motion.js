@@ -105,7 +105,12 @@
       var im = ph.querySelector("img"); if (im) gsap.fromTo(im, { yPercent: -6, scale: 1.12 }, { yPercent: 6, scale: 1.12, ease: "none", scrollTrigger: { trigger: ph, start: "top bottom", end: "bottom top", scrub: true } });
     });
     /* Vitrina: el escenario aparece desde lejos */
-    $$(".sc-stage-box").forEach(function (b) { gsap.from(b, { scale: .9, opacity: 0, rotateY: innerWidth > 900 ? -16 : 0, transformPerspective: 1400, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: b, start: "top 85%", once: true } }); });
+    $$(".sc-book").forEach(function (bk) {
+      var rev = bk.classList.contains("rev"), wide = innerWidth > 900;
+      var tl = gsap.timeline({ scrollTrigger: { trigger: bk, start: "top 80%", once: true } });
+      tl.from(bk.querySelector(".sc-stage-box"), { opacity: 0, x: wide ? (rev ? 80 : -80) : 0, y: wide ? 0 : 40, rotateY: wide ? (rev ? 14 : -14) : 0, scale: .94, transformPerspective: 1400, duration: 1.2, ease: "expo.out" })
+        .from(bk.querySelectorAll(".sc-txt > *"), { opacity: 0, y: 30, duration: .9, stagger: .07, ease: "expo.out" }, "-=.9");
+    });
     /* Encabezados de página interior */
     $$(".phead .wrap > *").forEach(function (el, i) { gsap.from(el, { opacity: 0, y: 40, duration: 1.1, delay: .1 + i * .08, ease: "expo.out" }); });
     /* Nombre grande del pie: letra por letra */
@@ -130,7 +135,7 @@
     }
     function tiltAll() {
       $$(".card").forEach(function (c) { tiltable(c, 9, 8); });
-      $$(".howto, .duo > *, .sc-stage-box, .qa details").forEach(function (c) { tiltable(c, 3, 0); });
+      $$(".howto, .duo > *, .qa details").forEach(function (c) { tiltable(c, 3, 0); });
       $$(".author .ph").forEach(function (c) { tiltable(c, 8, 0); });
     }
     tiltAll();
@@ -143,7 +148,7 @@
       el.addEventListener("pointermove", function (e) { var r = el.getBoundingClientRect(); x((e.clientX - r.left - r.width / 2) * .28); y((e.clientY - r.top - r.height / 2) * .38); });
       el.addEventListener("pointerleave", function () { gsap.to(el, { x: 0, y: 0, duration: .9, ease: "elastic.out(1,.4)" }); });
     }
-    function magAll() { $$(".hero .btn, .sec .btn-acc, .sc-item .btn, .nav .icon-btn, .totop, .op-go").forEach(magnet); }
+    function magAll() { $$(".hero .btn, .sec .btn-acc, .sc-txt .btn, .nav .icon-btn, .totop, .op-go").forEach(magnet); }
     magAll();
     new MutationObserver(magAll).observe(document.body, { childList: true, subtree: true });
   }

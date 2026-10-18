@@ -1001,3 +1001,40 @@ html.motion .card{transform-style:preserve-3d;will-change:transform}
 }
 .toolbar{position:static}
 .pdp-media,.qv-media{overflow:hidden;position:relative}
+
+/* =====================================================================
+   VITRINA: un recuadro propio para cada libro
+   ===================================================================== */
+.sc-books{display:grid;gap:clamp(1.5rem,3vw,2.5rem)}
+.sc-book{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(2rem,5vw,4.5rem);align-items:center;padding:clamp(1.25rem,2.5vw,2rem);border-radius:calc(var(--r-panel) + 8px);background:color-mix(in srgb,var(--tint,var(--acc-soft)) 45%,var(--surface));border:1px solid color-mix(in srgb,var(--tint,var(--line)) 70%,var(--line))}
+.sc-book.rev{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
+.sc-book.rev .sc-stage-box{order:2}
+.sc-book .sc-stage-box{height:clamp(26rem,62vh,36rem);min-height:0;background:radial-gradient(90% 75% at 50% 42%,color-mix(in srgb,var(--tint,var(--acc-soft)) 95%,#fff),color-mix(in srgb,var(--tint,var(--bg-2)) 60%,var(--bg-2)) 80%);border:0}
+.sc-book .sc-stage{width:52%;max-width:19rem;height:84%}
+.sc-num{position:absolute;left:1.5rem;top:1rem;font-family:var(--f-display);font-weight:600;font-size:clamp(4rem,9vw,7rem);line-height:1;color:color-mix(in srgb,var(--fg) 9%,transparent);pointer-events:none;z-index:0}
+.sc-book.rev .sc-num{left:auto;right:1.5rem}
+.sc-book .sc-hint{bottom:1rem}
+.sc-txt{display:grid;gap:1rem;align-content:center;padding-block:1rem}
+.sc-txt .kicker{font-size:.75rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--acc-tx)}
+.sc-txt h3{font-size:clamp(2.2rem,4vw,3.4rem)}
+.sc-txt .hook{font-family:var(--f-read);font-size:1.2rem;line-height:1.5}
+.sc-txt .syn{color:var(--fg-2);max-width:54ch}
+.sc-txt dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem;margin:.25rem 0}
+.sc-txt dl div{border-top:1px solid color-mix(in srgb,var(--fg) 15%,transparent);padding-top:.6rem}
+.sc-txt dt{font-size:.72rem;color:var(--fg-3);text-transform:uppercase;letter-spacing:.08em}
+.sc-txt dd{margin:.15rem 0 0;font-weight:600;font-size:.9rem}
+.sc-txt .ctas{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin-top:.25rem}
+:root[data-theme="dark"] .sc-book{background:color-mix(in srgb,var(--tint,#2a3a33) 10%,var(--surface));border-color:var(--line)}
+:root[data-theme="dark"] .sc-book .sc-stage-box{background:radial-gradient(90% 75% at 50% 42%,color-mix(in srgb,var(--tint,#2a3a33) 30%,var(--bg-3)),var(--bg-2) 80%)}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .sc-book{background:color-mix(in srgb,var(--tint,#2a3a33) 10%,var(--surface));border-color:var(--line)}
+  :root:not([data-theme="light"]) .sc-book .sc-stage-box{background:radial-gradient(90% 75% at 50% 42%,color-mix(in srgb,var(--tint,#2a3a33) 30%,var(--bg-3)),var(--bg-2) 80%)}
+}
+@media (max-width:900px){
+  .sc-book,.sc-book.rev{grid-template-columns:1fr;gap:1.25rem;padding:12px 12px 1.5rem}
+  .sc-book.rev .sc-stage-box{order:0}
+  .sc-book .sc-stage-box{height:22rem}
+  .sc-book .sc-stage{width:50%;height:82%}
+  .sc-txt{padding:0 .5rem}
+  .sc-txt dl{grid-template-columns:1fr 1fr}
+}

@@ -382,41 +382,39 @@
   var pages = {};
 
   /* ---------- Inicio ---------- */
-  /* Vitrina 3D de la portada: un bloque de texto por libro y el libro fijo al lado */
+  /* Vitrina 3D de la portada: cada libro en su propio recuadro, con su propio libro 3D */
   function showcase() {
-    var list = $("#scList"), stage = $("#scStage"); if (!list || !stage) return;
+    var list = $("#scList"); if (!list) return;
     var two = function (n) { return (n < 10 ? "0" : "") + n; };
     list.innerHTML = L.map(function (b, i) {
       var f = (b.ficha || []).slice(0, 3);
-      return '<article class="sc-item" data-i="' + i + '" style="--tint:' + (b.color || "") + '">'
-        + '<span class="kicker">' + two(i + 1) + " · " + esc(b.genero) + "</span><h3>" + esc(b.titulo) + "</h3>"
+      return '<article class="sc-book' + (i % 2 ? " rev" : "") + '" style="--tint:' + (b.color || "") + '">'
+        + '<div class="sc-stage-box"><span class="sc-num" aria-hidden="true">' + two(i + 1) + '</span><div class="stage sc-stage">' + book3d(b).replace(/^<div class="stage[^"]*">/, "").replace(/<\/div>$/, "") + '</div><span class="sc-hint">Arrástralo para girarlo</span></div>'
+        + '<div class="sc-txt"><span class="kicker">Libro ' + two(i + 1) + " de " + two(L.length) + " · " + esc(b.genero) + "</span><h3>" + esc(b.titulo) + "</h3>"
         + '<p class="hook">' + esc(b.gancho) + "</p>"
         + (b.sinopsis && b.sinopsis[0] ? "<p class='syn'>" + esc(b.sinopsis[0]) + "</p>" : "")
         + (f.length ? "<dl>" + f.map(function (x) { return "<div><dt>" + esc(x[0]) + "</dt><dd>" + esc(x[1]) + "</dd></div>"; }).join("") + "</dl>" : "")
-        + '<div class="ctas"><button class="btn btn-acc" type="button" data-add="' + b.id + '">' + BAG + 'Agregar al pedido</button><button class="btn btn-line" type="button" data-buy="' + b.id + '">Comprar ya</button><a class="link" href="' + bookUrl(b) + '">Ver la ficha <span class="ar">→</span></a></div>'
-        + '<div class="sc-mini">' + book3d(b) + "</div></article>";
+        + '<div class="ctas"><button class="btn btn-acc" type="button" data-add="' + b.id + '">' + BAG + 'Agregar al pedido</button><button class="btn btn-line" type="button" data-buy="' + b.id + '">Comprar ya</button><a class="link" href="' + bookUrl(b) + '">Ver la ficha <span class="ar">→</span></a></div></div></article>';
     }).join("");
-    stage.innerHTML = book3d(L[0]).replace(/^<div class="stage[^"]*">/, "").replace(/<\/div>$/, "");
-    var items = $$(".sc-item", list), act = -1, view = null, count = $("#scCount");
-    function setAct(i) {
-      if (i === act) return; var d = i > act ? 1 : -1; act = i;
-      items.forEach(function (it, k) { it.classList.toggle("on", k === i); });
-      count.textContent = two(i + 1) + " / " + two(L.length);
-      $(".sc-stage-box").style.setProperty("--tint", L[i].color || "");
-      var im = $(".book3d .front img", stage); if (im) im.src = L[i].portada;
-      if (view) view.setBook(L[i], d);
-    }
+    var blocks = $$(".sc-book", list), views = [];
     function upd() {
-      var vh = innerHeight, best = 0, bd = 1e9, p = 0;
-      items.forEach(function (it, k) { var r = it.getBoundingClientRect(), c = r.top + r.height / 2, dd = Math.abs(c - vh / 2); if (dd < bd) { bd = dd; best = k; } });
-      setAct(best);
-      var r = items[best].getBoundingClientRect(); p = Math.min(1, Math.max(0, (vh * 0.6 - r.top) / (r.height || 1)));
-      if (view) view.setScroll((p - 0.5) * 1.7);
+      var vh = innerHeight;
+      blocks.forEach(function (bl, k) {
+        var v = views[k]; if (!v) return;
+        var r = bl.getBoundingClientRect(); if (r.bottom < 0 || r.top > vh) return;
+        var p = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height)));
+        v.setScroll((p - 0.5) * 0.9 * (k % 2 ? -1 : 1));
+      });
     }
-    setAct(0);
-    glViewer({ mode: "scroll", baseY: -0.3 }, function (v) { view = v; v.mount(stage).setBook(L[act]); upd(); });
+    var io = "IntersectionObserver" in window ? new IntersectionObserver(function (en) {
+      en.forEach(function (x) {
+        if (!x.isIntersecting) return; io.unobserve(x.target);
+        var k = blocks.indexOf(x.target);
+        glViewer({ mode: "drag", baseY: k % 2 ? 0.42 : -0.42 }, function (v) { views[k] = v; v.mount($(".sc-stage", x.target)).setBook(L[k]); upd(); });
+      });
+    }, { rootMargin: "400px 0px" }) : null;
+    blocks.forEach(function (bl) { if (io) io.observe(bl); });
     addEventListener("scroll", function () { requestAnimationFrame(upd); }, { passive: true });
-    addEventListener("resize", upd); upd();
   }
 
   pages.inicio = function () {
