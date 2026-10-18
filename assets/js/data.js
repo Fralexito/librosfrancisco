@@ -46,7 +46,9 @@ window.SITE = {
       ventajas: ["Edición revisada y corregida en 2026", "Ilustraciones y glosario de voces amazónicas", "Para leer en familia o en el aula"],
       cita: { texto: "Su obra contribuye a preservar, mediante la palabra escrita, la riqueza de una tradición oral que permanece viva.", autor: "Jaime Vásquez Valcárcel, periodista, Diario Pro y Contra" },
       nota: "",
-      fragmento: "adelita"
+      fragmento: "adelita",
+      temas: ["Tradición oral", "Leyendas", "Educación"],
+      extra: { titulo: "Explora el universo de este libro", texto: "Las criaturas de sus relatos y un glosario de palabras de la Amazonía.", url: "universo.html" }
     },
     {
       id: "tras-los-muros-de-maranguita",
@@ -72,9 +74,23 @@ window.SITE = {
       ventajas: ["Testimonio real, contado en primera persona", "Tiraje limitado de 500 ejemplares", "Para educadores, psicólogos y lectores de no ficción"],
       cita: { texto: "La esperanza germina siempre que un maestro se niega a dar por perdida una vida.", autor: "Del libro" },
       nota: "Los nombres de los adolescentes son seudónimos, conforme a la Ley N.º 29733 y al Código de los Niños y Adolescentes.",
-      fragmento: "bautizo"
+      fragmento: "bautizo",
+      temas: ["Memoria", "Educación", "Justicia juvenil"],
+      extra: null
     }
   ],
+
+  /* ---------- Temas de la obra ----------
+     Cada libro indica sus temas en "temas". Aquí va la descripción de cada tema.
+     Si un libro nuevo trae un tema que no está aquí, igual aparece con un texto general.
+  */
+  temas: {
+    "Tradición oral": "Historias que pasaron de boca en boca y que el autor pone por escrito para que no se pierdan.",
+    "Leyendas": "Seres, misterios y creencias populares contados desde dentro de las comunidades.",
+    "Educación": "La escuela, el aula y el oficio de enseñar, vistos por quien fue maestro toda su vida.",
+    "Memoria": "Lo vivido en primera persona: testimonios reales, con nombres cambiados y hechos verdaderos.",
+    "Justicia juvenil": "Los adolescentes en conflicto con la ley y la gente que trabaja para darles otra oportunidad."
+  },
 
   /* ---------- Fragmentos para leer gratis ---------- */
   fragmentos: {
@@ -115,7 +131,7 @@ window.SITE = {
     }
   },
 
-  /* ---------- Criaturas del universo amazónico ---------- */
+  /* ---------- Extra de Fantasías Amazónicas: criaturas (página universo.html) ---------- */
   criaturas: [
     { nombre: "La Runa Mula", relato: "El reemplazo de la Runa Mula", imagen: "assets/img/criatura-runa-mula.jpg",
       texto: "Bestia condenada a recorrer las noches como castigo por un pecado prohibido. Dicen que aparece pasada la medianoche, sobre todo los martes y jueves, y que se la reconoce por el galope y un jadeo casi humano." },
@@ -133,7 +149,7 @@ window.SITE = {
       texto: "Mujer hermosa que habita en las profundidades de quebradas, cochas y ríos. Puede enfermar, atraer o proteger, y en las comunidades se habla de ella con respeto." }
   ],
 
-  /* ---------- Glosario del libro Fantasías Amazónicas ---------- */
+  /* ---------- Extra de Fantasías Amazónicas: glosario (página universo.html) ---------- */
   glosario: [
     ["Ayaymama", "Ave nocturna de canto lúgubre."],
     ["Bijao", "Planta de hojas grandes y resistentes para envolver alimentos."],

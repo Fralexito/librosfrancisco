@@ -531,3 +531,42 @@ footer code{font-family:inherit;user-select:all;word-break:break-all}
   :root:not([data-theme="light"]) .page.sepia{background:#2A251C;color:#E6DCC8}
   :root:not([data-theme="light"]) .page.sepia .fade{background:linear-gradient(0deg,#2A251C,transparent)}
 }
+
+/* ---------- Temas de la obra ---------- */
+.themes{display:grid;grid-template-columns:repeat(auto-fit,minmax(13rem,1fr));gap:1rem}
+.theme{position:relative;display:grid;gap:.6rem;align-content:start;padding:1.6rem;border:1px solid var(--line);border-radius:var(--r-card);background:var(--surface);overflow:hidden;transition:transform .5s var(--ease),box-shadow .4s,border-color .3s}
+.theme::before{content:"";position:absolute;inset:auto -30% -60% auto;width:14rem;height:14rem;border-radius:50%;background:radial-gradient(closest-side,var(--acc-soft),transparent);transition:transform .8s var(--ease);z-index:0}
+.theme > *{position:relative;z-index:1}
+.theme:hover{transform:translateY(-4px);box-shadow:0 22px 44px -30px var(--shadow);border-color:var(--line-2)}
+.theme:hover::before{transform:scale(1.4)}
+.theme .n{font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--fg-3)}
+.theme h3{font-size:clamp(1.7rem,2.6vw,2.1rem)}
+.theme p{color:var(--fg-2);font-size:.9375rem}
+.theme .mini{display:flex;margin-top:.4rem}
+.theme .mini img{width:2.6rem;aspect-ratio:.71;object-fit:cover;border-radius:2px 4px 4px 2px;box-shadow:0 8px 14px -8px rgba(0,0,0,.5);border:2px solid var(--surface)}
+.theme .mini img + img{margin-left:-.7rem}
+.theme .link{margin-top:.4rem}
+
+/* ---------- Abanico de portadas ---------- */
+.fan{position:relative;display:grid;place-items:center;min-height:22rem;padding:2rem}
+.fan img{position:absolute;width:min(42%,11rem);aspect-ratio:.71;object-fit:cover;border-radius:2px 6px 6px 2px;box-shadow:0 30px 50px -24px rgba(0,0,0,.8);transform:translateX(calc((var(--i) - (var(--n) - 1) / 2) * 38%)) rotate(calc((var(--i) - (var(--n) - 1) / 2) * 7deg));transition:transform .8s var(--ease)}
+.band:hover .fan img{transform:translateX(calc((var(--i) - (var(--n) - 1) / 2) * 52%)) rotate(calc((var(--i) - (var(--n) - 1) / 2) * 10deg)) translateY(-6px)}
+.band.plain{background:linear-gradient(135deg,#0F1A17,#1A2E27)}
+@media (max-width:860px){.fan{min-height:16rem;order:-1}}
+
+/* ---------- Temas en el catálogo y en la ficha ---------- */
+.themebar{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin:-1rem 0 1.5rem}
+.themebar small{font-size:.8125rem;color:var(--fg-3);margin-right:.4rem}
+.themebar a,.tags a{font-size:.8125rem;font-weight:500;padding:.35rem .8rem;border-radius:999px;background:var(--acc-soft);color:var(--acc-tx);transition:background .2s,color .2s}
+.themebar a[aria-current="true"]{background:var(--acc);color:#fff}
+.themebar a[aria-current="true"]::after{content:" ×"}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.extra{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.2rem 1rem;align-items:center;padding:1.2rem 1.4rem;border-radius:var(--r-card);background:var(--acc-soft);transition:transform .4s var(--ease)}
+.extra:hover{transform:translateY(-2px)}
+.extra b{font-family:var(--f-display);font-size:1.35rem}
+.extra span:not(.ar){grid-column:1;color:var(--fg-2);font-size:.9rem}
+.extra .ar{grid-row:1 / span 2;grid-column:2;font-size:1.3rem;color:var(--acc-tx)}
+
+/* ---------- Encabezado interior sin imagen ---------- */
+.phead.plain{background:radial-gradient(120% 140% at 85% 0%,#1F3A31 0%,#0F1A17 60%)}
+.phead.plain::after{background:none}
