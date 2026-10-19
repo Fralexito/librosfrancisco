@@ -1038,3 +1038,4 @@ html.motion .card{transform-style:preserve-3d;will-change:transform}
   .sc-txt{padding:0 .5rem}
   .sc-txt dl{grid-template-columns:1fr 1fr}
 }
+.duo .band{grid-template-rows:1fr;align-content:center}.duo .band .txt{padding-bottom:clamp(1.75rem,4vw,2.75rem)}
