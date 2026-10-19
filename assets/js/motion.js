@@ -33,7 +33,7 @@
       e.preventDefault();
       try { sessionStorage.setItem("fdt-pase", "1"); } catch (er) {}
       html.classList.add("pase-go");
-      setTimeout(function () { location.href = u.href; }, 520);
+      setTimeout(function () { location.href = u.href; }, 340);
     });
     addEventListener("pageshow", function (e) { if (e.persisted) html.classList.remove("pase-go", "pase-in", "pase-out"); });
   }
@@ -60,17 +60,17 @@
   window.FDT_LENIS = lenis;
 
   var D = reduce ? 0.5 : 1;            // intensidad
-  var far = reduce ? 14 : 70;
+  var far = reduce ? 10 : 40;
 
   /* ---------- Tarjetas que entran en 3D ---------- */
   function cardsIn(scope) {
     var cards = $$(".card", scope).filter(function (c) { return !c.__in; });
     cards.forEach(function (c) { c.__in = true; c.classList.remove("rv"); c.classList.add("seen"); });
     if (!cards.length) return;
-    gsap.set(cards, { opacity: 0, y: far, rotateX: reduce ? 0 : -22, transformPerspective: 1100, transformOrigin: "50% 100%" });
+    gsap.set(cards, { opacity: 0, y: far, rotateX: reduce ? 0 : -10, transformPerspective: 1100, transformOrigin: "50% 100%" });
     ST.batch(cards, {
       start: "top 92%",
-      onEnter: function (b) { gsap.to(b, { opacity: 1, y: 0, rotateX: 0, duration: 1.1 * D + .3, ease: "expo.out", stagger: .09, clearProps: "transform,opacity" }); },
+      onEnter: function (b) { gsap.to(b, { opacity: 1, y: 0, rotateX: 0, duration: .9 * D + .2, ease: "expo.out", stagger: .06, clearProps: "transform,opacity" }); },
       once: true
     });
   }
@@ -134,7 +134,7 @@
       el.addEventListener("pointerleave", function () { rx(0); ry(0); yy(0); });
     }
     function tiltAll() {
-      $$(".card").forEach(function (c) { tiltable(c, 9, 8); });
+      $$(".card").forEach(function (c) { tiltable(c, 5, 6); });
       $$(".howto, .duo > *, .qa details").forEach(function (c) { tiltable(c, 3, 0); });
       $$(".author .ph").forEach(function (c) { tiltable(c, 8, 0); });
     }
@@ -145,7 +145,7 @@
     function magnet(el) {
       if (el.__mag) return; el.__mag = true;
       var x = gsap.quickTo(el, "x", { duration: .5, ease: "power3" }), y = gsap.quickTo(el, "y", { duration: .5, ease: "power3" });
-      el.addEventListener("pointermove", function (e) { var r = el.getBoundingClientRect(); x((e.clientX - r.left - r.width / 2) * .28); y((e.clientY - r.top - r.height / 2) * .38); });
+      el.addEventListener("pointermove", function (e) { var r = el.getBoundingClientRect(); x((e.clientX - r.left - r.width / 2) * .18); y((e.clientY - r.top - r.height / 2) * .24); });
       el.addEventListener("pointerleave", function () { gsap.to(el, { x: 0, y: 0, duration: .9, ease: "elastic.out(1,.4)" }); });
     }
     function magAll() { $$(".hero .btn, .sec .btn-acc, .sc-txt .btn, .nav .icon-btn, .totop, .op-go").forEach(magnet); }
