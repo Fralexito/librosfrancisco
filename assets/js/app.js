@@ -479,12 +479,11 @@
     addEventListener("pointermove", function (e) { if (!drag) return; var dx = e.clientX - drag.x; if (Math.abs(dx) > 5 && !drag.moved) { drag.moved = true; shelf.classList.add("dragging"); } if (drag.moved) shelf.scrollLeft = drag.left - dx; });
     addEventListener("pointerup", function () { if (!drag) return; var moved = drag.moved; drag = null; if (moved) { shelf.classList.remove("dragging"); var w = step(); shelf.scrollTo({ left: Math.round(shelf.scrollLeft / w) * w, behavior: reduce ? "auto" : "smooth" }); shelf.addEventListener("click", function stop(ev) { ev.stopPropagation(); ev.preventDefault(); shelf.removeEventListener("click", stop, true); }, true); } });
 
-    /* Vitrina: cada libro en su propio recuadro */
-    showcase();
   };
 
   /* ---------- Catálogo ---------- */
   pages.libros = function () {
+    showcase();
     var grid = $("#catGrid"), chips = $("#catChips"), q = $("#catSearch"), sort = $("#catSort"), res = $("#catResult"), active = "Todos", tema = null;
     var T = themes(), tbox = $("#catThemes");
     tbox.innerHTML = T.map(function (th) { return '<a href="#' + th.slug + '" data-slug="' + th.slug + '">' + esc(th.nombre) + "</a>"; }).join("");
