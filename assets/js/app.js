@@ -420,7 +420,7 @@
     var feat = L.filter(function (b) { return b.destacado; }); if (!feat.length) feat = [L[0]];
     var hero = $("#hero"), bg = $("#heroBg"), slot = $("#heroSlot"), prog = $("#heroProg"), cur = 0, timer = null, DUR = 8000;
     bg.innerHTML = feat.map(function (b) { return '<img src="' + (b.fondo || b.portada) + '" alt="">'; }).join("");
-    prog.innerHTML = feat.map(function (b, i) { return '<button type="button" aria-label="' + esc(b.titulo) + '"><i></i></button>'; }).join("");
+    prog.innerHTML = feat.map(function (b, i) { return '<button type="button"><span>' + esc(b.titulo) + '</span><em><i></i></em></button>'; }).join("");
     prog.style.setProperty("--dur", DUR + "ms");
     function words(t) { return t.split(" ").map(function (w) { return '<span class="ln"><span>' + esc(w) + "</span></span>"; }).join(" "); }
     var heroV = null, heroWait = false;
@@ -428,8 +428,9 @@
       cur = (i + feat.length) % feat.length; var b = feat[cur];
       slot.classList.remove("in");
       setTimeout(function () {
-        slot.innerHTML = '<div class="hero-copy"><span class="badge">' + (b.disponible ? "Novedad · " + esc(b.salida) : "Preventa") + "</span>"
-          + "<h1" + (b.titulo.length > 22 ? " class='long'" : "") + ">" + words(b.titulo) + "</h1><p class='hook'>" + esc(b.gancho) + "</p>"
+        slot.style.setProperty("--tint", b.color || "");
+        slot.innerHTML = '<div class="hero-copy">'
+          + "<h1" + (b.titulo.length > 22 ? " class='long'" : "") + ">" + words(b.titulo) + "</h1><p class='byline'><span>" + esc(C.autor) + "</span><span>" + (b.disponible ? "Sale en " + esc(String(b.salida).toLowerCase()) : "Preventa") + "</span></p><p class='hook'>" + esc(b.gancho) + "</p>"
           + "<div class='ctas'><button class='btn btn-acc' type='button' data-add='" + b.id + "'>" + BAG + "Agregar al pedido</button><a class='btn btn-ghost-light' href='" + bookUrl(b) + "'>Ver el libro</a></div></div>"
           + book3d(b);
         $$(".hero-copy h1 .ln > span", slot).forEach(function (s, k) { s.style.transitionDelay = (0.08 + k * 0.07) + "s"; });

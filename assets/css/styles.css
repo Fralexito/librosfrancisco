@@ -35,13 +35,13 @@
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#0F1412; --bg-2:#161C19; --bg-3:#1E2622; --fg:#ECEFEC; --fg-2:#AAB3AE; --fg-3:#7F8984;
-    --line:#26302B; --line-2:#3A4640; --surface:#151B18; --acc:#2A7A60; --acc-hi:#33906F; --acc-soft:#16261F; --acc-tx:#8FD0B5;
+    --line:#26302B; --line-2:#3A4640; --surface:#151B18; --acc:#2A7A60; --acc-hi:#236B53; --acc-soft:#16261F; --acc-tx:#8FD0B5;
     --inv-bg:#ECEFEC; --inv-fg:#0F1412; --nav-bg:rgba(15,20,18,.88); --shadow:rgba(0,0,0,.7); color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0F1412; --bg-2:#161C19; --bg-3:#1E2622; --fg:#ECEFEC; --fg-2:#AAB3AE; --fg-3:#7F8984;
-  --line:#26302B; --line-2:#3A4640; --surface:#151B18; --acc:#2A7A60; --acc-hi:#33906F; --acc-soft:#16261F; --acc-tx:#8FD0B5;
+  --line:#26302B; --line-2:#3A4640; --surface:#151B18; --acc:#2A7A60; --acc-hi:#236B53; --acc-soft:#16261F; --acc-tx:#8FD0B5;
   --inv-bg:#ECEFEC; --inv-fg:#0F1412; --nav-bg:rgba(15,20,18,.88); --shadow:rgba(0,0,0,.7); color-scheme:dark;
 }
 html{transition:background-color .4s}
@@ -1047,7 +1047,7 @@ html.motion .card{transform-style:preserve-3d;will-change:transform}
 ::selection{background:color-mix(in srgb,var(--acc) 22%,transparent);color:inherit}
 html{scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--fg) 25%,transparent) transparent}
 body{font-feature-settings:"kern","liga";text-rendering:optimizeLegibility}
-h1,h2,h3{letter-spacing:-.018em;font-feature-settings:"kern","liga","dlig"}
+h1,h2,h3{letter-spacing:-.018em;font-feature-settings:"kern","liga"}
 .kicker,.sc-txt .kicker{font-size:.72rem;letter-spacing:.16em}
 .lead{line-height:1.65}
 :focus-visible{outline:2px solid color-mix(in srgb,var(--acc) 80%,transparent);outline-offset:3px}
@@ -1072,3 +1072,52 @@ svg[aria-hidden]{flex:none}
 .btn svg{width:1.2em;height:1.2em}
 .hero .hook{max-width:44ch}
 .hero .in .stage.gl-ready .book3d,.stage.gl-ready .book3d{opacity:0;pointer-events:none;transition:none}
+
+/* =====================================================================
+   PORTADA PRINCIPAL MÁS FIRME (impeccable · bolder)
+   Misma marca: Cormorant a toda su fuerza, el verde selva y el libro
+   como protagonista. Sin colores ni tipografías nuevas.
+   ===================================================================== */
+.hero > .wrap{min-height:clamp(38rem,calc(100dvh - 4.5rem),52rem);grid-template-columns:minmax(0,6fr) minmax(0,5fr);padding-block:clamp(3rem,6vw,4.5rem) clamp(6rem,9vw,7.5rem)}
+.hero-bg img.on{opacity:.42}
+.hero-bg::after{background:
+  radial-gradient(60% 70% at 78% 50%,color-mix(in srgb,var(--acc) 22%,transparent),transparent 70%),
+  linear-gradient(90deg,rgba(15,26,23,.97) 0%,rgba(15,26,23,.86) 38%,rgba(15,26,23,.45) 75%,rgba(15,26,23,.3) 100%),
+  linear-gradient(0deg,rgba(15,26,23,.92),rgba(15,26,23,0) 40%)}
+.hero-copy{gap:1.5rem}
+.hero h1{font-weight:500;font-size:clamp(3.4rem,6.8vw,6rem);line-height:.95;letter-spacing:-.025em;text-wrap:balance}
+.hero h1.long{font-size:clamp(3rem,5.4vw,5rem);line-height:.98}
+.hero .byline{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1rem;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,.16);max-width:30rem;font-size:.9375rem;color:#C3CCC7}
+.hero .byline span:first-child{font-family:var(--f-display);font-style:italic;font-size:1.35rem;color:#fff}
+.hero .byline span:last-child{color:#9FD3BF}
+.hero .hook{font-family:var(--f-read);font-size:clamp(1.1rem,1.5vw,1.3rem);line-height:1.5;color:#D7DED9;max-width:38ch}
+.hero .ctas{gap:.9rem;margin-top:.25rem}
+.hero .ctas .btn{min-height:3.4rem;padding:0 1.7rem;font-size:1rem}
+/* el libro: más grande y sobre una luz de su propio color */
+.hero .stage{position:relative;min-height:28rem}
+.hero .stage::before{content:"";position:absolute;left:50%;top:52%;width:118%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--tint,var(--acc)) 38%,transparent),transparent 72%);opacity:.55;pointer-events:none;z-index:0;transition:background .8s var(--ease)}
+.hero .stage .book3d{width:min(100%,22rem)}
+.hero .stage > .book3d{position:relative;z-index:1}
+.hero .stage > .gl-book{z-index:2}
+/* control del carrusel: los títulos de los libros en lugar de rayitas */
+.hero-ctrl .prog{gap:clamp(1rem,3vw,2rem)}
+.hero-ctrl .prog button{width:auto;height:auto;background:none;border-radius:0;overflow:visible;display:grid;gap:.55rem;text-align:left;color:rgba(255,255,255,.55);font:500 .875rem var(--f-body);transition:color 200ms ease}
+.hero-ctrl .prog button.on{color:#fff}
+.hero-ctrl .prog button em{display:block;height:2px;width:100%;min-width:6rem;background:rgba(255,255,255,.2);border-radius:2px;position:relative;overflow:hidden}
+.hero-ctrl .prog button i{background:#fff}
+@media (hover:hover) and (pointer:fine){.hero-ctrl .prog button:hover{color:#fff}}
+@media (max-width:900px){
+  .hero > .wrap{min-height:0;grid-template-columns:1fr;padding-block:1rem 6rem;gap:1rem}
+  .hero .stage{min-height:10rem}
+  .hero-copy{gap:.85rem}
+  .hero .byline{padding-top:.9rem;gap:.25rem .75rem}
+  .hero .byline span:first-child{font-size:1.15rem}
+  .hero .byline span:last-child{font-size:.875rem}
+  .hero .hook{font-size:1rem;line-height:1.45}
+  .hero .ctas .btn{min-height:3rem;padding:0 1.2rem;font-size:.95rem}
+  .hero .stage .book3d{width:11.5rem}
+  .hero h1{font-size:clamp(2.4rem,10vw,3.2rem)}
+  .hero h1.long{font-size:clamp(2.3rem,9.5vw,3.2rem)}
+  .hero-ctrl .prog button span{display:none}
+  .hero-ctrl .prog button em{min-width:2.5rem}
+}
