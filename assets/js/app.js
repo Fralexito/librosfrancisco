@@ -456,6 +456,29 @@
     document.addEventListener("visibilitychange", function () { if (document.hidden) clearInterval(timer); else { restartBar(); play(); } });
     show(0); play();
 
+    /* Estantería deslizable */
+    var shelf = $("#homeShelf"), bar = $("#shelfBar"), sp = $("#shelfPrev"), sn = $("#shelfNext");
+    shelf.innerHTML = L.map(card).join("") + soonCard;
+    function step() { var c = shelf.firstElementChild; return c ? c.getBoundingClientRect().width + 24 : 300; }
+    function syncShelf() {
+      var max = shelf.scrollWidth - shelf.clientWidth, x = shelf.scrollLeft, vis = shelf.clientWidth / (shelf.scrollWidth || 1);
+      bar.style.width = Math.max(vis * 100, 12) + "%";
+      bar.style.transform = "translateX(" + (max > 0 ? (x / max) * ((1 / Math.max(vis, .12)) - 1) * 100 : 0) + "%)";
+      sp.disabled = x <= 2; sn.disabled = x >= max - 2;
+      bar.parentNode.hidden = max <= 2;
+      sp.parentNode.hidden = max <= 2;
+    }
+    sp.addEventListener("click", function () { shelf.scrollBy({ left: -step(), behavior: reduce ? "auto" : "smooth" }); });
+    sn.addEventListener("click", function () { shelf.scrollBy({ left: step(), behavior: reduce ? "auto" : "smooth" }); });
+    shelf.addEventListener("scroll", function () { requestAnimationFrame(syncShelf); }, { passive: true });
+    addEventListener("resize", syncShelf); syncShelf();
+    shelf.addEventListener("keydown", function (e) { if (e.key === "ArrowRight") { e.preventDefault(); sn.click(); } if (e.key === "ArrowLeft") { e.preventDefault(); sp.click(); } });
+    /* Arrastrar con el mouse (en pantallas táctiles se desliza con el dedo) */
+    var drag = null;
+    shelf.addEventListener("pointerdown", function (e) { if (e.pointerType !== "mouse" || e.button !== 0) return; drag = { x: e.clientX, left: shelf.scrollLeft, moved: false }; });
+    addEventListener("pointermove", function (e) { if (!drag) return; var dx = e.clientX - drag.x; if (Math.abs(dx) > 5 && !drag.moved) { drag.moved = true; shelf.classList.add("dragging"); } if (drag.moved) shelf.scrollLeft = drag.left - dx; });
+    addEventListener("pointerup", function () { if (!drag) return; var moved = drag.moved; drag = null; if (moved) { shelf.classList.remove("dragging"); var w = step(); shelf.scrollTo({ left: Math.round(shelf.scrollLeft / w) * w, behavior: reduce ? "auto" : "smooth" }); shelf.addEventListener("click", function stop(ev) { ev.stopPropagation(); ev.preventDefault(); shelf.removeEventListener("click", stop, true); }, true); } });
+
     /* Vitrina: cada libro en su propio recuadro */
     showcase();
   };

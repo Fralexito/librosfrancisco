@@ -92,9 +92,18 @@
     <div class="hero-ctrl"><div class="wrap"><div class="prog" id="heroProg"></div><div class="arrows"><button type="button" id="heroPrev" aria-label="Anterior">←</button><button type="button" id="heroNext" aria-label="Siguiente">→</button></div></div></div>
   </section>
 
-  <section class="sec alt showcase" id="libros" aria-labelledby="h-show">
+  <section class="sec" id="libros" aria-labelledby="h-libros">
     <div class="wrap">
-      <header class="sec-head" data-rv><div><h2 id="h-show">Los <em>libros</em></h2><p class="lead">Cada libro en su propia vitrina. Tómalo y gíralo con el mouse o con el dedo para verlo por todos lados.</p></div><div class="sh-tools"><a class="link" href="libros.html">Ver catálogo <span class="ar">→</span></a></div></header>
+      <header class="sec-head" data-rv><div><h2 id="h-libros">Los <em>libros</em></h2><p class="lead">Toda la obra del autor en un solo lugar. Desliza para ver cada título.</p></div>
+        <div class="sh-tools"><div class="shelf-nav"><button type="button" class="icon-btn" id="shelfPrev" aria-label="Libros anteriores">←</button><button type="button" class="icon-btn" id="shelfNext" aria-label="Más libros">→</button></div><a class="link" href="libros.html">Ver catálogo <span class="ar">→</span></a></div></header>
+      <div class="shelf" id="homeShelf" tabindex="0" aria-label="Estantería de libros"></div>
+      <div class="shelf-bar" aria-hidden="true"><i id="shelfBar"></i></div>
+    </div>
+  </section>
+
+  <section class="sec alt showcase" aria-labelledby="h-show">
+    <div class="wrap">
+      <header class="sec-head" data-rv><div><h2 id="h-show">Gira cada <em>libro</em></h2><p class="lead">Cada libro en su propia vitrina. Tómalo y gíralo con el mouse o con el dedo para verlo por todos lados.</p></div></header>
       <div class="sc-books" id="scList"></div>
     </div>
   </section>
