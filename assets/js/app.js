@@ -14,8 +14,8 @@
   var price = function (b) { return b.precio != null ? C.moneda + " " + Number(b.precio).toFixed(2) : "Precio por anunciar"; };
   var wa = function (msg) { return "https://wa.me/" + C.whatsapp + "?text=" + encodeURIComponent(msg); };
   var bookUrl = function (b) { return "libro.html#" + b.id; };
-  var WA = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.2-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1.1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>';
-  var BAG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>';
+  var WA = '<svg aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M187.58,144.84l-32-16a8,8,0,0,0-8,.5l-14.69,9.8a40.55,40.55,0,0,1-16-16l9.8-14.69a8,8,0,0,0,.5-8l-16-32A8,8,0,0,0,104,64a40,40,0,0,0-40,40,88.1,88.1,0,0,0,88,88,40,40,0,0,0,40-40A8,8,0,0,0,187.58,144.84ZM152,176a72.08,72.08,0,0,1-72-72A24,24,0,0,1,99.29,80.46l11.48,23L101,118a8,8,0,0,0-.73,7.51,56.47,56.47,0,0,0,30.15,30.15A8,8,0,0,0,138,155l14.61-9.74,23,11.48A24,24,0,0,1,152,176ZM128,24A104,104,0,0,0,36.18,176.88L24.83,210.93a16,16,0,0,0,20.24,20.24l34.05-11.35A104,104,0,1,0,128,24Zm0,192a87.87,87.87,0,0,1-44.06-11.81,8,8,0,0,0-6.54-.67L40,216,52.47,178.6a8,8,0,0,0-.66-6.54A88,88,0,1,1,128,216Z"/></svg>';
+  var BAG = '<svg aria-hidden="true" viewBox="0 0 256 256" fill="currentColor"><path d="M239.89,198.12l-14.26-120a16,16,0,0,0-16-14.12H176a48,48,0,0,0-96,0H46.33a16,16,0,0,0-16,14.12l-14.26,120A16,16,0,0,0,20,210.6a16.13,16.13,0,0,0,12,5.4H223.92A16.13,16.13,0,0,0,236,210.6,16,16,0,0,0,239.89,198.12ZM128,32a32,32,0,0,1,32,32H96A32,32,0,0,1,128,32ZM32,200,46.33,80H80v24a8,8,0,0,0,16,0V80h64v24a8,8,0,0,0,16,0V80h33.75l14.17,120Z"/></svg>';
 
   document.documentElement.classList.add("js");
 
@@ -389,8 +389,8 @@
     list.innerHTML = L.map(function (b, i) {
       var f = (b.ficha || []).slice(0, 3);
       return '<article class="sc-book' + (i % 2 ? " rev" : "") + '" style="--tint:' + (b.color || "") + '">'
-        + '<div class="sc-stage-box"><span class="sc-num" aria-hidden="true">' + two(i + 1) + '</span><div class="stage sc-stage">' + book3d(b).replace(/^<div class="stage[^"]*">/, "").replace(/<\/div>$/, "") + '</div><span class="sc-hint">Arrástralo para girarlo</span></div>'
-        + '<div class="sc-txt"><span class="kicker">Libro ' + two(i + 1) + " de " + two(L.length) + " · " + esc(b.genero) + "</span><h3>" + esc(b.titulo) + "</h3>"
+        + '<div class="sc-stage-box"><div class="stage sc-stage">' + book3d(b).replace(/^<div class="stage[^"]*">/, "").replace(/<\/div>$/, "") + '</div><span class="sc-hint">Arrástralo para girarlo</span></div>'
+        + '<div class="sc-txt"><span class="kicker">' + esc(b.genero) + "</span><h3>" + esc(b.titulo) + "</h3>"
         + '<p class="hook">' + esc(b.gancho) + "</p>"
         + (b.sinopsis && b.sinopsis[0] ? "<p class='syn'>" + esc(b.sinopsis[0]) + "</p>" : "")
         + (f.length ? "<dl>" + f.map(function (x) { return "<div><dt>" + esc(x[0]) + "</dt><dd>" + esc(x[1]) + "</dd></div>"; }).join("") + "</dl>" : "")
@@ -414,7 +414,6 @@
       });
     }, { rootMargin: "400px 0px" }) : null;
     blocks.forEach(function (bl) { if (io) io.observe(bl); });
-    addEventListener("scroll", function () { requestAnimationFrame(upd); }, { passive: true });
   }
 
   pages.inicio = function () {
@@ -430,9 +429,8 @@
       slot.classList.remove("in");
       setTimeout(function () {
         slot.innerHTML = '<div class="hero-copy"><span class="badge">' + (b.disponible ? "Novedad · " + esc(b.salida) : "Preventa") + "</span>"
-          + "<h1" + (b.titulo.length > 22 ? " class='long'" : "") + ">" + words(b.titulo) + "</h1><p class='sub'>" + esc(b.subtitulo) + "</p><p class='hook'>" + esc(b.gancho) + "</p>"
-          + "<div class='price-line'><b>" + esc(price(b)) + "</b><span>Pago y envío por WhatsApp</span></div>"
-          + "<div class='ctas'><button class='btn btn-acc' type='button' data-add='" + b.id + "'>" + BAG + "Agregar al pedido</button><button class='btn btn-ghost-light' type='button' data-buy='" + b.id + "'>Comprar ya</button><a class='link light' href='" + bookUrl(b) + "'>Ver el libro <span class='ar'>→</span></a></div></div>"
+          + "<h1" + (b.titulo.length > 22 ? " class='long'" : "") + ">" + words(b.titulo) + "</h1><p class='hook'>" + esc(b.gancho) + "</p>"
+          + "<div class='ctas'><button class='btn btn-acc' type='button' data-add='" + b.id + "'>" + BAG + "Agregar al pedido</button><a class='btn btn-ghost-light' href='" + bookUrl(b) + "'>Ver el libro</a></div></div>"
           + book3d(b);
         $$(".hero-copy h1 .ln > span", slot).forEach(function (s, k) { s.style.transitionDelay = (0.08 + k * 0.07) + "s"; });
         tilt($(".stage", slot));
